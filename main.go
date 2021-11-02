@@ -61,6 +61,10 @@ func (g *Game) Update() error {
 		}
 	}
 
+	if inpututil.IsKeyJustPressed(ebiten.KeySpace) {
+		g.Cricket.Velocity = g.Cricket.Velocity + 10
+	}
+
 	// Move the cricket
 	if g.Wait++; g.Cricket.Velocity > -5 && g.Wait%10 == 0 {
 		g.Cricket.Velocity--
