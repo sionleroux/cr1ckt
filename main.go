@@ -23,12 +23,13 @@ func main() {
 	ebiten.SetWindowTitle("cr1ck_t")
 	ebiten.SetCursorMode(ebiten.CursorModeHidden)
 
-	cricket := NewObjectFromImage(loadImage("assets/cricket.png"))
+	cricket := &Cricket{Object: NewObjectFromImage(loadImage("assets/cricket.png"))}
 
 	game := &Game{
 		Width:   gameWidth,
 		Height:  gameHeight,
 		Cricket: cricket,
+		Wait:    10,
 	}
 
 	if err := ebiten.RunGame(game); err != nil {
@@ -40,7 +41,8 @@ func main() {
 type Game struct {
 	Width   int
 	Height  int
-	Cricket *Object
+	Cricket *Cricket
+	Wait    int
 }
 
 // Update calculates game logic
@@ -58,6 +60,12 @@ func (g *Game) Update() error {
 			ebiten.SetFullscreen(true)
 		}
 	}
+
+	// Move the cricket
+	if g.Wait++; g.Cricket.Velocity > -5 && g.Wait%10 == 0 {
+		g.Cricket.Velocity--
+	}
+	g.Cricket.Op.GeoM.Translate(0, float64(-g.Cricket.Velocity))
 
 	return nil
 }
@@ -87,6 +95,11 @@ func NewObjectFromImage(img *ebiten.Image) *Object {
 		Op:     &ebiten.DrawImageOptions{},
 		Center: image.Pt(0, 0),
 	}
+}
+
+type Cricket struct {
+	*Object
+	Velocity int
 }
 
 // Load an image from embedded FS into an ebiten Image object
