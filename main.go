@@ -4,11 +4,13 @@ package main
 
 import (
 	"embed"
+	"errors"
 	"image"
 	"image/png"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 //go:embed assets/*.png
@@ -43,6 +45,20 @@ type Game struct {
 
 // Update calculates game logic
 func (g *Game) Update() error {
+
+	// Pressing Esc any time quits immediately
+	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
+		return errors.New("game quit by player")
+	}
+
+	if inpututil.IsKeyJustPressed(ebiten.KeyF) {
+		if ebiten.IsFullscreen() {
+			ebiten.SetFullscreen(false)
+		} else {
+			ebiten.SetFullscreen(true)
+		}
+	}
+
 	return nil
 }
 
