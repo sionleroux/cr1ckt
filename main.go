@@ -66,17 +66,27 @@ func (g *Game) Update() error {
 	}
 
 	if inpututil.IsKeyJustPressed(ebiten.KeySpace) {
-		g.Cricket.Velocity = g.Cricket.Velocity + 10
+		g.Cricket.Velocity.Y += 7
+		g.Cricket.Velocity.X += 5
 	}
 
+	g.Wait++
+
 	// Move the cricket
-	if g.Wait++; g.Cricket.Velocity > -5 && g.Wait%10 == 0 {
-		g.Cricket.Velocity--
+	if g.Wait%10 == 0 {
+		if g.Cricket.Velocity.Y > -5 {
+			g.Cricket.Velocity.Y--
+		}
+		if g.Cricket.Velocity.X > 0 {
+			g.Cricket.Velocity.X--
+		}
 	}
-	if g.Cricket.Position.Y < g.Height-g.Cricket.Image.Bounds().Dy() || g.Cricket.Velocity > 0 {
-		g.Cricket.Position.Y = g.Cricket.Position.Y - g.Cricket.Velocity
+
+	if g.Cricket.Position.Y < g.Height-g.Cricket.Image.Bounds().Dy() || g.Cricket.Velocity.Y > 0 {
+		g.Cricket.Position.Y = g.Cricket.Position.Y - g.Cricket.Velocity.Y
+		g.Cricket.Position.X = g.Cricket.Position.X + g.Cricket.Velocity.X
 		g.Cricket.Op.GeoM.Reset()
-		g.Cricket.Op.GeoM.Translate(0, float64(g.Cricket.Position.Y))
+		g.Cricket.Op.GeoM.Translate(float64(g.Cricket.Position.X), float64(g.Cricket.Position.Y))
 	}
 
 	return nil
@@ -85,9 +95,8 @@ func (g *Game) Update() error {
 // Draw handles rendering the sprites
 func (g *Game) Draw(screen *ebiten.Image) {
 	screen.DrawImage(g.Cricket.Image, g.Cricket.Op)
-	ebitenutil.DebugPrint(screen, fmt.Sprintf("(%d, %d) v%d\n",
-		g.Cricket.Position.X,
-		g.Cricket.Position.Y,
+	ebitenutil.DebugPrint(screen, fmt.Sprintf("p%v - v%v\n",
+		g.Cricket.Position,
 		g.Cricket.Velocity,
 	))
 }
@@ -117,7 +126,7 @@ func NewObjectFromImage(img *ebiten.Image) *Object {
 type Cricket struct {
 	*Object
 	Position image.Point
-	Velocity int
+	Velocity image.Point
 }
 
 // Load an image from embedded FS into an ebiten Image object
