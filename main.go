@@ -27,7 +27,10 @@ func main() {
 	ebiten.SetWindowTitle("cr1ck_t")
 	ebiten.SetCursorMode(ebiten.CursorModeHidden)
 
-	cricket := &Cricket{Object: NewObjectFromImage(loadImage("assets/cricket.png"))}
+	cricket := &Cricket{
+		Object:  NewObjectFromImage(loadImage("assets/cricket.png")),
+		Jumping: true,
+	}
 
 	game := &Game{
 		Width:   gameWidth,
@@ -65,9 +68,10 @@ func (g *Game) Update() error {
 		}
 	}
 
-	if inpututil.IsKeyJustPressed(ebiten.KeySpace) {
+	if !g.Cricket.Jumping && inpututil.IsKeyJustPressed(ebiten.KeySpace) {
 		g.Cricket.Velocity.Y += 7
 		g.Cricket.Velocity.X += 5
+		g.Cricket.Jumping = true
 	}
 
 	g.Wait++
@@ -87,6 +91,8 @@ func (g *Game) Update() error {
 		g.Cricket.Position.X = g.Cricket.Position.X + g.Cricket.Velocity.X
 		g.Cricket.Op.GeoM.Reset()
 		g.Cricket.Op.GeoM.Translate(float64(g.Cricket.Position.X), float64(g.Cricket.Position.Y))
+	} else {
+		g.Cricket.Jumping = false
 	}
 
 	return nil
@@ -123,10 +129,12 @@ func NewObjectFromImage(img *ebiten.Image) *Object {
 	}
 }
 
+// Cricket is a small, jumping insect, the main character of the game
 type Cricket struct {
 	*Object
 	Position image.Point
 	Velocity image.Point
+	Jumping  bool
 }
 
 // Load an image from embedded FS into an ebiten Image object
