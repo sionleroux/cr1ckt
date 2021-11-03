@@ -28,8 +28,9 @@ func main() {
 	ebiten.SetCursorMode(ebiten.CursorModeHidden)
 
 	cricket := &Cricket{
-		Object:  NewObjectFromImage(loadImage("assets/cricket.png")),
-		Jumping: true,
+		Object:    NewObjectFromImage(loadImage("assets/cricket.png")),
+		Jumping:   true,
+		Direction: -1,
 	}
 
 	game := &Game{
@@ -68,10 +69,12 @@ func (g *Game) Update() error {
 		}
 	}
 
+	// Jump
 	if !g.Cricket.Jumping && inpututil.IsKeyJustPressed(ebiten.KeySpace) {
 		g.Cricket.Velocity.Y += 7
-		g.Cricket.Velocity.X += 5
+		g.Cricket.Velocity.X = (5 * g.Cricket.Direction)
 		g.Cricket.Jumping = true
+		g.Cricket.Direction = -g.Cricket.Direction
 	}
 
 	g.Wait++
@@ -81,6 +84,9 @@ func (g *Game) Update() error {
 		if g.Cricket.Velocity.Y > -5 {
 			g.Cricket.Velocity.Y--
 		}
+		if g.Cricket.Velocity.X < 0 {
+			g.Cricket.Velocity.X++
+		}
 		if g.Cricket.Velocity.X > 0 {
 			g.Cricket.Velocity.X--
 		}
@@ -88,7 +94,7 @@ func (g *Game) Update() error {
 
 	if g.Cricket.Position.Y < g.Height-g.Cricket.Image.Bounds().Dy() || g.Cricket.Velocity.Y > 0 {
 		g.Cricket.Position.Y = g.Cricket.Position.Y - g.Cricket.Velocity.Y
-		g.Cricket.Position.X = g.Cricket.Position.X + g.Cricket.Velocity.X
+		g.Cricket.Position.X = g.Cricket.Position.X - g.Cricket.Velocity.X
 		g.Cricket.Op.GeoM.Reset()
 		g.Cricket.Op.GeoM.Translate(float64(g.Cricket.Position.X), float64(g.Cricket.Position.Y))
 	} else {
@@ -132,9 +138,10 @@ func NewObjectFromImage(img *ebiten.Image) *Object {
 // Cricket is a small, jumping insect, the main character of the game
 type Cricket struct {
 	*Object
-	Position image.Point
-	Velocity image.Point
-	Jumping  bool
+	Position  image.Point
+	Velocity  image.Point
+	Jumping   bool
+	Direction int
 }
 
 // Load an image from embedded FS into an ebiten Image object
