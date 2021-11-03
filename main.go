@@ -69,7 +69,11 @@ func (g *Game) Update() error {
 	if g.Wait++; g.Cricket.Velocity > -5 && g.Wait%10 == 0 {
 		g.Cricket.Velocity--
 	}
-	g.Cricket.Op.GeoM.Translate(0, float64(-g.Cricket.Velocity))
+	if g.Cricket.Position.Y < g.Height-g.Cricket.Image.Bounds().Dy() || g.Cricket.Velocity > 0 {
+		g.Cricket.Position.Y = g.Cricket.Position.Y - g.Cricket.Velocity
+		g.Cricket.Op.GeoM.Reset()
+		g.Cricket.Op.GeoM.Translate(0, float64(g.Cricket.Position.Y))
+	}
 
 	return nil
 }
@@ -103,6 +107,7 @@ func NewObjectFromImage(img *ebiten.Image) *Object {
 
 type Cricket struct {
 	*Object
+	Position image.Point
 	Velocity int
 }
 
