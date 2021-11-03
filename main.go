@@ -5,11 +5,13 @@ package main
 import (
 	"embed"
 	"errors"
+	"fmt"
 	"image"
 	"image/png"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
@@ -81,6 +83,11 @@ func (g *Game) Update() error {
 // Draw handles rendering the sprites
 func (g *Game) Draw(screen *ebiten.Image) {
 	screen.DrawImage(g.Cricket.Image, g.Cricket.Op)
+	ebitenutil.DebugPrint(screen, fmt.Sprintf("(%d, %d) v%d\n",
+		g.Cricket.Position.X,
+		g.Cricket.Position.Y,
+		g.Cricket.Velocity,
+	))
 }
 
 // Layout is hardcoded for now, may be made dynamic in future
