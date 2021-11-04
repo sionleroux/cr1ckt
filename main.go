@@ -15,6 +15,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/solarlune/ldtkgo"
 )
 
 //go:embed assets/*.png
@@ -22,6 +23,9 @@ var assets embed.FS
 
 func main() {
 	gameWidth, gameHeight := 640, 480
+
+	var ldtkProject *ldtkgo.Project
+	var ebitenRenderer *renderer.EbitenRenderer
 
 	ebiten.SetWindowSize(gameWidth, gameHeight)
 	ebiten.SetWindowTitle("cr1ck_t")
@@ -32,6 +36,20 @@ func main() {
 		Jumping:   true,
 		Direction: -1,
 	}
+
+	// Load the LDtk Project
+	ldtkProject, err := ldtkgo.LoadFile("example.ldtk")
+	ldtkgo.L
+
+	if err != nil {
+		panic(err)
+	}
+
+	level := ldtkProject.Levels[0]
+
+	ebitenRenderer = renderer.NewEbitenRenderer()
+
+	ebitenRenderer.Render(level)
 
 	game := &Game{
 		Width:   gameWidth,
