@@ -10,22 +10,22 @@ import (
 	"fmt"
 	"image"
 	"image/png"
+	"io/ioutil"
 	"log"
+	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/solarlune/ldtkgo"
+	renderer "github.com/solarlune/ldtkgo/ebitenrenderer"
 )
 
-//go:embed assets/*.png
+//go:embed assets/*
 var assets embed.FS
 
 func main() {
 	gameWidth, gameHeight := 640, 480
-
-	var ldtkProject *ldtkgo.Project
-	var ebitenRenderer *renderer.EbitenRenderer
 
 	ebiten.SetWindowSize(gameWidth, gameHeight)
 	ebiten.SetWindowTitle("cr1ck_t")
@@ -37,25 +37,16 @@ func main() {
 		Direction: -1,
 	}
 
-	// Load the LDtk Project
-	ldtkProject, err := ldtkgo.LoadFile("example.ldtk")
-	ldtkgo.L
-
-	if err != nil {
-		panic(err)
-	}
-
-	level := ldtkProject.Levels[0]
-
-	ebitenRenderer = renderer.NewEbitenRenderer()
-
-	ebitenRenderer.Render(level)
+	ldtkProject := loadMaps("assets/maps.ldtk")
+	ebitenRenderer := renderer.NewEbitenRenderer(&EmbedLoader{"assets"})
 
 	game := &Game{
-		Width:   gameWidth,
-		Height:  gameHeight,
-		Cricket: cricket,
-		Wait:    10,
+		Width:        gameWidth,
+		Height:       gameHeight,
+		Cricket:      cricket,
+		Wait:         10,
+		TileRenderer: ebitenRenderer,
+		LDTKProject:  ldtkProject,
 	}
 
 	if err := ebiten.RunGame(game); err != nil {
@@ -65,10 +56,12 @@ func main() {
 
 // Game represents the main game state
 type Game struct {
-	Width   int
-	Height  int
-	Cricket *Cricket
-	Wait    int
+	Width        int
+	Height       int
+	Cricket      *Cricket
+	Wait         int
+	TileRenderer *renderer.EbitenRenderer
+	LDTKProject  *ldtkgo.Project
 }
 
 // Update calculates game logic
@@ -86,6 +79,9 @@ func (g *Game) Update() error {
 			ebiten.SetFullscreen(true)
 		}
 	}
+
+	// Render map
+	g.TileRenderer.Render(g.LDTKProject.Levels[0])
 
 	// Jump
 	if !g.Cricket.Jumping && inpututil.IsKeyJustPressed(ebiten.KeySpace) {
@@ -124,6 +120,10 @@ func (g *Game) Update() error {
 
 // Draw handles rendering the sprites
 func (g *Game) Draw(screen *ebiten.Image) {
+	screen.Fill(g.LDTKProject.Levels[0].BGColor)
+	for _, layer := range g.TileRenderer.RenderedLayers {
+		screen.DrawImage(layer.Image, &ebiten.DrawImageOptions{})
+	}
 	screen.DrawImage(g.Cricket.Image, g.Cricket.Op)
 	ebitenutil.DebugPrint(screen, fmt.Sprintf("p%v - v%v\n",
 		g.Cricket.Position,
@@ -162,6 +162,30 @@ type Cricket struct {
 	Direction int
 }
 
+// Load an project from embedded FS into an LDtk Project object
+func loadMaps(name string) *ldtkgo.Project {
+	log.Printf("loading %s\n", name)
+
+	file, err := assets.Open(name)
+	if err != nil {
+		log.Fatalf("error opening file %s: %v\n", name, err)
+	}
+	defer file.Close()
+
+	data, err := ioutil.ReadAll(file)
+	if err != nil {
+		log.Fatalf("error reading from file %s: %v\n", name, err)
+	}
+
+	// Load the LDtk Project
+	maps, err := ldtkgo.Read(data)
+	if err != nil {
+		log.Fatalf("error parsing file %s as LDtk Project: %v\n", name, err)
+	}
+
+	return maps
+}
+
 // Load an image from embedded FS into an ebiten Image object
 func loadImage(name string) *ebiten.Image {
 	log.Printf("loading %s\n", name)
@@ -178,4 +202,14 @@ func loadImage(name string) *ebiten.Image {
 	}
 
 	return ebiten.NewImageFromImage(raw)
+}
+
+// EmbedLoader is a TilesetLoader for the embedded FS
+type EmbedLoader struct {
+	BasePath string
+}
+
+// LoadTileset loads an LDtk tileset image from the embedded FS
+func (l *EmbedLoader) LoadTileset(tileSetPath string) *ebiten.Image {
+	return loadImage(filepath.Join(l.BasePath, tileSetPath))
 }
