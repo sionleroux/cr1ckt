@@ -37,8 +37,17 @@ func main() {
 		Direction: -1,
 	}
 
-	ldtkProject := loadMaps("assets/maps.ldtk")
-	ebitenRenderer := renderer.NewEbitenRenderer(&EmbedLoader{"assets"})
+	ldtkProject, err := ldtkgo.Open("maps.ldtk")
+	var ebitenRenderer *renderer.EbitenRenderer
+	if err == nil {
+		log.Println("Found local map override, using that instead!")
+		log.Println("Looking for local tileset...")
+		ebitenRenderer = renderer.NewEbitenRenderer(renderer.NewDiskLoader("assets"))
+	} else {
+		log.Println("Using embedded map data...")
+		ldtkProject = loadMaps("assets/maps.ldtk")
+		ebitenRenderer = renderer.NewEbitenRenderer(&EmbedLoader{"assets"})
+	}
 
 	game := &Game{
 		Width:        gameWidth,
