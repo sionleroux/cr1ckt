@@ -1,18 +1,18 @@
 # Cr1ck_t
 
-Still very WIP!
+**Still very WIP!** Entry for 2021 Game Off, themed "BUG".  I'll add a link to the submission when it's published.
 
-Entry for 2021 Game Off, themed "BUG".  I'll add a link to the submission when it's published.
-
-![Screenshot of actual gameplay](screenshot.png)
+You may be interested in help for [game testers](#for-game-testers), for [level makers](#for-level-makers) or for [programmers](#for-programmers).
 
 Bugs in this game might be there intentionally...
+
+![Screenshot of actual gameplay](screenshot.png)
 
 ## For game testers
 
 For alpha testing use this [link to download the latest Windows EXE](https://nightly.link/sinisterstuf/cr1ck_t/workflows/build-exe/master/cr1ck_t-bundle.zip).
 
-For Mac & Linux it is trivial to install go with your package manager and built it yourself, see the section for programmers below.
+For Mac & Linux it is trivial to install go with your package manager and built it yourself, see [the section for programmers](#for-programmers) below.
 
 During development there's debug info at the top showing things like player location and velocity, level number, etc. and some controls:
 
