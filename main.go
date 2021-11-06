@@ -65,7 +65,7 @@ type Game struct {
 func (g *Game) Update() error {
 
 	// Pressing Esc any time quits immediately
-	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
+	if ebiten.IsKeyPressed(ebiten.KeyEscape) || ebiten.IsKeyPressed(ebiten.KeyQ) {
 		return errors.New("game quit by player")
 	}
 
