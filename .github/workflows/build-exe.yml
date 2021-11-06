@@ -8,4 +8,4 @@ jobs:
         shell: bash
         run: |
           ls .
-          go build .
+          go build ./...
