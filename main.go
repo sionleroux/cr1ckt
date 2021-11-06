@@ -116,10 +116,10 @@ func (g *Game) Update() error {
 		g.Cricket.Position.X = g.Cricket.Position.X - g.Cricket.Velocity.X
 		// keep within the map
 		if g.Cricket.Position.X < 0 {
-			g.Cricket.Position.X++
+			g.Cricket.Position.X = 0
 		}
 		if g.Cricket.Position.X+g.Cricket.Image.Bounds().Dx() > g.Width {
-			g.Cricket.Position.X--
+			g.Cricket.Position.X = g.Width - g.Cricket.Image.Bounds().Dx()
 		}
 		g.Cricket.Position.Y = g.Cricket.Position.Y - g.Cricket.Velocity.Y
 		g.Cricket.Op.GeoM.Reset()
