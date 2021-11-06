@@ -22,7 +22,7 @@ import (
 var assets embed.FS
 
 // TILELAYER is the layer to check for tile collisions
-const TILELAYER int = 1
+const TILELAYER int = 2
 
 func main() {
 	gameWidth, gameHeight := 640, 480
@@ -30,12 +30,6 @@ func main() {
 	ebiten.SetWindowSize(gameWidth, gameHeight)
 	ebiten.SetWindowTitle("cr1ck_t")
 	ebiten.SetCursorMode(ebiten.CursorModeHidden)
-
-	cricket := &Cricket{
-		Object:    NewObjectFromImage(loadImage("assets/cricket.png")),
-		Jumping:   true,
-		Direction: -1,
-	}
 
 	ldtkProject, err := ldtkgo.Open("maps.ldtk")
 	var ebitenRenderer *renderer.EbitenRenderer
@@ -47,6 +41,15 @@ func main() {
 		log.Println("Using embedded map data...")
 		ldtkProject = loadMaps("assets/maps.ldtk")
 		ebitenRenderer = renderer.NewEbitenRenderer(&EmbedLoader{"assets"})
+	}
+
+	cricketPos := ldtkProject.Levels[0].Layers[0].EntityByIdentifier("Cricket").Position
+	log.Println("Cricket starting position", cricketPos)
+	cricket := &Cricket{
+		Object:    NewObjectFromImage(loadImage("assets/cricket.png")),
+		Jumping:   true,
+		Direction: -1,
+		Position:  image.Pt(cricketPos[0], cricketPos[1]),
 	}
 
 	game := &Game{
