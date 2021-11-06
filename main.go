@@ -113,8 +113,15 @@ func (g *Game) Update() error {
 	layer := g.LDTKProject.Levels[g.Level].Layers[TILELAYER]
 	tile := layer.TileAt(layer.ToGridPosition(g.Cricket.Position.X, g.Cricket.Position.Y+g.Cricket.Image.Bounds().Dy()))
 	if tile == nil || g.Cricket.Velocity.Y > 0 {
-		g.Cricket.Position.Y = g.Cricket.Position.Y - g.Cricket.Velocity.Y
 		g.Cricket.Position.X = g.Cricket.Position.X - g.Cricket.Velocity.X
+		// keep within the map
+		if g.Cricket.Position.X < 0 {
+			g.Cricket.Position.X++
+		}
+		if g.Cricket.Position.X+g.Cricket.Image.Bounds().Dx() > g.Width {
+			g.Cricket.Position.X--
+		}
+		g.Cricket.Position.Y = g.Cricket.Position.Y - g.Cricket.Velocity.Y
 		g.Cricket.Op.GeoM.Reset()
 		g.Cricket.Op.GeoM.Translate(float64(g.Cricket.Position.X), float64(g.Cricket.Position.Y))
 	} else {
