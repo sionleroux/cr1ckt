@@ -4,6 +4,8 @@ Still very WIP!
 
 Entry for 2021 Game Off, themed "BUG".  I'll add a link to the submission when it's published.
 
+![Screenshot of actual gameplay](screenshot.png)
+
 Bugs in this game might be there intentionally...
 
 ## For game testers
