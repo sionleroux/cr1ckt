@@ -54,7 +54,7 @@ func main() {
 	cricket := &Cricket{
 		Object:    NewObjectFromImage(loadImage("assets/cricket.png")),
 		Jumping:   true,
-		Direction: -1,
+		Direction: 1,
 		Position:  image.Pt(cricketPos[0], cricketPos[1]),
 	}
 
@@ -110,7 +110,7 @@ func (g *Game) Update() error {
 		cricket := &Cricket{
 			Object:    g.Cricket.Object,
 			Jumping:   true,
-			Direction: -1,
+			Direction: 1,
 			Position:  image.Pt(cricketPos[0], cricketPos[1]),
 		}
 		g.Cricket = cricket
