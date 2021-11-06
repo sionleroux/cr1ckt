@@ -90,7 +90,7 @@ func (g *Game) Update() error {
 		g.Cricket.Direction = -g.Cricket.Direction
 	}
 
-	g.Wait++
+	g.Wait = (g.Wait + 1) % g.WaitTime
 
 	// Move the cricket
 	if g.Wait%g.WaitTime == 0 {
