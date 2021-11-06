@@ -56,6 +56,8 @@ func main() {
 		Jumping:   true,
 		Direction: 1,
 		Position:  image.Pt(cricketPos[0], cricketPos[1]),
+		Frame:     1,
+		Width:     34,
 	}
 
 	game := &Game{
@@ -112,6 +114,8 @@ func (g *Game) Update() error {
 			Jumping:   true,
 			Direction: 1,
 			Position:  image.Pt(cricketPos[0], cricketPos[1]),
+			Frame:     1,
+			Width:     34,
 		}
 		g.Cricket = cricket
 	}
@@ -155,15 +159,15 @@ func (g *Game) Update() error {
 		if g.Cricket.Position.X < 0 {
 			g.Cricket.Position.X = 0
 		}
-		if g.Cricket.Position.X+g.Cricket.Image.Bounds().Dx() > g.Width {
-			g.Cricket.Position.X = g.Width - g.Cricket.Image.Bounds().Dx()
+		if g.Cricket.Position.X+g.Cricket.Width > g.Width {
+			g.Cricket.Position.X = g.Width - g.Cricket.Width
 		}
 		g.Cricket.Position.Y = g.Cricket.Position.Y - g.Cricket.Velocity.Y
 		g.Cricket.Op.GeoM.Reset()
 		// Flip cricket direction
 		g.Cricket.Op.GeoM.Scale(float64(-g.Cricket.Direction), 1)
 		if g.Cricket.Direction > 0 {
-			g.Cricket.Op.GeoM.Translate(float64(g.Cricket.Image.Bounds().Dx()), 0)
+			g.Cricket.Op.GeoM.Translate(float64(g.Cricket.Width), 0)
 		}
 		// Position cricket
 		g.Cricket.Op.GeoM.Translate(float64(g.Cricket.Position.X), float64(g.Cricket.Position.Y))
@@ -180,7 +184,10 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	for _, layer := range g.TileRenderer.RenderedLayers {
 		screen.DrawImage(layer.Image, &ebiten.DrawImageOptions{})
 	}
-	screen.DrawImage(g.Cricket.Image, g.Cricket.Op)
+	frameSize := g.Cricket.Width
+	screen.DrawImage(g.Cricket.Image.SubImage(image.Rect(
+		g.Cricket.Frame*frameSize, 0, (1+g.Cricket.Frame)*frameSize, frameSize,
+	)).(*ebiten.Image), g.Cricket.Op)
 	layer := g.LDTKProject.Levels[g.Level].Layers[LayerTile]
 	ebitenutil.DebugPrint(screen, fmt.Sprintf("p%v - v%v: %v\n%v/%v\nl:%d",
 		g.Cricket.Position,
@@ -222,4 +229,6 @@ type Cricket struct {
 	Jumping       bool
 	PrimeDuration int
 	Direction     int
+	Frame         int
+	Width         int
 }
