@@ -103,7 +103,9 @@ func (g *Game) Update() error {
 		}
 	}
 
-	if g.Cricket.Position.Y < g.Height-g.Cricket.Image.Bounds().Dy() || g.Cricket.Velocity.Y > 0 {
+	layer := g.LDTKProject.Levels[0].Layers[0]
+	tile := layer.TileAt(layer.ToGridPosition(g.Cricket.Position.X, g.Cricket.Position.Y))
+	if tile == nil || g.Cricket.Velocity.Y > 0 {
 		g.Cricket.Position.Y = g.Cricket.Position.Y - g.Cricket.Velocity.Y
 		g.Cricket.Position.X = g.Cricket.Position.X - g.Cricket.Velocity.X
 		g.Cricket.Op.GeoM.Reset()
