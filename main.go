@@ -41,7 +41,8 @@ func main() {
 		Width:        gameWidth,
 		Height:       gameHeight,
 		Cricket:      cricket,
-		Wait:         10,
+		Wait:         0,
+		WaitTime:     10,
 		TileRenderer: ebitenRenderer,
 		LDTKProject:  ldtkProject,
 	}
@@ -57,6 +58,7 @@ type Game struct {
 	Height       int
 	Cricket      *Cricket
 	Wait         int
+	WaitTime     int
 	TileRenderer *renderer.EbitenRenderer
 	LDTKProject  *ldtkgo.Project
 }
@@ -91,7 +93,7 @@ func (g *Game) Update() error {
 	g.Wait++
 
 	// Move the cricket
-	if g.Wait%10 == 0 {
+	if g.Wait%g.WaitTime == 0 {
 		if g.Cricket.Velocity.Y > -5 {
 			g.Cricket.Velocity.Y--
 		}
