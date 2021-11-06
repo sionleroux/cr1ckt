@@ -88,11 +88,14 @@ func (g *Game) Update() error {
 	g.TileRenderer.Render(g.LDTKProject.Levels[g.Level])
 
 	// Jump
-	if !g.Cricket.Jumping && inpututil.IsKeyJustPressed(ebiten.KeySpace) {
-		g.Cricket.Velocity.Y += 7
-		g.Cricket.Velocity.X = (5 * g.Cricket.Direction)
-		g.Cricket.Jumping = true
-		g.Cricket.Direction = -g.Cricket.Direction
+	if !g.Cricket.Jumping {
+		if inpututil.IsKeyJustReleased(ebiten.KeySpace) {
+			g.Cricket.Jumping = true
+			g.Cricket.Direction = -g.Cricket.Direction
+			g.Cricket.Velocity.Y = g.Cricket.PrimeDuration
+			g.Cricket.Velocity.X = 2 * g.Cricket.PrimeDuration * g.Cricket.Direction
+		}
+		g.Cricket.PrimeDuration = inpututil.KeyPressDuration(ebiten.KeySpace) / g.WaitTime
 	}
 
 	g.Wait = (g.Wait + 1) % g.WaitTime
@@ -139,10 +142,12 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	}
 	screen.DrawImage(g.Cricket.Image, g.Cricket.Op)
 	layer := g.LDTKProject.Levels[g.Level].Layers[TILELAYER]
-	ebitenutil.DebugPrint(screen, fmt.Sprintf("p%v - v%v: %v",
+	ebitenutil.DebugPrint(screen, fmt.Sprintf("p%v - v%v: %v\n%v/%v",
 		g.Cricket.Position,
 		g.Cricket.Velocity,
 		layer.TileAt(layer.ToGridPosition(g.Cricket.Position.X, g.Cricket.Position.Y)),
+		inpututil.KeyPressDuration(ebiten.KeySpace),
+		g.Cricket.PrimeDuration,
 	))
 }
 
@@ -171,8 +176,9 @@ func NewObjectFromImage(img *ebiten.Image) *Object {
 // Cricket is a small, jumping insect, the main character of the game
 type Cricket struct {
 	*Object
-	Position  image.Point
-	Velocity  image.Point
-	Jumping   bool
-	Direction int
+	Position      image.Point
+	Velocity      image.Point
+	Jumping       bool
+	PrimeDuration int
+	Direction     int
 }
