@@ -21,8 +21,14 @@ import (
 //go:embed assets/*
 var assets embed.FS
 
-// TILELAYER is the layer to check for tile collisions
-const TILELAYER int = 2
+// LayerEntities is the layer to use for entity positions
+const LayerEntities int = 0
+
+// LayerAuto is the layer to check for auto-tile collisions
+const LayerAuto int = 1
+
+// LayerTile is the layer to check for tile collisions
+const LayerTile int = 2
 
 func main() {
 	gameWidth, gameHeight := 640, 480
@@ -139,9 +145,11 @@ func (g *Game) Update() error {
 		}
 	}
 
-	layer := g.LDTKProject.Levels[g.Level].Layers[TILELAYER]
+	layer := g.LDTKProject.Levels[g.Level].Layers[LayerTile]
 	tile := layer.TileAt(layer.ToGridPosition(g.Cricket.Position.X, g.Cricket.Position.Y+g.Cricket.Image.Bounds().Dy()))
-	if tile == nil || g.Cricket.Velocity.Y > 0 {
+	alayer := g.LDTKProject.Levels[g.Level].Layers[LayerAuto]
+	atile := alayer.AutoTileAt(layer.ToGridPosition(g.Cricket.Position.X, g.Cricket.Position.Y+g.Cricket.Image.Bounds().Dy()))
+	if tile == nil && atile == nil || g.Cricket.Velocity.Y > 0 {
 		g.Cricket.Position.X = g.Cricket.Position.X - g.Cricket.Velocity.X
 		// keep within the map
 		if g.Cricket.Position.X < 0 {
@@ -173,7 +181,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		screen.DrawImage(layer.Image, &ebiten.DrawImageOptions{})
 	}
 	screen.DrawImage(g.Cricket.Image, g.Cricket.Op)
-	layer := g.LDTKProject.Levels[g.Level].Layers[TILELAYER]
+	layer := g.LDTKProject.Levels[g.Level].Layers[LayerTile]
 	ebitenutil.DebugPrint(screen, fmt.Sprintf("p%v - v%v: %v\n%v/%v\nl:%d",
 		g.Cricket.Position,
 		g.Cricket.Velocity,
