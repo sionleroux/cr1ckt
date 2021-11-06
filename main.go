@@ -96,6 +96,20 @@ func (g *Game) Update() error {
 		}
 	}
 
+	if inpututil.IsKeyJustPressed(ebiten.KeyN) {
+		g.Level = (g.Level + 1) % len(g.LDTKProject.Levels)
+		log.Println("Switching to Level", g.Level)
+		cricketPos := g.LDTKProject.Levels[g.Level].Layers[0].EntityByIdentifier("Cricket").Position
+		log.Println("Cricket starting position", cricketPos)
+		cricket := &Cricket{
+			Object:    g.Cricket.Object,
+			Jumping:   true,
+			Direction: -1,
+			Position:  image.Pt(cricketPos[0], cricketPos[1]),
+		}
+		g.Cricket = cricket
+	}
+
 	// Render map
 	g.TileRenderer.Render(g.LDTKProject.Levels[g.Level])
 
@@ -160,12 +174,13 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	}
 	screen.DrawImage(g.Cricket.Image, g.Cricket.Op)
 	layer := g.LDTKProject.Levels[g.Level].Layers[TILELAYER]
-	ebitenutil.DebugPrint(screen, fmt.Sprintf("p%v - v%v: %v\n%v/%v",
+	ebitenutil.DebugPrint(screen, fmt.Sprintf("p%v - v%v: %v\n%v/%v\nl:%d",
 		g.Cricket.Position,
 		g.Cricket.Velocity,
 		layer.TileAt(layer.ToGridPosition(g.Cricket.Position.X, g.Cricket.Position.Y)),
 		inpututil.KeyPressDuration(ebiten.KeySpace),
 		g.Cricket.PrimeDuration,
+		g.Level,
 	))
 }
 
