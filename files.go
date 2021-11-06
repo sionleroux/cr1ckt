@@ -8,7 +8,7 @@ import (
 	"image/png"
 	"io/ioutil"
 	"log"
-	"path/filepath"
+	"path"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/solarlune/ldtkgo"
@@ -63,5 +63,5 @@ type EmbedLoader struct {
 
 // LoadTileset loads an LDtk tileset image from the embedded FS
 func (l *EmbedLoader) LoadTileset(tileSetPath string) *ebiten.Image {
-	return loadImage(filepath.Join(l.BasePath, tileSetPath))
+	return loadImage(path.Join(l.BasePath, tileSetPath))
 }
