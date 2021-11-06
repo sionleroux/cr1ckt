@@ -122,9 +122,11 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		screen.DrawImage(layer.Image, &ebiten.DrawImageOptions{})
 	}
 	screen.DrawImage(g.Cricket.Image, g.Cricket.Op)
-	ebitenutil.DebugPrint(screen, fmt.Sprintf("p%v - v%v\n",
+	layer := g.LDTKProject.Levels[0].Layers[0]
+	ebitenutil.DebugPrint(screen, fmt.Sprintf("p%v - v%v: %v",
 		g.Cricket.Position,
 		g.Cricket.Velocity,
+		layer.TileAt(layer.ToGridPosition(g.Cricket.Position.X, g.Cricket.Position.Y)),
 	))
 }
 
