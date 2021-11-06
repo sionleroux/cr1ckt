@@ -1,6 +1,0 @@
-os:
-  - windows
-language: go
-go: 1.17
-script:
-    go build .
