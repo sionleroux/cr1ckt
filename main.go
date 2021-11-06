@@ -45,6 +45,7 @@ func main() {
 		WaitTime:     10,
 		TileRenderer: ebitenRenderer,
 		LDTKProject:  ldtkProject,
+		Level:        0,
 	}
 
 	if err := ebiten.RunGame(game); err != nil {
@@ -61,6 +62,7 @@ type Game struct {
 	WaitTime     int
 	TileRenderer *renderer.EbitenRenderer
 	LDTKProject  *ldtkgo.Project
+	Level        int
 }
 
 // Update calculates game logic
@@ -80,7 +82,7 @@ func (g *Game) Update() error {
 	}
 
 	// Render map
-	g.TileRenderer.Render(g.LDTKProject.Levels[0])
+	g.TileRenderer.Render(g.LDTKProject.Levels[g.Level])
 
 	// Jump
 	if !g.Cricket.Jumping && inpututil.IsKeyJustPressed(ebiten.KeySpace) {
@@ -105,7 +107,7 @@ func (g *Game) Update() error {
 		}
 	}
 
-	layer := g.LDTKProject.Levels[0].Layers[0]
+	layer := g.LDTKProject.Levels[g.Level].Layers[0]
 	tile := layer.TileAt(layer.ToGridPosition(g.Cricket.Position.X, g.Cricket.Position.Y))
 	if tile == nil || g.Cricket.Velocity.Y > 0 {
 		g.Cricket.Position.Y = g.Cricket.Position.Y - g.Cricket.Velocity.Y
@@ -121,12 +123,12 @@ func (g *Game) Update() error {
 
 // Draw handles rendering the sprites
 func (g *Game) Draw(screen *ebiten.Image) {
-	screen.Fill(g.LDTKProject.Levels[0].BGColor)
+	screen.Fill(g.LDTKProject.Levels[g.Level].BGColor)
 	for _, layer := range g.TileRenderer.RenderedLayers {
 		screen.DrawImage(layer.Image, &ebiten.DrawImageOptions{})
 	}
 	screen.DrawImage(g.Cricket.Image, g.Cricket.Op)
-	layer := g.LDTKProject.Levels[0].Layers[0]
+	layer := g.LDTKProject.Levels[g.Level].Layers[0]
 	ebitenutil.DebugPrint(screen, fmt.Sprintf("p%v - v%v: %v",
 		g.Cricket.Position,
 		g.Cricket.Velocity,
