@@ -127,6 +127,7 @@ func (g *Game) Update() error {
 	if !g.Cricket.Jumping {
 		if inpututil.IsKeyJustReleased(ebiten.KeySpace) {
 			g.Cricket.Jumping = true
+			g.Cricket.State = Jumping
 			g.Cricket.Velocity.Y = g.Cricket.PrimeDuration
 			g.Cricket.Velocity.X = 2 * g.Cricket.PrimeDuration * g.Cricket.Direction
 		}
@@ -146,11 +147,36 @@ func (g *Game) Update() error {
 		if g.Cricket.Velocity.X > 0 {
 			g.Cricket.Velocity.X--
 		}
-
-		// Idle Animation
-		g.Cricket.Frame = (g.Cricket.Frame + 1) % 5
 	}
 
+	// Animation ...these magic numbers refer to frames in cricket.png
+	switch g.Cricket.State {
+	case Idle:
+		if g.Wait%g.WaitTime == 0 {
+			g.Cricket.Frame = (g.Cricket.Frame + 1) % 5
+		}
+	case Jumping:
+		if g.Cricket.Frame < 5 || g.Cricket.Frame > 8 {
+			g.Cricket.Frame = 4
+		}
+		if g.Cricket.Frame < 8 {
+			g.Cricket.Frame++
+		}
+	case Landing:
+		if g.Cricket.Frame < 9 {
+			g.Cricket.Frame = 8
+		}
+		if g.Cricket.Frame <= 11 {
+			g.Cricket.Frame++
+		}
+	}
+
+	// Landing state
+	if g.Cricket.Jumping && g.Cricket.Velocity.Y <= 0 {
+		g.Cricket.State = Landing
+	}
+
+	// Collision and jump arc
 	layer := g.LDTKProject.Levels[g.Level].Layers[LayerTile]
 	tile := layer.TileAt(layer.ToGridPosition(g.Cricket.Position.X, g.Cricket.Position.Y+g.Cricket.Image.Bounds().Dy()))
 	alayer := g.LDTKProject.Levels[g.Level].Layers[LayerAuto]
@@ -167,6 +193,7 @@ func (g *Game) Update() error {
 		g.Cricket.Position.Y = g.Cricket.Position.Y - g.Cricket.Velocity.Y
 	} else if g.Cricket.Jumping {
 		g.Cricket.Jumping = false
+		g.Cricket.State = Idle
 		g.Cricket.Direction = -g.Cricket.Direction
 	}
 
@@ -194,13 +221,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		g.Cricket.Frame*frameSize, 0, (1+g.Cricket.Frame)*frameSize, frameSize,
 	)).(*ebiten.Image), g.Cricket.Op)
 	layer := g.LDTKProject.Levels[g.Level].Layers[LayerTile]
-	ebitenutil.DebugPrint(screen, fmt.Sprintf("p%v - v%v: %v\n%v/%v\nl:%d",
+	ebitenutil.DebugPrint(screen, fmt.Sprintf("p%v - v%v: %v\n%v/%v\nl:%d\n%v",
 		g.Cricket.Position,
 		g.Cricket.Velocity,
 		layer.TileAt(layer.ToGridPosition(g.Cricket.Position.X, g.Cricket.Position.Y)),
 		inpututil.KeyPressDuration(ebiten.KeySpace),
 		g.Cricket.PrimeDuration,
 		g.Level,
+		g.Cricket.State,
 	))
 }
 
@@ -226,6 +254,15 @@ func NewObjectFromImage(img *ebiten.Image) *Object {
 	}
 }
 
+// CricketState are the different animation states a Cricket can be in
+type CricketState int
+
+const (
+	Idle CricketState = iota
+	Jumping
+	Landing
+)
+
 // Cricket is a small, jumping insect, the main character of the game
 type Cricket struct {
 	*Object
@@ -236,4 +273,5 @@ type Cricket struct {
 	Direction     int
 	Frame         int
 	Width         int
+	State         CricketState
 }
