@@ -57,7 +57,7 @@ func main() {
 		Direction: 1,
 		Position:  image.Pt(cricketPos[0], cricketPos[1]),
 		Frame:     1,
-		Width:     34,
+		Width:     37,
 	}
 
 	game := &Game{
@@ -115,7 +115,7 @@ func (g *Game) Update() error {
 			Direction: 1,
 			Position:  image.Pt(cricketPos[0], cricketPos[1]),
 			Frame:     1,
-			Width:     34,
+			Width:     37,
 		}
 		g.Cricket = cricket
 	}
@@ -147,6 +147,9 @@ func (g *Game) Update() error {
 		if g.Cricket.Velocity.X > 0 {
 			g.Cricket.Velocity.X--
 		}
+
+		// Idle Animation
+		g.Cricket.Frame = (g.Cricket.Frame + 1) % 5
 	}
 
 	layer := g.LDTKProject.Levels[g.Level].Layers[LayerTile]
