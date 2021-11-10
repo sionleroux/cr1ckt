@@ -166,17 +166,19 @@ func (g *Game) Update() error {
 			g.Cricket.Position.X = g.Width - g.Cricket.Width
 		}
 		g.Cricket.Position.Y = g.Cricket.Position.Y - g.Cricket.Velocity.Y
-		g.Cricket.Op.GeoM.Reset()
-		// Flip cricket direction
-		g.Cricket.Op.GeoM.Scale(float64(-g.Cricket.Direction), 1)
-		if g.Cricket.Direction > 0 {
-			g.Cricket.Op.GeoM.Translate(float64(g.Cricket.Width), 0)
-		}
-		// Position cricket
-		g.Cricket.Op.GeoM.Translate(float64(g.Cricket.Position.X), float64(g.Cricket.Position.Y))
 	} else {
 		g.Cricket.Jumping = false
 	}
+
+	// Update GeoM
+	g.Cricket.Op.GeoM.Reset()
+	// Flip cricket direction
+	g.Cricket.Op.GeoM.Scale(float64(-g.Cricket.Direction), 1)
+	if g.Cricket.Direction > 0 {
+		g.Cricket.Op.GeoM.Translate(float64(g.Cricket.Width), 0)
+	}
+	// Position cricket
+	g.Cricket.Op.GeoM.Translate(float64(g.Cricket.Position.X), float64(g.Cricket.Position.Y))
 
 	return nil
 }
