@@ -127,7 +127,6 @@ func (g *Game) Update() error {
 	if !g.Cricket.Jumping {
 		if inpututil.IsKeyJustReleased(ebiten.KeySpace) {
 			g.Cricket.Jumping = true
-			g.Cricket.Direction = -g.Cricket.Direction
 			g.Cricket.Velocity.Y = g.Cricket.PrimeDuration
 			g.Cricket.Velocity.X = 2 * g.Cricket.PrimeDuration * g.Cricket.Direction
 		}
@@ -166,8 +165,9 @@ func (g *Game) Update() error {
 			g.Cricket.Position.X = g.Width - g.Cricket.Width
 		}
 		g.Cricket.Position.Y = g.Cricket.Position.Y - g.Cricket.Velocity.Y
-	} else {
+	} else if g.Cricket.Jumping {
 		g.Cricket.Jumping = false
+		g.Cricket.Direction = -g.Cricket.Direction
 	}
 
 	// Update GeoM
