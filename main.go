@@ -86,7 +86,7 @@ func NewGame(game *Game) {
 	log.Println("Cricket starting position", cricketPos)
 	cricket := &Cricket{
 		Object:    NewObjectFromImage(loadImage("assets/cricket.png")),
-		Hitbox:    image.Rect(7, 24, 30, 36),
+		Hitbox:    image.Rect(7, 24, 30, 36).Inset(1),
 		Jumping:   true,
 		Direction: 1,
 		Position:  image.Pt(cricketPos[0], cricketPos[1]),
