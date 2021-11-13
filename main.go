@@ -66,6 +66,7 @@ type Game struct {
 	Loading      bool
 }
 
+// NewGame populates a default game object with game data
 func NewGame(game *Game) {
 	log.Println("Loading game...")
 
@@ -278,8 +279,11 @@ func NewObjectFromImage(img *ebiten.Image) *Object {
 type CricketState int
 
 const (
+	// Idle is the animation state when the Cricket is not moving
 	Idle CricketState = iota
+	// Jumping is the animation state on the way up
 	Jumping
+	// Landing is the animation state on the way down
 	Landing
 )
 
