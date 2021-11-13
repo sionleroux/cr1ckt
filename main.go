@@ -37,6 +37,38 @@ func main() {
 	ebiten.SetWindowTitle("cr1ck_t")
 	ebiten.SetCursorMode(ebiten.CursorModeHidden)
 
+	game := &Game{
+		Width:    gameWidth,
+		Height:   gameHeight,
+		Wait:     0,
+		WaitTime: 10,
+		Level:    0,
+		Loading:  true,
+	}
+
+	go NewGame(game)
+
+	if err := ebiten.RunGame(game); err != nil {
+		log.Fatal(err)
+	}
+}
+
+// Game represents the main game state
+type Game struct {
+	Width        int
+	Height       int
+	Cricket      *Cricket
+	Wait         int
+	WaitTime     int
+	TileRenderer *renderer.EbitenRenderer
+	LDTKProject  *ldtkgo.Project
+	Level        int
+	Loading      bool
+}
+
+func NewGame(game *Game) {
+	log.Println("Loading game...")
+
 	ldtkProject, err := ldtkgo.Open("maps.ldtk")
 	var ebitenRenderer *renderer.EbitenRenderer
 	if err == nil {
@@ -60,32 +92,10 @@ func main() {
 		Width:     37,
 	}
 
-	game := &Game{
-		Width:        gameWidth,
-		Height:       gameHeight,
-		Cricket:      cricket,
-		Wait:         0,
-		WaitTime:     10,
-		TileRenderer: ebitenRenderer,
-		LDTKProject:  ldtkProject,
-		Level:        0,
-	}
-
-	if err := ebiten.RunGame(game); err != nil {
-		log.Fatal(err)
-	}
-}
-
-// Game represents the main game state
-type Game struct {
-	Width        int
-	Height       int
-	Cricket      *Cricket
-	Wait         int
-	WaitTime     int
-	TileRenderer *renderer.EbitenRenderer
-	LDTKProject  *ldtkgo.Project
-	Level        int
+	game.Cricket = cricket
+	game.TileRenderer = ebitenRenderer
+	game.LDTKProject = ldtkProject
+	game.Loading = false
 }
 
 // Update calculates game logic
@@ -102,6 +112,11 @@ func (g *Game) Update() error {
 		} else {
 			ebiten.SetFullscreen(true)
 		}
+	}
+
+	// Skip logic while game is loading
+	if g.Loading {
+		return nil
 	}
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyN) {
@@ -212,6 +227,11 @@ func (g *Game) Update() error {
 
 // Draw handles rendering the sprites
 func (g *Game) Draw(screen *ebiten.Image) {
+	if g.Loading {
+		ebitenutil.DebugPrint(screen, "Loading...")
+		return
+	}
+
 	screen.Fill(g.LDTKProject.Levels[g.Level].BGColor)
 	for _, layer := range g.TileRenderer.RenderedLayers {
 		screen.DrawImage(layer.Image, &ebiten.DrawImageOptions{})
