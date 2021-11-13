@@ -9,7 +9,6 @@ import (
 	"errors"
 	"fmt"
 	"image"
-	"image/color"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -246,7 +245,6 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	)).(*ebiten.Image), g.Cricket.Op)
 	layer := g.LDTKProject.Levels[g.Level].Layers[LayerTile]
 	hitbox := g.Cricket.Hitbox.Add(image.Pt(g.Cricket.Position.X, g.Cricket.Position.Y))
-	ebitenutil.DrawRect(screen, float64(hitbox.Min.X), float64(hitbox.Min.Y), float64(hitbox.Max.X-hitbox.Min.X), float64(hitbox.Max.Y-hitbox.Min.Y), color.White)
 	var state string
 	switch g.Cricket.State {
 	case Idle:
