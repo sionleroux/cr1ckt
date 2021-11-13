@@ -143,13 +143,16 @@ func (g *Game) Update() error {
 
 	// Jump
 	if !g.Cricket.Jumping {
-		if inpututil.IsKeyJustReleased(ebiten.KeySpace) {
+		if ebiten.IsKeyPressed(ebiten.KeySpace) {
+			g.Cricket.PrimeDuration++
+		} else if g.Cricket.PrimeDuration > 0 {
+			g.Cricket.PrimeDuration /= g.WaitTime
 			g.Cricket.Jumping = true
 			g.Cricket.State = Jumping
 			g.Cricket.Velocity.Y = g.Cricket.PrimeDuration
 			g.Cricket.Velocity.X = 2 * g.Cricket.PrimeDuration * g.Cricket.Direction
+			g.Cricket.PrimeDuration = 0
 		}
-		g.Cricket.PrimeDuration = inpututil.KeyPressDuration(ebiten.KeySpace) / g.WaitTime
 	}
 
 	g.Wait = (g.Wait + 1) % g.WaitTime
