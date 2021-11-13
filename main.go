@@ -49,7 +49,7 @@ func main() {
 		ebitenRenderer = renderer.NewEbitenRenderer(&EmbedLoader{"assets"})
 	}
 
-	cricketPos := ldtkProject.Levels[0].Layers[0].EntityByIdentifier("Cricket").Position
+	cricketPos := ldtkProject.Levels[0].Layers[LayerEntities].EntityByIdentifier("Cricket").Position
 	log.Println("Cricket starting position", cricketPos)
 	cricket := &Cricket{
 		Object:    NewObjectFromImage(loadImage("assets/cricket.png")),
@@ -107,7 +107,7 @@ func (g *Game) Update() error {
 	if inpututil.IsKeyJustPressed(ebiten.KeyN) {
 		g.Level = (g.Level + 1) % len(g.LDTKProject.Levels)
 		log.Println("Switching to Level", g.Level)
-		cricketPos := g.LDTKProject.Levels[g.Level].Layers[0].EntityByIdentifier("Cricket").Position
+		cricketPos := g.LDTKProject.Levels[g.Level].Layers[LayerEntities].EntityByIdentifier("Cricket").Position
 		log.Println("Cricket starting position", cricketPos)
 		cricket := &Cricket{
 			Object:    g.Cricket.Object,
