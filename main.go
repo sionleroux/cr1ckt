@@ -247,6 +247,15 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	layer := g.LDTKProject.Levels[g.Level].Layers[LayerTile]
 	hitbox := g.Cricket.Hitbox.Add(image.Pt(g.Cricket.Position.X, g.Cricket.Position.Y))
 	ebitenutil.DrawRect(screen, float64(hitbox.Min.X), float64(hitbox.Min.Y), float64(hitbox.Max.X-hitbox.Min.X), float64(hitbox.Max.Y-hitbox.Min.Y), color.White)
+	var state string
+	switch g.Cricket.State {
+	case Idle:
+		state = "idle"
+	case Jumping:
+		state = "jumping"
+	case Landing:
+		state = "landing"
+	}
 	ebitenutil.DebugPrint(screen, fmt.Sprintf("p%v - v%v: %v [%v]\n%v/%v\nl:%d\n%v",
 		g.Cricket.Position,
 		g.Cricket.Velocity,
@@ -255,7 +264,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		inpututil.KeyPressDuration(ebiten.KeySpace),
 		g.Cricket.PrimeDuration,
 		g.Level,
-		g.Cricket.State,
+		state,
 	))
 }
 
