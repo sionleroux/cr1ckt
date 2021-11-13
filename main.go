@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"image"
+	"image/color"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -86,6 +87,7 @@ func NewGame(game *Game) {
 	log.Println("Cricket starting position", cricketPos)
 	cricket := &Cricket{
 		Object:    NewObjectFromImage(loadImage("assets/cricket.png")),
+		Hitbox:    image.Rect(7, 24, 30, 36),
 		Jumping:   true,
 		Direction: 1,
 		Position:  image.Pt(cricketPos[0], cricketPos[1]),
@@ -127,6 +129,7 @@ func (g *Game) Update() error {
 		log.Println("Cricket starting position", cricketPos)
 		cricket := &Cricket{
 			Object:    g.Cricket.Object,
+			Hitbox:    g.Cricket.Hitbox,
 			Jumping:   true,
 			Direction: 1,
 			Position:  image.Pt(cricketPos[0], cricketPos[1]),
@@ -242,9 +245,12 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		g.Cricket.Frame*frameSize, 0, (1+g.Cricket.Frame)*frameSize, frameSize,
 	)).(*ebiten.Image), g.Cricket.Op)
 	layer := g.LDTKProject.Levels[g.Level].Layers[LayerTile]
-	ebitenutil.DebugPrint(screen, fmt.Sprintf("p%v - v%v: %v\n%v/%v\nl:%d\n%v",
+	hitbox := g.Cricket.Hitbox.Add(image.Pt(g.Cricket.Position.X, g.Cricket.Position.Y))
+	ebitenutil.DrawRect(screen, float64(hitbox.Min.X), float64(hitbox.Min.Y), float64(hitbox.Max.X-hitbox.Min.X), float64(hitbox.Max.Y-hitbox.Min.Y), color.White)
+	ebitenutil.DebugPrint(screen, fmt.Sprintf("p%v - v%v: %v [%v]\n%v/%v\nl:%d\n%v",
 		g.Cricket.Position,
 		g.Cricket.Velocity,
+		hitbox,
 		layer.TileAt(layer.ToGridPosition(g.Cricket.Position.X, g.Cricket.Position.Y)),
 		inpututil.KeyPressDuration(ebiten.KeySpace),
 		g.Cricket.PrimeDuration,
@@ -290,6 +296,7 @@ const (
 // Cricket is a small, jumping insect, the main character of the game
 type Cricket struct {
 	*Object
+	Hitbox        image.Rectangle
 	Position      image.Point
 	Velocity      image.Point
 	Jumping       bool
