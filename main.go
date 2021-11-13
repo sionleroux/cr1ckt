@@ -146,7 +146,11 @@ func (g *Game) Update() error {
 		if ebiten.IsKeyPressed(ebiten.KeySpace) {
 			g.Cricket.PrimeDuration++
 		} else if g.Cricket.PrimeDuration > 0 {
+			maxPrime := 5
 			g.Cricket.PrimeDuration /= g.WaitTime
+			if g.Cricket.PrimeDuration > maxPrime {
+				g.Cricket.PrimeDuration = maxPrime
+			}
 			g.Cricket.Jumping = true
 			g.Cricket.State = Jumping
 			g.Cricket.Velocity.Y = g.Cricket.PrimeDuration
