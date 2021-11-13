@@ -194,12 +194,29 @@ func (g *Game) Update() error {
 		g.Cricket.State = Landing
 	}
 
-	// Collision and jump arc
-	layer := g.LDTKProject.Levels[g.Level].Layers[LayerTile]
-	tile := layer.TileAt(layer.ToGridPosition(g.Cricket.Position.X, g.Cricket.Position.Y+g.Cricket.Image.Bounds().Dy()))
-	alayer := g.LDTKProject.Levels[g.Level].Layers[LayerAuto]
-	atile := alayer.AutoTileAt(layer.ToGridPosition(g.Cricket.Position.X, g.Cricket.Position.Y+g.Cricket.Image.Bounds().Dy()))
-	if tile == nil && atile == nil || g.Cricket.Velocity.Y > 0 {
+	// Collision
+	level := g.LDTKProject.Levels[g.Level]
+	tiles := level.Layers[LayerTile]
+	auto := level.Layers[LayerAuto].AllTiles()
+	hitbox := g.Cricket.Hitbox.Add(image.Pt(
+		g.Cricket.Position.X,
+		g.Cricket.Position.Y,
+	))
+	collides := func(ts []*ldtkgo.Tile) bool {
+		for _, v := range ts {
+			if v != nil && image.Rect(
+				v.Position[0], v.Position[1],
+				v.Position[0]+tiles.GridSize, v.Position[1]+tiles.GridSize,
+			).Overlaps(hitbox) {
+				return true
+			}
+		}
+		return false
+	}
+	colliding := collides(tiles.AllTiles()) || collides(auto)
+
+	// Jump arc
+	if !colliding || g.Cricket.Velocity.Y > 0 {
 		g.Cricket.Position.X = g.Cricket.Position.X - g.Cricket.Velocity.X
 		// keep within the map
 		if g.Cricket.Position.X < 0 {
