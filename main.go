@@ -147,22 +147,37 @@ func (g *Game) Update() error {
 	g.TileRenderer.Render(g.LDTKProject.Levels[g.Level])
 
 	// Jump
-	if !g.Cricket.Jumping {
-		if ebiten.IsKeyPressed(ebiten.KeySpace) {
-			g.Cricket.PrimeDuration++
-		} else if g.Cricket.PrimeDuration > 0 {
-			g.Cricket.PrimeDuration /= VelocityDenominator
-			if g.Cricket.PrimeDuration > MaxPrime {
-				g.Cricket.PrimeDuration = MaxPrime
+	func() {
+		if !g.Cricket.Jumping {
+			// Why would you press both at once?
+			if ebiten.IsKeyPressed(ebiten.KeyA) && ebiten.IsKeyPressed(ebiten.KeyD) {
+				g.Cricket.PrimeDuration = 0
+				return
 			}
-			g.Cricket.Jumping = true
-			g.Cricket.State = Jumping
-			g.Cricket.Velocity.Y = g.Cricket.PrimeDuration
-			g.Cricket.Velocity.X =
-				VelocityXMultiplier * g.Cricket.PrimeDuration * g.Cricket.Direction
-			g.Cricket.PrimeDuration = 0
+			if ebiten.IsKeyPressed(ebiten.KeyA) {
+				g.Cricket.Direction = 1
+				g.Cricket.PrimeDuration++
+				return
+			}
+			if ebiten.IsKeyPressed(ebiten.KeyD) {
+				g.Cricket.Direction = -1
+				g.Cricket.PrimeDuration++
+				return
+			}
+			if g.Cricket.PrimeDuration > 0 {
+				g.Cricket.PrimeDuration /= VelocityDenominator
+				if g.Cricket.PrimeDuration > MaxPrime {
+					g.Cricket.PrimeDuration = MaxPrime
+				}
+				g.Cricket.Jumping = true
+				g.Cricket.State = Jumping
+				g.Cricket.Velocity.Y = g.Cricket.PrimeDuration
+				g.Cricket.Velocity.X =
+					VelocityXMultiplier * g.Cricket.PrimeDuration * g.Cricket.Direction
+				g.Cricket.PrimeDuration = 0
+			}
 		}
-	}
+	}()
 
 	g.Wait = (g.Wait + 1) % g.WaitTime
 
@@ -254,7 +269,6 @@ func (g *Game) Update() error {
 	} else if g.Cricket.Jumping {
 		g.Cricket.Jumping = false
 		g.Cricket.State = Idle
-		g.Cricket.Direction = -g.Cricket.Direction
 	}
 
 	// Update GeoM
