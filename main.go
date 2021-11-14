@@ -7,7 +7,6 @@ package main
 import (
 	"embed"
 	"errors"
-	"fmt"
 	"image"
 	"log"
 
@@ -42,6 +41,10 @@ var VelocityXMultiplier int = 2
 // MaxPrime is the maximum jump level (after division) you can prime the cricket
 // to jump for, it avoids you jumping off the screen
 var MaxPrime int = 5
+
+// DebugMode sets whether to display additional debugging info on the screen
+// during playing the game or not
+var DebugMode bool = false
 
 func main() {
 	gameWidth, gameHeight := 640, 480
@@ -271,27 +274,10 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	screen.DrawImage(g.Cricket.Image.SubImage(image.Rect(
 		g.Cricket.Frame*frameSize, 0, (1+g.Cricket.Frame)*frameSize, frameSize,
 	)).(*ebiten.Image), g.Cricket.Op)
-	layer := g.LDTKProject.Levels[g.Level].Layers[LayerTile]
-	hitbox := g.Cricket.Hitbox.Add(image.Pt(g.Cricket.Position.X, g.Cricket.Position.Y))
-	var state string
-	switch g.Cricket.State {
-	case Idle:
-		state = "idle"
-	case Jumping:
-		state = "jumping"
-	case Landing:
-		state = "landing"
+
+	if DebugMode {
+		debug(screen, g)
 	}
-	ebitenutil.DebugPrint(screen, fmt.Sprintf("p%v - v%v: %v [%v]\n%v/%v\nl:%d\n%v",
-		g.Cricket.Position,
-		g.Cricket.Velocity,
-		hitbox,
-		layer.TileAt(layer.ToGridPosition(g.Cricket.Position.X, g.Cricket.Position.Y)),
-		inpututil.KeyPressDuration(ebiten.KeySpace),
-		g.Cricket.PrimeDuration,
-		g.Level,
-		state,
-	))
 }
 
 // Layout is hardcoded for now, may be made dynamic in future
@@ -368,5 +354,6 @@ func applyConfigs() {
 		VelocityDenominator, _ = cfg.Section("").Key("VelocityDenominator").Int()
 		VelocityXMultiplier, _ = cfg.Section("").Key("VelocityXMultiplier").Int()
 		MaxPrime, _ = cfg.Section("").Key("MaxPrime").Int()
+		DebugMode, _ = cfg.Section("").Key("DebugMode").Bool()
 	}
 }
