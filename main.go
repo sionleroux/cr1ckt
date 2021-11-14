@@ -135,20 +135,7 @@ func (g *Game) Update() error {
 	}
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyN) {
-		g.Level = (g.Level + 1) % len(g.LDTKProject.Levels)
-		log.Println("Switching to Level", g.Level)
-		cricketPos := g.LDTKProject.Levels[g.Level].Layers[LayerEntities].EntityByIdentifier("Cricket").Position
-		log.Println("Cricket starting position", cricketPos)
-		cricket := &Cricket{
-			Object:    g.Cricket.Object,
-			Hitbox:    g.Cricket.Hitbox,
-			Jumping:   true,
-			Direction: 1,
-			Position:  image.Pt(cricketPos[0], cricketPos[1]),
-			Frame:     1,
-			Width:     37,
-		}
-		g.Cricket = cricket
+		g.Reset(g.Level + 1)
 	}
 
 	// Render map
@@ -228,6 +215,10 @@ func (g *Game) Update() error {
 				v.Position[0], v.Position[1],
 				v.Position[0]+tiles.GridSize, v.Position[1]+tiles.GridSize,
 			).Overlaps(hitbox) {
+				if v.ID == 11 || v.ID == 12 {
+					log.Println("Hit water, restarting level")
+					g.Reset(g.Level)
+				}
 				return true
 			}
 		}
@@ -306,6 +297,25 @@ func (g *Game) Draw(screen *ebiten.Image) {
 // Layout is hardcoded for now, may be made dynamic in future
 func (g *Game) Layout(outsideWidth int, outsideHeight int) (screenWidth int, screenHeight int) {
 	return g.Width, g.Height
+}
+
+// Reset resets the game level and cricket states to defaults for a provided
+// game level
+func (g *Game) Reset(level int) {
+	g.Level = (level) % len(g.LDTKProject.Levels)
+	log.Println("Switching to Level", g.Level)
+	cricketPos := g.LDTKProject.Levels[g.Level].Layers[LayerEntities].EntityByIdentifier("Cricket").Position
+	log.Println("Cricket starting position", cricketPos)
+	cricket := &Cricket{
+		Object:    g.Cricket.Object,
+		Hitbox:    g.Cricket.Hitbox,
+		Jumping:   true,
+		Direction: 1,
+		Position:  image.Pt(cricketPos[0], cricketPos[1]),
+		Frame:     1,
+		Width:     37,
+	}
+	g.Cricket = cricket
 }
 
 // An Object is something that can be seen and positioned in the game
