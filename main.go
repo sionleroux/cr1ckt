@@ -16,6 +16,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/solarlune/ldtkgo"
 	renderer "github.com/solarlune/ldtkgo/ebitenrenderer"
+	"gopkg.in/ini.v1"
 )
 
 //go:embed assets/*
@@ -29,6 +30,14 @@ const LayerAuto int = 1
 
 // LayerTile is the layer to check for tile collisions
 const LayerTile int = 2
+
+// VelocityDenominator is by how much to divide the time the jump was primed to
+// get the jump velocity
+var VelocityDenominator int = 10
+
+// VelocityXMultiplier is by how much to multiply the Y velocity to get the
+// velocity for the X axis, it's usually bigger
+var VelocityXMultiplier int = 2
 
 func main() {
 	gameWidth, gameHeight := 640, 480
@@ -147,14 +156,15 @@ func (g *Game) Update() error {
 			g.Cricket.PrimeDuration++
 		} else if g.Cricket.PrimeDuration > 0 {
 			maxPrime := 5
-			g.Cricket.PrimeDuration /= g.WaitTime
+			g.Cricket.PrimeDuration /= VelocityDenominator
 			if g.Cricket.PrimeDuration > maxPrime {
 				g.Cricket.PrimeDuration = maxPrime
 			}
 			g.Cricket.Jumping = true
 			g.Cricket.State = Jumping
 			g.Cricket.Velocity.Y = g.Cricket.PrimeDuration
-			g.Cricket.Velocity.X = 2 * g.Cricket.PrimeDuration * g.Cricket.Direction
+			g.Cricket.Velocity.X =
+				VelocityXMultiplier * g.Cricket.PrimeDuration * g.Cricket.Direction
 			g.Cricket.PrimeDuration = 0
 		}
 	}
@@ -336,4 +346,13 @@ type Cricket struct {
 	Frame         int
 	Width         int
 	State         CricketState
+}
+
+func applyConfigs() {
+	cfg, err := ini.Load("cr1ck_t.ini")
+	log.Println(err)
+	if err == nil {
+		VelocityDenominator, _ = cfg.Section("").Key("VelocityDenominator").Int()
+		VelocityXMultiplier, _ = cfg.Section("").Key("VelocityXMultiplier").Int()
+	}
 }

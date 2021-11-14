@@ -27,6 +27,8 @@ If the game is crashing you can get extra information about what went wrong if y
 2. Go to the folder where the game is, e.g. `cd C:\Users\Alice\Downloads`
 3. Run it like this: `.\cr1ck_t.exe`
 
+Some values the game uses can be overridden by putting a configuration "ini" file `cr1ck_t.ini` next to the game EXE file.  An example INI file is provided in the download bundle above.
+
 ## For level makers
 
 You can edit the levels using the Level Designer Toolkit ([LDtk](https://ldtk.io/)).

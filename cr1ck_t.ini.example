@@ -1,0 +1,2 @@
+VelocityDenominator = 10 ; VelocityDenominator is by how much to divide the time the jump was primed to get the jump velocity
+VelocityXMultiplier = 2  ; VelocityXMultiplier is by how much to multiply the Y velocity to get the velocity for the X axis, it's usually bigger
