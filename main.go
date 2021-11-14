@@ -39,6 +39,10 @@ var VelocityDenominator int = 10
 // velocity for the X axis, it's usually bigger
 var VelocityXMultiplier int = 2
 
+// MaxPrime is the maximum jump level (after division) you can prime the cricket
+// to jump for, it avoids you jumping off the screen
+var MaxPrime int = 5
+
 func main() {
 	gameWidth, gameHeight := 640, 480
 
@@ -155,10 +159,9 @@ func (g *Game) Update() error {
 		if ebiten.IsKeyPressed(ebiten.KeySpace) {
 			g.Cricket.PrimeDuration++
 		} else if g.Cricket.PrimeDuration > 0 {
-			maxPrime := 5
 			g.Cricket.PrimeDuration /= VelocityDenominator
-			if g.Cricket.PrimeDuration > maxPrime {
-				g.Cricket.PrimeDuration = maxPrime
+			if g.Cricket.PrimeDuration > MaxPrime {
+				g.Cricket.PrimeDuration = MaxPrime
 			}
 			g.Cricket.Jumping = true
 			g.Cricket.State = Jumping
@@ -354,5 +357,6 @@ func applyConfigs() {
 	if err == nil {
 		VelocityDenominator, _ = cfg.Section("").Key("VelocityDenominator").Int()
 		VelocityXMultiplier, _ = cfg.Section("").Key("VelocityXMultiplier").Int()
+		MaxPrime, _ = cfg.Section("").Key("MaxPrime").Int()
 	}
 }
