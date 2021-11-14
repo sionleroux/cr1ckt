@@ -106,3 +106,19 @@ jobs:
           cr1ckt-mac.tar.gz
           cr1ckt.exe
           cr1ckt.ini.example
+
+  deploy:
+    name: Deploy EXE to itch.io
+    needs: build-win
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: cr1ckt-win
+    - uses: josephbmanley/butler-publish-itchio-action@master
+      env:
+        BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+        CHANNEL: windows
+        ITCH_GAME: cr1ckt
+        ITCH_USER: sinisterstuf
+        PACKAGE: cr1ckt.exe
