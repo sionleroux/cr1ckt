@@ -53,6 +53,8 @@ func main() {
 	ebiten.SetWindowTitle("cr1ck_t")
 	ebiten.SetCursorMode(ebiten.CursorModeHidden)
 
+	applyConfigs()
+
 	game := &Game{
 		Width:    gameWidth,
 		Height:   gameHeight,
@@ -348,6 +350,7 @@ type Cricket struct {
 }
 
 func applyConfigs() {
+	log.Println("Looking for INI file...")
 	cfg, err := ini.Load("cr1ck_t.ini")
 	log.Println(err)
 	if err == nil {
