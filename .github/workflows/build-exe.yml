@@ -18,6 +18,8 @@ jobs:
     - name: Upload exe
       uses: actions/upload-artifact@v2.2.4
       with:
-        path: cr1ck_t.exe
         name: cr1ck_t-bundle
+        path: |
+          cr1ck_t.exe
+          assets/
 
