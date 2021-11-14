@@ -229,6 +229,15 @@ func (g *Game) Update() error {
 		}
 		return false
 	}
+	exit := g.LDTKProject.Levels[g.Level].Layers[LayerEntities].EntityByIdentifier("Exit")
+	exitbox := image.Rect(
+		exit.Position[0], exit.Position[1],
+		exit.Position[0]+tiles.GridSize, exit.Position[1]+tiles.GridSize,
+	)
+	if exitbox.Overlaps(hitbox) {
+		log.Println("Found the exit, going to next level")
+		g.Reset(g.Level + 1)
+	}
 	colliding := collides(tiles.AllTiles()) || collides(auto)
 
 	// Jump arc
