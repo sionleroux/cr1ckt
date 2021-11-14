@@ -532,6 +532,39 @@
 							"defUid": 31,
 							"px": [0,144],
 							"fieldInstances": []
+						},
+						{
+							"__identifier": "Exit",
+							"__grid": [16,27],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 16,
+							"height": 16,
+							"defUid": 37,
+							"px": [256,432],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "Exit",
+							"__grid": [13,27],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 16,
+							"height": 16,
+							"defUid": 37,
+							"px": [208,432],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "Exit",
+							"__grid": [11,27],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 16,
+							"height": 16,
+							"defUid": 37,
+							"px": [176,432],
+							"fieldInstances": []
 						}
 					]
 				},
@@ -770,6 +803,17 @@
 							"height": 32,
 							"defUid": 31,
 							"px": [32,32],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "Exit",
+							"__grid": [30,8],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 16,
+							"height": 16,
+							"defUid": 37,
+							"px": [480,128],
 							"fieldInstances": []
 						}
 					]
@@ -1246,6 +1290,17 @@
 							"defUid": 31,
 							"px": [80,352],
 							"fieldInstances": []
+						},
+						{
+							"__identifier": "Exit",
+							"__grid": [36,6],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 16,
+							"height": 16,
+							"defUid": 37,
+							"px": [576,96],
+							"fieldInstances": []
 						}
 					]
 				},
@@ -1657,6 +1712,17 @@
 							"height": 32,
 							"defUid": 31,
 							"px": [16,352],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "Exit",
+							"__grid": [31,5],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 16,
+							"height": 16,
+							"defUid": 37,
+							"px": [496,80],
 							"fieldInstances": []
 						}
 					]
