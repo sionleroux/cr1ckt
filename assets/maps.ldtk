@@ -433,7 +433,7 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "Entity",
+			"identifier": "Exit",
 			"uid": 37,
 			"tags": [],
 			"width": 16,
