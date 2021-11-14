@@ -31,9 +31,9 @@ If the game is crashing you can get extra information about what went wrong if y
 
 You can edit the levels using the Level Designer Toolkit ([LDtk](https://ldtk.io/)).
 
-The latest version of levels' maps is always in <a href="https://raw.githubusercontent.com/sinisterstuf/cr1ck_t/master/assets/maps.ldtk" download>assets/maps.ldtk</a>.  (Right-click link and "Save as..." or open it and save the page as a file.)
+Get the latest version of the maps file and associated images [from this download bundle](https://nightly.link/sinisterstuf/cr1ck_t/workflows/build-exe/master/cr1ck_t-bundle.zip).
 
-If you put a copy of that file with your changes in it in the same folder as the game binary (e.g. `cr1ck_t.exe`) then it will load that instead of the maps embedded in the binary, which is useful for prototyping and testing when developing a map because you don't have to compile any code.
+If you put a copy of the `maps.ldtk` file with your changes in it in the same folder as the game binary (e.g. `cr1ck_t.exe`) then it will load that instead of the maps embedded in the binary, which is useful for prototyping and testing when developing a map because you don't have to compile any code.  This also requires you to have the `tiles.png` file in a folder called `assets` otherwise the game can't find it.
 
 - Auto-tiling is done on the layer called IntGrid (tutorial on [auto-tiling](https://ldtk.io/docs/tutorials/intgrid-layers/))
 - [Entities](https://ldtk.io/docs/general/editor-components/entities/) (e.g. the player, monsters, items) are on the Entities layer
