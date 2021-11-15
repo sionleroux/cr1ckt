@@ -30,6 +30,21 @@ const LayerAuto int = 1
 // LayerTile is the layer to check for tile collisions
 const LayerTile int = 2
 
+// ImpassibleTiles is a list of tiles you can't pass through while jumping
+var ImpassibleTiles = []int{
+	0,  // Earth top
+	1,  // Earth top slope right
+	2,  // Earth top slope left
+	3,  // Stone
+	10, // Water bank
+	11, // Water pool
+	12, // Water plant
+	13, // Water stone
+	32, // Earth middle
+	33, // Earth middle slope right
+	34, // Earth middle slope left
+}
+
 // VelocityDenominator is by how much to divide the time the jump was primed to
 // get the jump velocity
 var VelocityDenominator int = 10
@@ -240,6 +255,7 @@ func (g *Game) Update() error {
 		g.Cricket.Position.X,
 		g.Cricket.Position.Y,
 	))
+	impassible := false
 	collides := func(ts []*ldtkgo.Tile) bool {
 		for _, v := range ts {
 			if v != nil && image.Rect(
@@ -249,6 +265,11 @@ func (g *Game) Update() error {
 				if v.ID == 11 || v.ID == 12 {
 					log.Println("Hit water, restarting level")
 					g.Reset(g.Level)
+				}
+				for _, t := range ImpassibleTiles {
+					if v.ID == t {
+						impassible = true
+					}
 				}
 				return true
 			}
@@ -274,7 +295,9 @@ func (g *Game) Update() error {
 			g.Cricket.Jumping = false
 			g.Cricket.State = Idle
 		}
-		g.Cricket.Position = oldPos
+		if impassible {
+			g.Cricket.Position = oldPos
+		}
 	}
 	// Landing state
 	if g.Cricket.Jumping && g.Cricket.Velocity.Y <= 0 {
