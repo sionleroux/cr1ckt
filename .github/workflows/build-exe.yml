@@ -20,6 +20,8 @@ jobs:
       with:
         name: cr1ck_t-bundle
         path: |
+          README.md
+          LICENSE
           cr1ck_t.exe
           cr1ck_t.ini.example
           assets/
