@@ -216,9 +216,20 @@ func (g *Game) Update() error {
 		}
 	}
 
-	// Landing state
-	if g.Cricket.Jumping && g.Cricket.Velocity.Y <= 0 {
-		g.Cricket.State = Landing
+	// Save pos for after collision
+	oldPos := g.Cricket.Position
+
+	// Jump arc
+	if g.Cricket.Jumping {
+		g.Cricket.Position.X = g.Cricket.Position.X - g.Cricket.Velocity.X
+		// keep within the map
+		if g.Cricket.Position.X < 0 {
+			g.Cricket.Position.X = 0
+		}
+		if g.Cricket.Position.X+g.Cricket.Width > g.Width {
+			g.Cricket.Position.X = g.Width - g.Cricket.Width
+		}
+		g.Cricket.Position.Y = g.Cricket.Position.Y - g.Cricket.Velocity.Y
 	}
 
 	// Collision
@@ -255,20 +266,19 @@ func (g *Game) Update() error {
 	}
 	colliding := collides(tiles.AllTiles()) || collides(auto)
 
-	// Jump arc
-	if !colliding || g.Cricket.Velocity.Y > 0 {
-		g.Cricket.Position.X = g.Cricket.Position.X - g.Cricket.Velocity.X
-		// keep within the map
-		if g.Cricket.Position.X < 0 {
-			g.Cricket.Position.X = 0
+	// Collision response
+	if colliding {
+		if g.Cricket.Velocity.Y > 0 {
+			g.Cricket.Velocity.Y *= -1 // Invert on hit
+		} else {
+			g.Cricket.Jumping = false
+			g.Cricket.State = Idle
 		}
-		if g.Cricket.Position.X+g.Cricket.Width > g.Width {
-			g.Cricket.Position.X = g.Width - g.Cricket.Width
-		}
-		g.Cricket.Position.Y = g.Cricket.Position.Y - g.Cricket.Velocity.Y
-	} else if g.Cricket.Jumping {
-		g.Cricket.Jumping = false
-		g.Cricket.State = Idle
+		g.Cricket.Position = oldPos
+	}
+	// Landing state
+	if g.Cricket.Jumping && g.Cricket.Velocity.Y <= 0 {
+		g.Cricket.State = Landing
 	}
 
 	// Update GeoM
