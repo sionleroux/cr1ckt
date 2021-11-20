@@ -2,7 +2,7 @@
 // Use of this source code is subject to an MIT-style
 // licence which can be found in the LICENSE file.
 
-package main
+package cr1ckt
 
 import (
 	"embed"
@@ -12,7 +12,6 @@ import (
 	"image/color"
 	"log"
 	"math/rand"
-	"time"
 
 	camera "github.com/sinisterstuf/cr1ckt/camera"
 	"golang.org/x/image/font"
@@ -24,7 +23,6 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
 	"github.com/solarlune/ldtkgo"
-	renderer "github.com/solarlune/ldtkgo/ebitenrenderer"
 	"gopkg.in/ini.v1"
 )
 
@@ -63,37 +61,13 @@ var DebugMode bool = false
 // Double the amount of blackness that occurs after this many jumps
 var BlacknessFactor int = 10
 
+// JumpPress are the different jump states for controls
 const (
 	JumpPressNone int = iota
 	JumpPressLeft
 	JumpPressRight
 	JumpPressCancel
 )
-
-func main() {
-	gameWidth, gameHeight := 640, 480
-
-	ebiten.SetWindowSize(gameWidth, gameHeight)
-	ebiten.SetWindowTitle("cr1ckt")
-
-	rand.Seed(time.Now().UnixNano())
-	applyConfigs()
-
-	game := &Game{
-		Width:    gameWidth,
-		Height:   gameHeight,
-		Wait:     0,
-		WaitTime: 10,
-		Level:    0,
-		Loading:  true,
-	}
-
-	go NewGame(game)
-
-	if err := ebiten.RunGame(game); err != nil {
-		log.Fatal(err)
-	}
-}
 
 // Game represents the main game state
 type Game struct {
@@ -102,7 +76,7 @@ type Game struct {
 	Cricket      *Cricket
 	Wait         int
 	WaitTime     int
-	TileRenderer *renderer.EbitenRenderer
+	TileRenderer *EbitenMobileRenderer
 	LDTKProject  *ldtkgo.Project
 	Level        int
 	Loading      bool
@@ -119,18 +93,19 @@ type Game struct {
 // NewGame populates a default game object with game data
 func NewGame(game *Game) {
 	log.Println("Loading game...")
-	ldtkProject, err := ldtkgo.Open("maps.ldtk")
-	var ebitenRenderer *renderer.EbitenRenderer
-	if err == nil {
-		log.Println("Found local map override, using that instead!")
-		log.Println("Looking for local tileset...")
-		ebitenRenderer = renderer.NewEbitenRenderer(renderer.NewDiskLoader("assets"))
-	} else {
-		log.Println("Using embedded map data...")
-		ldtkProject = loadMaps("assets/maps.ldtk")
-		ebitenRenderer = renderer.NewEbitenRenderer(&EmbedLoader{"assets"})
-	}
-	game.TileRenderer = ebitenRenderer
+	// 	ldtkProject, err := ldtkgo.Open("maps.ldtk")
+	var renderer *EbitenMobileRenderer
+	// 	if err == nil {
+	// 		log.Println("Found local map override, using that instead!")
+	// 		log.Println("Looking for local tileset...")
+	// 		ebitenRenderer = renderer.NewEbitenRenderer(renderer.NewDiskLoader("assets"))
+	// 	} else {
+	log.Println("Using embedded map data...")
+	ldtkProject := loadMaps("assets/maps.ldtk")
+	renderer = NewEbitenMobileRenderer(&EmbedLoader{"assets"})
+	// }
+
+	game.TileRenderer = renderer
 	game.LDTKProject = ldtkProject
 	game.bg = loadImage("assets/background.png")
 	game.fruit = loadImage("assets/fruit.png")
@@ -611,7 +586,8 @@ func (c *Cricket) Hitbox() image.Rectangle {
 	))
 }
 
-func applyConfigs() {
+// ApplyConfigs overrides default values with a config file if available
+func ApplyConfigs() {
 	log.Println("Looking for INI file...")
 	cfg, err := ini.Load("cr1ckt.ini")
 	log.Println(err)

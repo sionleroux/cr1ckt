@@ -2,14 +2,13 @@
 // Use of this source code is subject to an MIT-style
 // licence which can be found in the LICENSE file.
 
-package main
+package cr1ckt
 
 import (
 	"image/png"
 	"io/fs"
 	"io/ioutil"
 	"log"
-	"path"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/audio"
@@ -59,16 +58,6 @@ func loadImage(name string) *ebiten.Image {
 	}
 
 	return ebiten.NewImageFromImage(raw)
-}
-
-// EmbedLoader is a TilesetLoader for the embedded FS
-type EmbedLoader struct {
-	BasePath string
-}
-
-// LoadTileset loads an LDtk tileset image from the embedded FS
-func (l *EmbedLoader) LoadTileset(tileSetPath string) *ebiten.Image {
-	return loadImage(path.Join(l.BasePath, tileSetPath))
 }
 
 func loadSoundFile(name string, context *audio.Context) fs.File {

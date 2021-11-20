@@ -1,4 +1,4 @@
-package main
+package cr1ckt
 
 import (
 	"image"
