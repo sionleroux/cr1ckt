@@ -50,7 +50,7 @@ func main() {
 	gameWidth, gameHeight := 640, 480
 
 	ebiten.SetWindowSize(gameWidth, gameHeight)
-	ebiten.SetWindowTitle("cr1ck_t")
+	ebiten.SetWindowTitle("cr1ckt")
 	ebiten.SetCursorMode(ebiten.CursorModeHidden)
 
 	applyConfigs()
@@ -384,7 +384,7 @@ type Cricket struct {
 
 func applyConfigs() {
 	log.Println("Looking for INI file...")
-	cfg, err := ini.Load("cr1ck_t.ini")
+	cfg, err := ini.Load("cr1ckt.ini")
 	log.Println(err)
 	if err == nil {
 		VelocityDenominator, _ = cfg.Section("").Key("VelocityDenominator").Int()

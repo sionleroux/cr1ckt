@@ -1,4 +1,4 @@
-module github.com/sinisterstuf/cr1ck_t
+module github.com/sinisterstuf/cr1ckt
 
 go 1.17
 

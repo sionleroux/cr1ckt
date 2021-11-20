@@ -1,4 +1,4 @@
-# Cr1ck_t
+# cr1ckt
 
 **Still very WIP!** Entry for 2021 Game Off, themed "BUG".  I'll add a link to the submission when it's published.
 
@@ -10,7 +10,7 @@ Bugs in this game might be there intentionally...
 
 ## For game testers
 
-For alpha testing use this [link to download the latest Windows EXE](https://nightly.link/sinisterstuf/cr1ck_t/workflows/build-exe/master/cr1ck_t-bundle.zip).
+For alpha testing use this [link to download the latest Windows EXE](https://nightly.link/sinisterstuf/cr1ckt/workflows/build-exe/master/cr1ckt-bundle.zip).
 
 For Mac & Linux it is trivial to install go with your package manager and built it yourself, see [the section for programmers](#for-programmers) below.
 
@@ -25,17 +25,17 @@ If the game is crashing you can get extra information about what went wrong if y
 
 1. Open PowerShell
 2. Go to the folder where the game is, e.g. `cd C:\Users\Alice\Downloads`
-3. Run it like this: `.\cr1ck_t.exe`
+3. Run it like this: `.\cr1ckt.exe`
 
-Some values the game uses can be overridden by putting a configuration "ini" file `cr1ck_t.ini` next to the game EXE file.  An example INI file is provided in the download bundle above.
+Some values the game uses can be overridden by putting a configuration "ini" file `cr1ckt.ini` next to the game EXE file.  An example INI file is provided in the download bundle above.
 
 ## For level makers
 
 You can edit the levels using the Level Designer Toolkit ([LDtk](https://ldtk.io/)).
 
-Get the latest version of the maps file and associated images [from this download bundle](https://nightly.link/sinisterstuf/cr1ck_t/workflows/build-exe/master/cr1ck_t-bundle.zip).
+Get the latest version of the maps file and associated images [from this download bundle](https://nightly.link/sinisterstuf/cr1ckt/workflows/build-exe/master/cr1ckt-bundle.zip).
 
-If you put a copy of the `maps.ldtk` file with your changes in it in the same folder as the game binary (e.g. `cr1ck_t.exe`) then it will load that instead of the maps embedded in the binary, which is useful for prototyping and testing when developing a map because you don't have to compile any code.  This also requires you to have the `tiles.png` file in a folder called `assets` otherwise the game can't find it.
+If you put a copy of the `maps.ldtk` file with your changes in it in the same folder as the game binary (e.g. `cr1ckt.exe`) then it will load that instead of the maps embedded in the binary, which is useful for prototyping and testing when developing a map because you don't have to compile any code.  This also requires you to have the `tiles.png` file in a folder called `assets` otherwise the game can't find it.
 
 - Auto-tiling is done on the layer called IntGrid (tutorial on [auto-tiling](https://ldtk.io/docs/tutorials/intgrid-layers/))
 - [Entities](https://ldtk.io/docs/general/editor-components/entities/) (e.g. the player, monsters, items) are on the Entities layer

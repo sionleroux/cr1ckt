@@ -18,11 +18,11 @@ jobs:
     - name: Upload exe
       uses: actions/upload-artifact@v2.2.4
       with:
-        name: cr1ck_t-bundle
+        name: cr1ckt-bundle
         path: |
           README.md
           LICENSE
-          cr1ck_t.exe
-          cr1ck_t.ini.example
+          cr1ckt.exe
+          cr1ckt.ini.example
           assets/
 
