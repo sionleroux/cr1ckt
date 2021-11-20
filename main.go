@@ -99,8 +99,10 @@ func NewGame(game *Game) {
 		ldtkProject = loadMaps("assets/maps.ldtk")
 		ebitenRenderer = renderer.NewEbitenRenderer(&EmbedLoader{"assets"})
 	}
+	game.TileRenderer = ebitenRenderer
+	game.LDTKProject = ldtkProject
 
-	cricketPos := ldtkProject.Levels[0].Layers[LayerEntities].EntityByIdentifier("Cricket").Position
+	cricketPos := game.EntityByIdentifier("Cricket").Position
 	log.Println("Cricket starting position", cricketPos)
 	cricket := &Cricket{
 		Object:    NewObjectFromImage(loadImage("assets/cricket.png")),
@@ -111,10 +113,8 @@ func NewGame(game *Game) {
 		Frame:     1,
 		Width:     37,
 	}
-
 	game.Cricket = cricket
-	game.TileRenderer = ebitenRenderer
-	game.LDTKProject = ldtkProject
+
 	game.Loading = false
 }
 
@@ -239,7 +239,7 @@ func (g *Game) Update() error {
 			g.Reset(g.Level)
 		}
 		tiles := g.LDTKProject.Levels[g.Level].Layers[LayerTile]
-		exit := g.LDTKProject.Levels[g.Level].Layers[LayerEntities].EntityByIdentifier("Exit")
+		exit := g.EntityByIdentifier("Exit")
 		exitbox := image.Rect(
 			exit.Position[0], exit.Position[1],
 			exit.Position[0]+tiles.GridSize, exit.Position[1]+tiles.GridSize,
@@ -313,7 +313,7 @@ func (g *Game) Layout(outsideWidth int, outsideHeight int) (screenWidth int, scr
 func (g *Game) Reset(level int) {
 	g.Level = (level) % len(g.LDTKProject.Levels)
 	log.Println("Switching to Level", g.Level)
-	cricketPos := g.LDTKProject.Levels[g.Level].Layers[LayerEntities].EntityByIdentifier("Cricket").Position
+	cricketPos := g.EntityByIdentifier("Cricket").Position
 	log.Println("Cricket starting position", cricketPos)
 	cricket := &Cricket{
 		Object:    g.Cricket.Object,
@@ -325,6 +325,14 @@ func (g *Game) Reset(level int) {
 		Width:     37,
 	}
 	g.Cricket = cricket
+}
+
+// EntityByIdentifier is a convenience function for the same thing in ldtkgo but
+// defaulting to checking the Entities layer of the current level
+func (g *Game) EntityByIdentifier(identifier string) *ldtkgo.Entity {
+	return g.LDTKProject.Levels[g.Level].
+		Layers[LayerEntities].
+		EntityByIdentifier(identifier)
 }
 
 // An Object is something that can be seen and positioned in the game
