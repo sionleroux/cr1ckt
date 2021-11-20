@@ -104,7 +104,7 @@ func NewGame(game *Game) {
 	log.Println("Cricket starting position", cricketPos)
 	cricket := &Cricket{
 		Object:    NewObjectFromImage(loadImage("assets/cricket.png")),
-		Hitbox:    image.Rect(7, 24, 30, 36).Inset(1),
+		hitbox:    image.Rect(7, 24, 30, 36).Inset(1),
 		Jumping:   true,
 		Direction: 1,
 		Position:  image.Pt(cricketPos[0], cricketPos[1]),
@@ -239,16 +239,12 @@ func (g *Game) Update() error {
 			g.Reset(g.Level)
 		}
 		tiles := g.LDTKProject.Levels[g.Level].Layers[LayerTile]
-		hitbox := g.Cricket.Hitbox.Add(image.Pt(
-			g.Cricket.Position.X,
-			g.Cricket.Position.Y,
-		))
 		exit := g.LDTKProject.Levels[g.Level].Layers[LayerEntities].EntityByIdentifier("Exit")
 		exitbox := image.Rect(
 			exit.Position[0], exit.Position[1],
 			exit.Position[0]+tiles.GridSize, exit.Position[1]+tiles.GridSize,
 		)
-		if exitbox.Overlaps(hitbox) {
+		if exitbox.Overlaps(g.Cricket.Hitbox()) {
 			log.Println("Found the exit, going to next level")
 			g.Reset(g.Level + 1)
 		}
@@ -321,7 +317,7 @@ func (g *Game) Reset(level int) {
 	log.Println("Cricket starting position", cricketPos)
 	cricket := &Cricket{
 		Object:    g.Cricket.Object,
-		Hitbox:    g.Cricket.Hitbox,
+		hitbox:    g.Cricket.hitbox,
 		Jumping:   true,
 		Direction: 1,
 		Position:  image.Pt(cricketPos[0], cricketPos[1]),
@@ -363,7 +359,7 @@ const (
 // Cricket is a small, jumping insect, the main character of the game
 type Cricket struct {
 	*Object
-	Hitbox        image.Rectangle
+	hitbox        image.Rectangle
 	Position      image.Point
 	Velocity      image.Point
 	Jumping       bool
@@ -372,6 +368,15 @@ type Cricket struct {
 	Frame         int
 	Width         int
 	State         CricketState
+}
+
+// Hitbox returns a correctly positioned rectangular hitbox for collision
+// detection with the Cricket
+func (c *Cricket) Hitbox() image.Rectangle {
+	return c.hitbox.Add(image.Pt(
+		c.Position.X,
+		c.Position.Y,
+	))
 }
 
 func applyConfigs() {

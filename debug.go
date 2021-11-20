@@ -6,7 +6,6 @@ package main
 
 import (
 	"fmt"
-	"image"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -15,7 +14,7 @@ import (
 
 func debug(screen *ebiten.Image, g *Game) {
 	layer := g.LDTKProject.Levels[g.Level].Layers[LayerTile]
-	hitbox := g.Cricket.Hitbox.Add(image.Pt(g.Cricket.Position.X, g.Cricket.Position.Y))
+	hitbox := g.Cricket.Hitbox()
 
 	var state string
 	switch g.Cricket.State {

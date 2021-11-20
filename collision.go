@@ -30,10 +30,6 @@ func Collides(g *Game) *ldtkgo.Tile {
 	level := g.LDTKProject.Levels[g.Level]
 	tiles := level.Layers[LayerTile]
 	auto := level.Layers[LayerAuto]
-	hitbox := g.Cricket.Hitbox.Add(image.Pt(
-		g.Cricket.Position.X,
-		g.Cricket.Position.Y,
-	))
 
 	// This inner function is a workaround because we need to loop through both
 	// Tiles and AutoTiles in exactly the same way
@@ -42,7 +38,7 @@ func Collides(g *Game) *ldtkgo.Tile {
 			if v != nil && image.Rect(
 				v.Position[0], v.Position[1],
 				v.Position[0]+tiles.GridSize, v.Position[1]+tiles.GridSize,
-			).Overlaps(hitbox) {
+			).Overlaps(g.Cricket.Hitbox()) {
 				return v
 			}
 		}
