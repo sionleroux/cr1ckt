@@ -30,21 +30,6 @@ const LayerAuto int = 1
 // LayerTile is the layer to check for tile collisions
 const LayerTile int = 2
 
-// ImpassibleTiles is a list of tiles you can't pass through while jumping
-var ImpassibleTiles = []int{
-	0,  // Earth top
-	1,  // Earth top slope right
-	2,  // Earth top slope left
-	3,  // Stone
-	10, // Water bank
-	11, // Water pool
-	12, // Water plant
-	13, // Water stone
-	32, // Earth middle
-	33, // Earth middle slope right
-	34, // Earth middle slope left
-}
-
 // VelocityDenominator is by how much to divide the time the jump was primed to
 // get the jump velocity
 var VelocityDenominator int = 10
@@ -247,48 +232,32 @@ func (g *Game) Update() error {
 		g.Cricket.Position.Y = g.Cricket.Position.Y - g.Cricket.Velocity.Y
 	}
 
-	// Collision
-	level := g.LDTKProject.Levels[g.Level]
-	tiles := level.Layers[LayerTile]
-	auto := level.Layers[LayerAuto].AllTiles()
-	hitbox := g.Cricket.Hitbox.Add(image.Pt(
-		g.Cricket.Position.X,
-		g.Cricket.Position.Y,
-	))
-	impassible := false
-	collides := func(ts []*ldtkgo.Tile) bool {
-		for _, v := range ts {
-			if v != nil && image.Rect(
-				v.Position[0], v.Position[1],
-				v.Position[0]+tiles.GridSize, v.Position[1]+tiles.GridSize,
-			).Overlaps(hitbox) {
-				if v.ID == 11 || v.ID == 12 {
-					log.Println("Hit water, restarting level")
-					g.Reset(g.Level)
-				}
-				for _, t := range ImpassibleTiles {
-					if v.ID == t {
-						impassible = true
-					}
-				}
-				return true
+	// Collision response
+	if v := Collides(g); v != nil {
+		if v.ID == 11 || v.ID == 12 {
+			log.Println("Hit water, restarting level")
+			g.Reset(g.Level)
+		}
+		tiles := g.LDTKProject.Levels[g.Level].Layers[LayerTile]
+		hitbox := g.Cricket.Hitbox.Add(image.Pt(
+			g.Cricket.Position.X,
+			g.Cricket.Position.Y,
+		))
+		exit := g.LDTKProject.Levels[g.Level].Layers[LayerEntities].EntityByIdentifier("Exit")
+		exitbox := image.Rect(
+			exit.Position[0], exit.Position[1],
+			exit.Position[0]+tiles.GridSize, exit.Position[1]+tiles.GridSize,
+		)
+		if exitbox.Overlaps(hitbox) {
+			log.Println("Found the exit, going to next level")
+			g.Reset(g.Level + 1)
+		}
+		impassible := false
+		for _, t := range ImpassibleTiles {
+			if v.ID == t {
+				impassible = true
 			}
 		}
-		return false
-	}
-	exit := g.LDTKProject.Levels[g.Level].Layers[LayerEntities].EntityByIdentifier("Exit")
-	exitbox := image.Rect(
-		exit.Position[0], exit.Position[1],
-		exit.Position[0]+tiles.GridSize, exit.Position[1]+tiles.GridSize,
-	)
-	if exitbox.Overlaps(hitbox) {
-		log.Println("Found the exit, going to next level")
-		g.Reset(g.Level + 1)
-	}
-	colliding := collides(tiles.AllTiles()) || collides(auto)
-
-	// Collision response
-	if colliding {
 		if g.Cricket.Velocity.Y > 0 {
 			g.Cricket.Velocity.Y *= -1 // Invert on hit
 		} else {
