@@ -87,7 +87,6 @@ type Game struct {
 // NewGame populates a default game object with game data
 func NewGame(game *Game) {
 	log.Println("Loading game...")
-
 	ldtkProject, err := ldtkgo.Open("maps.ldtk")
 	var ebitenRenderer *renderer.EbitenRenderer
 	if err == nil {
@@ -101,20 +100,7 @@ func NewGame(game *Game) {
 	}
 	game.TileRenderer = ebitenRenderer
 	game.LDTKProject = ldtkProject
-
-	cricketPos := game.EntityByIdentifier("Cricket").Position
-	log.Println("Cricket starting position", cricketPos)
-	cricket := &Cricket{
-		Object:    NewObjectFromImage(loadImage("assets/cricket.png")),
-		hitbox:    image.Rect(7, 24, 30, 36).Inset(1),
-		Jumping:   true,
-		Direction: 1,
-		Position:  image.Pt(cricketPos[0], cricketPos[1]),
-		Frame:     1,
-		Width:     37,
-	}
-	game.Cricket = cricket
-
+	game.Cricket = NewCricket(game.EntityByIdentifier("Cricket").Position)
 	game.Loading = false
 }
 
@@ -313,18 +299,7 @@ func (g *Game) Layout(outsideWidth int, outsideHeight int) (screenWidth int, scr
 func (g *Game) Reset(level int) {
 	g.Level = (level) % len(g.LDTKProject.Levels)
 	log.Println("Switching to Level", g.Level)
-	cricketPos := g.EntityByIdentifier("Cricket").Position
-	log.Println("Cricket starting position", cricketPos)
-	cricket := &Cricket{
-		Object:    g.Cricket.Object,
-		hitbox:    g.Cricket.hitbox,
-		Jumping:   true,
-		Direction: 1,
-		Position:  image.Pt(cricketPos[0], cricketPos[1]),
-		Frame:     1,
-		Width:     37,
-	}
-	g.Cricket = cricket
+	g.Cricket = NewCricket(g.EntityByIdentifier("Cricket").Position)
 }
 
 // EntityByIdentifier is a convenience function for the same thing in ldtkgo but
@@ -376,6 +351,20 @@ type Cricket struct {
 	Frame         int
 	Width         int
 	State         CricketState
+}
+
+// NewCricket returns a new Cricket object at the given position
+func NewCricket(cricketPos []int) *Cricket {
+	log.Println("Cricket starting position", cricketPos)
+	return &Cricket{
+		Object:    NewObjectFromImage(loadImage("assets/cricket.png")),
+		hitbox:    image.Rect(7, 24, 30, 36).Inset(1),
+		Jumping:   true,
+		Direction: 1,
+		Position:  image.Pt(cricketPos[0], cricketPos[1]),
+		Frame:     1,
+		Width:     37,
+	}
 }
 
 // Hitbox returns a correctly positioned rectangular hitbox for collision
