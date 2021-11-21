@@ -1,4 +1,4 @@
-VelocityDenominator = 10    ; VelocityDenominator is by how much to divide the time the jump was primed to get the jump velocity
-VelocityXMultiplier = 2     ; VelocityXMultiplier is by how much to multiply the Y velocity to get the velocity for the X axis, it's usually bigger
-MaxPrime            = 5     ; MaxPrime is the maximum jump level (after division) you can prime the cricket to jump for, it avoids you jumping off the screen
-DebugMode           = false ; DebugMode sets whether to display additional debugging info on the screen during playing the game or not
+VelocityDenominator = 10    ; the bigger this is, the longer you have to hold jump to reach the next level of "jump strength" aka priming
+VelocityXMultiplier = 2     ; how many times further it should move sideways than up when jumping
+MaxPrime            = 5     ; should have been called max level of jump strength
+DebugMode           = false ; sets whether to display additional debugging info on the screen during playing the game or not
