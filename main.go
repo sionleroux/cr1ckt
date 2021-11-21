@@ -221,9 +221,11 @@ func (g *Game) Update() error {
 
 	// Collision response
 	if v := Collides(g); v != nil {
-		if v.ID == 11 || v.ID == 12 {
-			log.Println("Hit water, restarting level")
-			g.Reset(g.Level)
+		for _, w := range TilesWater {
+			if v.ID == w {
+				log.Println("Hit water, restarting level")
+				g.Reset(g.Level)
+			}
 		}
 		tiles := g.LDTKProject.Levels[g.Level].Layers[LayerTile]
 		exit := g.EntityByIdentifier("Exit")
@@ -236,7 +238,7 @@ func (g *Game) Update() error {
 			g.Reset(g.Level + 1)
 		}
 		impassible := false
-		for _, t := range ImpassibleTiles {
+		for _, t := range TilesImpassible {
 			if v.ID == t {
 				impassible = true
 			}

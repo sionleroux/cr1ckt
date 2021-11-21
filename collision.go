@@ -10,14 +10,17 @@ import (
 	"github.com/solarlune/ldtkgo"
 )
 
-// ImpassibleTiles is a list of tiles you can't pass through while jumping
-var ImpassibleTiles = []int{
+// TilesImpassible is a list of tiles you can't pass through while jumping
+var TilesImpassible = []int{
 	0, 1, 32, 64, 65, // Earth top
 	17, 21, 81, 85, // Water bank
 	128,                // Earth inner
 	194, 256, 260, 322, // Cave walls
 	// Slops excluded intentionally
 }
+
+// TilesWater is a list of tiles that should behave like water
+var TilesWater = []int{18, 19, 20, 82, 83, 84, 114, 145, 156, 146}
 
 // Collides checks whether the Cricket is colliding with a tile
 func Collides(g *Game) *ldtkgo.Tile {
