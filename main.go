@@ -126,7 +126,7 @@ func (g *Game) Update() error {
 		return nil
 	}
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyN) {
+	if DebugMode && inpututil.IsKeyJustPressed(ebiten.KeyN) {
 		g.Reset(g.Level + 1)
 	}
 
