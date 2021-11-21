@@ -26,14 +26,19 @@ func debug(screen *ebiten.Image, g *Game) {
 		state = "landing"
 	}
 
-	ebitenutil.DebugPrint(screen, fmt.Sprintf("p%v - v%v: %v [%v]\n%v/%v\nl:%d\n%v",
-		g.Cricket.Position,
-		g.Cricket.Velocity,
-		hitbox,
-		layer.TileAt(layer.ToGridPosition(g.Cricket.Position.X, g.Cricket.Position.Y)),
-		inpututil.KeyPressDuration(ebiten.KeySpace),
-		g.Cricket.PrimeDuration,
-		g.Level,
-		state,
-	))
+	ebitenutil.DebugPrint(screen,
+		fmt.Sprintf(`position%v - velocity%v: hitbox%v clip[%v]
+keypress:%v/%v
+level:%d
+anim:%v`,
+			g.Cricket.Position,
+			g.Cricket.Velocity,
+			hitbox,
+			layer.TileAt(layer.ToGridPosition(
+				g.Cricket.Position.X, g.Cricket.Position.Y)),
+			inpututil.KeyPressDuration(ebiten.KeySpace),
+			g.Cricket.PrimeDuration,
+			g.Level,
+			state,
+		))
 }
