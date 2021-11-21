@@ -8,6 +8,7 @@ import (
 	"embed"
 	"errors"
 	"image"
+	"image/color"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -283,6 +284,15 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	screen.DrawImage(g.Cricket.Image.SubImage(image.Rect(
 		g.Cricket.Frame*frameSize, 0, (1+g.Cricket.Frame)*frameSize, frameSize,
 	)).(*ebiten.Image), g.Cricket.Op)
+	for _, v := range g.LDTKProject.Levels[g.Level].Layers[LayerEntities].Entities {
+		if v.Identifier == "Exit" {
+			ebitenutil.DrawRect(screen,
+				float64(v.Position[0]), float64(v.Position[1]), // pos
+				16, 16, // size
+				color.RGBA{200, 50, 50, 200}, // colour
+			)
+		}
+	}
 
 	if DebugMode {
 		debug(screen, g)
