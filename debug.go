@@ -9,7 +9,11 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
+)
+
+var (
+	debugLastJumpStrength int = 0
+	debugNumberOfJumps    int = 0
 )
 
 func debug(screen *ebiten.Image, g *Game) {
@@ -29,6 +33,7 @@ func debug(screen *ebiten.Image, g *Game) {
 	ebitenutil.DebugPrint(screen,
 		fmt.Sprintf(`position%v - velocity%v: hitbox%v clip[%v]
 keypress:%v/%v
+jumps:%d
 level:%d
 anim:%v`,
 			g.Cricket.Position,
@@ -36,8 +41,9 @@ anim:%v`,
 			hitbox,
 			layer.TileAt(layer.ToGridPosition(
 				g.Cricket.Position.X, g.Cricket.Position.Y)),
-			inpututil.KeyPressDuration(ebiten.KeySpace),
+			debugLastJumpStrength,
 			g.Cricket.PrimeDuration,
+			debugNumberOfJumps,
 			g.Level,
 			state,
 		))

@@ -158,6 +158,8 @@ func (g *Game) Update() error {
 				}
 				g.Cricket.Jumping = true
 				g.Cricket.State = Jumping
+				debugNumberOfJumps++
+				debugLastJumpStrength = g.Cricket.PrimeDuration
 				g.Cricket.Velocity.Y = g.Cricket.PrimeDuration
 				g.Cricket.Velocity.X =
 					VelocityXMultiplier * g.Cricket.PrimeDuration * g.Cricket.Direction
