@@ -12,17 +12,11 @@ import (
 
 // ImpassibleTiles is a list of tiles you can't pass through while jumping
 var ImpassibleTiles = []int{
-	0,  // Earth top
-	1,  // Earth top slope right
-	2,  // Earth top slope left
-	3,  // Stone
-	10, // Water bank
-	11, // Water pool
-	12, // Water plant
-	13, // Water stone
-	32, // Earth middle
-	33, // Earth middle slope right
-	34, // Earth middle slope left
+	0, 1, 32, 64, 65, // Earth top
+	17, 21, 81, 85, // Water bank
+	128,                // Earth inner
+	194, 256, 260, 322, // Cave walls
+	// Slops excluded intentionally
 }
 
 // Collides checks whether the Cricket is colliding with a tile
