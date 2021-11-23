@@ -48,4 +48,12 @@ func Collides(g *Game) *ldtkgo.Tile {
 	return overlapsTiles(auto.AllTiles())
 }
 
-// XXX: impassible
+// Impassible checks whether a tile is impassible (true) or passible (false)
+func Impassible(tile *ldtkgo.Tile) bool {
+	for _, t := range TilesImpassible {
+		if tile.ID == t {
+			return true
+		}
+	}
+	return false
+}

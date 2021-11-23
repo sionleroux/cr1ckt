@@ -288,19 +288,13 @@ func (g *Game) Update() error {
 			log.Println("Found the exit, going to next level")
 			g.Reset(g.Level + 1)
 		}
-		impassible := false
-		for _, t := range TilesImpassible {
-			if v.ID == t {
-				impassible = true
-			}
-		}
 		if g.Cricket.Velocity.Y > 0 {
 			g.Cricket.Velocity.Y *= -1 // Invert on hit
 		} else {
 			g.Cricket.Jumping = false
 			g.Cricket.State = Idle
 		}
-		if impassible {
+		if Impassible(v) {
 			g.Cricket.Position = oldPos
 		}
 	}
