@@ -47,6 +47,13 @@ var MaxPrime int = 5
 // during playing the game or not
 var DebugMode bool = false
 
+const (
+	JumpPressNone int = iota
+	JumpPressLeft
+	JumpPressRight
+	JumpPressCancel
+)
+
 func main() {
 	gameWidth, gameHeight := 640, 480
 
@@ -83,6 +90,7 @@ type Game struct {
 	LDTKProject  *ldtkgo.Project
 	Level        int
 	Loading      bool
+	touchIDs     []ebiten.TouchID
 }
 
 // NewGame populates a default game object with game data
@@ -126,6 +134,7 @@ func (g *Game) Update() error {
 		return nil
 	}
 
+	// Skip to next level
 	if DebugMode && inpututil.IsKeyJustPressed(ebiten.KeyN) {
 		g.Reset(g.Level + 1)
 	}
@@ -133,20 +142,60 @@ func (g *Game) Update() error {
 	// Render map
 	g.TileRenderer.Render(g.LDTKProject.Levels[g.Level])
 
+	// Controls
+	var JumpPress = JumpPressNone
+	func() {
+		// Keyboard input
+		if ebiten.IsKeyPressed(ebiten.KeyA) && ebiten.IsKeyPressed(ebiten.KeyD) {
+			JumpPress = JumpPressCancel
+			return
+		}
+		if ebiten.IsKeyPressed(ebiten.KeyA) {
+			JumpPress = JumpPressLeft
+			return
+		}
+		if ebiten.IsKeyPressed(ebiten.KeyD) {
+			JumpPress = JumpPressRight
+			return
+		}
+
+		// Touch input
+		g.touchIDs = ebiten.AppendTouchIDs(g.touchIDs[:0])
+		if len(g.touchIDs) < 1 {
+			return
+		}
+		if len(g.touchIDs) > 2 {
+			JumpPress = JumpPressCancel
+			return
+		}
+		touchX, _ := ebiten.TouchPosition(g.touchIDs[0])
+		if touchX == 0 {
+			return
+		}
+		if touchX < g.Width/2 {
+			JumpPress = JumpPressLeft
+			return
+		}
+		if touchX >= g.Width/2 {
+			JumpPress = JumpPressRight
+			return
+		}
+	}()
+
 	// Jump
 	func() {
 		if !g.Cricket.Jumping {
 			// Why would you press both at once?
-			if ebiten.IsKeyPressed(ebiten.KeyA) && ebiten.IsKeyPressed(ebiten.KeyD) {
+			if JumpPress == JumpPressCancel {
 				g.Cricket.PrimeDuration = 0
 				return
 			}
-			if ebiten.IsKeyPressed(ebiten.KeyA) {
+			if JumpPress == JumpPressLeft {
 				g.Cricket.Direction = 1
 				g.Cricket.PrimeDuration++
 				return
 			}
-			if ebiten.IsKeyPressed(ebiten.KeyD) {
+			if JumpPress == JumpPressRight {
 				g.Cricket.Direction = -1
 				g.Cricket.PrimeDuration++
 				return
