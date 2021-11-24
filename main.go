@@ -60,7 +60,6 @@ func main() {
 
 	ebiten.SetWindowSize(gameWidth, gameHeight)
 	ebiten.SetWindowTitle("cr1ckt")
-	ebiten.SetCursorMode(ebiten.CursorModeHidden)
 
 	applyConfigs()
 
