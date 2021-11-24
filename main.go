@@ -354,7 +354,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	for b, _ := range g.blackness {
 		ebitenutil.DrawRect(screen,
 			float64(b.X*16), float64(b.Y*16),
-			float64(b.X*16+16), float64(b.Y*16+16),
+			16, 16,
 			color.Black,
 		)
 	}
