@@ -5,6 +5,7 @@ github.com/go-gl/glfw/v3.3/glfw v0.0.0-20210727001814-0db043d8d5be/go.mod h1:tQ2
 github.com/gofrs/flock v0.8.0/go.mod h1:F1TvTiK9OcQqauNUHlbJvyl9Qa1QvF/gOUDKA14jxHU=
 github.com/hajimehoshi/bitmapfont/v2 v2.1.3/go.mod h1:2BnYrkTQGThpr/CY6LorYtt/zEPNzvE/ND69CRTaHMs=
 github.com/hajimehoshi/ebiten/v2 v2.1.3/go.mod h1:mpAvpmTRbMdhQDZplZ4rfEogRhdsfAGTC0zLhxawKHY=
+github.com/hajimehoshi/ebiten/v2 v2.1.6/go.mod h1:jySpxHAruK+OxqSiU5+ga2OGvlQCIRNlKhDZTIyn9po=
 github.com/hajimehoshi/ebiten/v2 v2.2.1 h1:YhITMaBQmnwb4kzAXCCfSkSZmeQX7pfQ7BnC32cnPjc=
 github.com/hajimehoshi/ebiten/v2 v2.2.1/go.mod h1:olKl/qqhMBBAm2oI7Zy292nCtE+nitlmYKNF3UpbFn0=
 github.com/hajimehoshi/file2byteslice v0.0.0-20200812174855-0e5e8a80490e/go.mod h1:CqqAHp7Dk/AqQiwuhV1yT2334qbA/tFWQW0MD2dGqUE=
@@ -22,6 +23,8 @@ github.com/kr/pretty v0.2.1/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfn
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
 github.com/pkg/browser v0.0.0-20180916011732-0a3d74bf9ce4/go.mod h1:4OwLy04Bl9Ef3GJJCoec+30X3LQs/0/m4HFRt/2LUSA=
+github.com/scarycoffee/ebiten-camera v0.0.0-20210923210744-6c7a078928bf h1:V0fhEuVAzRzhUEVdd8A34P2OkAJ8EYLVWsBsht26yS8=
+github.com/scarycoffee/ebiten-camera v0.0.0-20210923210744-6c7a078928bf/go.mod h1:qkKNcxayrKRndoeskVJio6w49+zcllbrE/wfiMC0y44=
 github.com/solarlune/ldtkgo v0.8.2-0.20210720001006-2a37a6ad5dd5/go.mod h1:rpW/4FW9wOJR9JVpA67mbCfllBsg6ZvCFZnVtfokdFc=
 github.com/solarlune/ldtkgo v0.9.3 h1:pPgbO68AlhRzb9hynGoWxuZpYkmxmG0bjuFYpTdH9rQ=
 github.com/solarlune/ldtkgo v0.9.3/go.mod h1:rpW/4FW9wOJR9JVpA67mbCfllBsg6ZvCFZnVtfokdFc=

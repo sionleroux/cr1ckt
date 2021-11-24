@@ -15,6 +15,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	camera "github.com/scarycoffee/ebiten-camera"
 	"github.com/solarlune/ldtkgo"
 	renderer "github.com/solarlune/ldtkgo/ebitenrenderer"
 	"gopkg.in/ini.v1"
@@ -93,6 +94,7 @@ type Game struct {
 	touchIDs     []ebiten.TouchID
 	blackness    Blackness
 	bg           *ebiten.Image
+	cam          *camera.Camera
 }
 
 // NewGame populates a default game object with game data
@@ -112,6 +114,7 @@ func NewGame(game *Game) {
 	game.TileRenderer = ebitenRenderer
 	game.LDTKProject = ldtkProject
 	game.bg = loadImage("assets/background.png")
+	game.cam = camera.NewCamera(0, 0, 0, 1)
 	game.Cricket = NewCricket(game.EntityByIdentifier("Cricket").Position)
 	game.blackness = make(map[image.Point]bool)
 	game.Loading = false
@@ -217,6 +220,7 @@ func (g *Game) Update() error {
 				g.Cricket.Velocity.X =
 					VelocityXMultiplier * g.Cricket.PrimeDuration * g.Cricket.Direction
 				g.Cricket.PrimeDuration = 0
+				// XXX: crashes when jumping in water
 				g.blackness[image.Pt(
 					rand.Intn(g.LDTKProject.Levels[g.Level].Width/16),
 					rand.Intn(g.LDTKProject.Levels[g.Level].Height/16),
@@ -321,6 +325,12 @@ func (g *Game) Update() error {
 	// Position cricket
 	g.Cricket.Op.GeoM.Translate(float64(g.Cricket.Position.X), float64(g.Cricket.Position.Y))
 
+	// Position camera
+	g.cam.SetPosition(
+		float64(g.Cricket.Position.X),
+		float64(g.Cricket.Position.Y),
+	)
+
 	return nil
 }
 
@@ -331,24 +341,36 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		return
 	}
 
-	screen.Fill(g.LDTKProject.Levels[g.Level].BGColor)
-	screen.DrawImage(g.bg, &ebiten.DrawImageOptions{})
+	bg := ebiten.NewImage(
+		g.LDTKProject.Levels[g.Level].Width,
+		g.LDTKProject.Levels[g.Level].Height,
+	)
+	bg.Fill(g.LDTKProject.Levels[g.Level].BGColor)
+	bg.DrawImage(g.bg, &ebiten.DrawImageOptions{})
 	for _, layer := range g.TileRenderer.RenderedLayers {
-		screen.DrawImage(layer.Image, &ebiten.DrawImageOptions{})
+		bg.DrawImage(layer.Image, &ebiten.DrawImageOptions{})
 	}
-	frameSize := g.Cricket.Width
-	screen.DrawImage(g.Cricket.Image.SubImage(image.Rect(
-		g.Cricket.Frame*frameSize, 0, (1+g.Cricket.Frame)*frameSize, frameSize,
-	)).(*ebiten.Image), g.Cricket.Op)
 	for _, v := range g.LDTKProject.Levels[g.Level].Layers[LayerEntities].Entities {
 		if v.Identifier == "Exit" {
-			ebitenutil.DrawRect(screen,
+			ebitenutil.DrawRect(bg,
 				float64(v.Position[0]), float64(v.Position[1]), // pos
 				16, 16, // size
 				color.RGBA{200, 50, 50, 200}, // colour
 			)
 		}
 	}
+
+	g.cam.Surface.Clear()
+	g.cam.Surface.DrawImage(bg, g.cam.GetTranslation(0, 0))
+
+	frameSize := g.Cricket.Width
+	g.cam.Surface.DrawImage(g.Cricket.Image.SubImage(image.Rect(
+		g.Cricket.Frame*frameSize, 0, (1+g.Cricket.Frame)*frameSize, frameSize,
+	)).(*ebiten.Image), g.cam.GetTranslation(
+		float64(g.Cricket.Position.X), float64(g.Cricket.Position.Y),
+	))
+
+	g.cam.Blit(screen)
 
 	for b, _ := range g.blackness {
 		ebitenutil.DrawRect(screen,
