@@ -56,7 +56,7 @@ const (
 )
 
 func main() {
-	gameWidth, gameHeight := 1440, 1440
+	gameWidth, gameHeight := 640, 480
 
 	ebiten.SetWindowSize(gameWidth, gameHeight)
 	ebiten.SetWindowTitle("cr1ckt")
