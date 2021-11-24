@@ -10,6 +10,7 @@ import (
 	"image"
 	"image/color"
 	"log"
+	"math/rand"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -91,6 +92,7 @@ type Game struct {
 	Level        int
 	Loading      bool
 	touchIDs     []ebiten.TouchID
+	blackness    Blackness
 }
 
 // NewGame populates a default game object with game data
@@ -110,6 +112,7 @@ func NewGame(game *Game) {
 	game.TileRenderer = ebitenRenderer
 	game.LDTKProject = ldtkProject
 	game.Cricket = NewCricket(game.EntityByIdentifier("Cricket").Position)
+	game.blackness = make(map[image.Point]bool)
 	game.Loading = false
 }
 
@@ -213,6 +216,10 @@ func (g *Game) Update() error {
 				g.Cricket.Velocity.X =
 					VelocityXMultiplier * g.Cricket.PrimeDuration * g.Cricket.Direction
 				g.Cricket.PrimeDuration = 0
+				g.blackness[image.Pt(
+					rand.Intn(g.LDTKProject.Levels[g.Level].Width/16),
+					rand.Intn(g.LDTKProject.Levels[g.Level].Height/16),
+				)] = true
 			}
 		}
 	}()
@@ -341,6 +348,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		}
 	}
 
+	for b, _ := range g.blackness {
+		ebitenutil.DrawRect(screen,
+			float64(b.X*16), float64(b.Y*16),
+			float64(b.X*16+16), float64(b.Y*16+16),
+			color.Black,
+		)
+	}
+
 	if DebugMode {
 		debug(screen, g)
 	}
@@ -357,6 +372,7 @@ func (g *Game) Reset(level int) {
 	g.Level = (level) % len(g.LDTKProject.Levels)
 	log.Println("Switching to Level", g.Level)
 	g.Cricket = NewCricket(g.EntityByIdentifier("Cricket").Position)
+	g.blackness = nil
 }
 
 // EntityByIdentifier is a convenience function for the same thing in ldtkgo but
@@ -443,4 +459,11 @@ func applyConfigs() {
 		MaxPrime, _ = cfg.Section("").Key("MaxPrime").Int()
 		DebugMode, _ = cfg.Section("").Key("DebugMode").Bool()
 	}
+}
+
+type Blackness map[image.Point]bool
+
+func (b Blackness) Has(v image.Point) bool {
+	_, ok := b[v]
+	return ok
 }
