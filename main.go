@@ -93,6 +93,7 @@ type Game struct {
 	Loading      bool
 	touchIDs     []ebiten.TouchID
 	blackness    Blackness
+	bg           *ebiten.Image
 }
 
 // NewGame populates a default game object with game data
@@ -111,6 +112,7 @@ func NewGame(game *Game) {
 	}
 	game.TileRenderer = ebitenRenderer
 	game.LDTKProject = ldtkProject
+	game.bg = loadImage("assets/background.png")
 	game.Cricket = NewCricket(game.EntityByIdentifier("Cricket").Position)
 	game.blackness = make(map[image.Point]bool)
 	game.Loading = false
@@ -331,6 +333,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	}
 
 	screen.Fill(g.LDTKProject.Levels[g.Level].BGColor)
+	screen.DrawImage(g.bg, &ebiten.DrawImageOptions{})
 	for _, layer := range g.TileRenderer.RenderedLayers {
 		screen.DrawImage(layer.Image, &ebiten.DrawImageOptions{})
 	}
