@@ -321,8 +321,6 @@ func (g *Game) Update() error {
 	if g.Cricket.Direction > 0 {
 		g.Cricket.Op.GeoM.Translate(float64(g.Cricket.Width), 0)
 	}
-	// Position cricket
-	g.Cricket.Op.GeoM.Translate(float64(g.Cricket.Position.X), float64(g.Cricket.Position.Y))
 
 	// Position camera
 	g.cam.SetPosition(
@@ -363,11 +361,12 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	g.cam.Surface.DrawImage(bg, g.cam.GetTranslation(0, 0))
 
 	frameSize := g.Cricket.Width
+	g.Cricket.Op.GeoM.Concat(g.cam.GetTranslation(
+		float64(g.Cricket.Position.X), float64(g.Cricket.Position.Y),
+	).GeoM)
 	g.cam.Surface.DrawImage(g.Cricket.Image.SubImage(image.Rect(
 		g.Cricket.Frame*frameSize, 0, (1+g.Cricket.Frame)*frameSize, frameSize,
-	)).(*ebiten.Image), g.cam.GetTranslation(
-		float64(g.Cricket.Position.X), float64(g.Cricket.Position.Y),
-	))
+	)).(*ebiten.Image), g.Cricket.Op)
 
 	g.cam.Blit(screen)
 
