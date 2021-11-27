@@ -326,8 +326,8 @@ func (g *Game) Update() error {
 
 	// Position camera
 	g.cam.SetPosition(
-		float64(g.Cricket.Position.X),
-		float64(g.Cricket.Position.Y),
+		float64(g.Cricket.Position.X+g.Cricket.Width/2),
+		float64(g.Cricket.Position.Y+g.Cricket.Image.Bounds().Dy()/2),
 	)
 
 	return nil
