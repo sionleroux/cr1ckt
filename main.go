@@ -220,7 +220,6 @@ func (g *Game) Update() error {
 				g.Cricket.Velocity.X =
 					VelocityXMultiplier * g.Cricket.PrimeDuration * g.Cricket.Direction
 				g.Cricket.PrimeDuration = 0
-				// XXX: crashes when jumping in water
 				g.blackness[image.Pt(
 					rand.Intn(g.LDTKProject.Levels[g.Level].Width/16),
 					rand.Intn(g.LDTKProject.Levels[g.Level].Height/16),
@@ -396,7 +395,7 @@ func (g *Game) Reset(level int) {
 	g.Level = (level) % len(g.LDTKProject.Levels)
 	log.Println("Switching to Level", g.Level)
 	g.Cricket = NewCricket(g.EntityByIdentifier("Cricket").Position)
-	g.blackness = nil
+	g.blackness = make(map[image.Point]bool)
 }
 
 // EntityByIdentifier is a convenience function for the same thing in ldtkgo but
