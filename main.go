@@ -287,6 +287,7 @@ func (g *Game) Update() error {
 			if v.ID == w {
 				log.Println("Hit water, restarting level")
 				g.Reset(g.Level)
+				return nil
 			}
 		}
 		tiles := g.LDTKProject.Levels[g.Level].Layers[LayerTile]
@@ -298,6 +299,7 @@ func (g *Game) Update() error {
 		if exitbox.Overlaps(g.Cricket.Hitbox()) {
 			log.Println("Found the exit, going to next level")
 			g.Reset(g.Level + 1)
+			return nil
 		}
 		if g.Cricket.Velocity.Y > 0 {
 			g.Cricket.Velocity.Y *= -1 // Invert on hit
