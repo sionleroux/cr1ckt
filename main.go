@@ -396,6 +396,7 @@ func (g *Game) Reset(level int) {
 	log.Println("Switching to Level", g.Level)
 	g.Cricket = NewCricket(g.EntityByIdentifier("Cricket").Position)
 	g.blackness = make(map[image.Point]bool)
+	debugNumberOfJumps = 0
 }
 
 // EntityByIdentifier is a convenience function for the same thing in ldtkgo but
