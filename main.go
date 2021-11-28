@@ -118,7 +118,21 @@ func NewGame(game *Game) {
 	}
 	game.TileRenderer = ebitenRenderer
 	game.LDTKProject = ldtkProject
-	game.bg = loadImage("assets/background.png")
+	game.bg = ebiten.NewImage(
+		game.LDTKProject.Levels[game.Level].Width,
+		game.LDTKProject.Levels[game.Level].Height,
+	)
+	game.bg.Fill(game.LDTKProject.Levels[game.Level].BGColor)
+	game.bg.DrawImage(loadImage("assets/background.png"), &ebiten.DrawImageOptions{})
+	for _, v := range game.LDTKProject.Levels[game.Level].Layers[LayerEntities].Entities {
+		if v.Identifier == "Exit" {
+			ebitenutil.DrawRect(game.bg,
+				float64(v.Position[0]), float64(v.Position[1]), // pos
+				16, 16, // size
+				color.RGBA{200, 50, 50, 200}, // colour
+			)
+		}
+	}
 	game.cam = camera.NewCamera(0, 0, 0, 1, image.Pt(game.Width, game.Height))
 	game.Cricket = NewCricket(game.EntityByIdentifier("Cricket").Position)
 	game.blackness = make(map[image.Point]bool)
@@ -367,27 +381,12 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		return
 	}
 
-	bg := ebiten.NewImage(
-		g.LDTKProject.Levels[g.Level].Width,
-		g.LDTKProject.Levels[g.Level].Height,
-	)
-	bg.Fill(g.LDTKProject.Levels[g.Level].BGColor)
-	bg.DrawImage(g.bg, &ebiten.DrawImageOptions{})
-	for _, layer := range g.TileRenderer.RenderedLayers {
-		bg.DrawImage(layer.Image, &ebiten.DrawImageOptions{})
-	}
-	for _, v := range g.LDTKProject.Levels[g.Level].Layers[LayerEntities].Entities {
-		if v.Identifier == "Exit" {
-			ebitenutil.DrawRect(bg,
-				float64(v.Position[0]), float64(v.Position[1]), // pos
-				16, 16, // size
-				color.RGBA{200, 50, 50, 200}, // colour
-			)
-		}
-	}
-
 	g.cam.Surface.Clear()
-	g.cam.Surface.DrawImage(bg, g.cam.GetTranslation(0, 0))
+	g.cam.Surface.DrawImage(g.bg, g.cam.GetTranslation(0, 0))
+
+	for _, layer := range g.TileRenderer.RenderedLayers {
+		g.bg.DrawImage(layer.Image, &ebiten.DrawImageOptions{})
+	}
 
 	frameSize := g.Cricket.Width
 	g.Cricket.Op.GeoM.Concat(g.cam.GetTranslation(
@@ -424,6 +423,10 @@ func (g *Game) Reset(level int) {
 	log.Println("Switching to Level", g.Level)
 	g.Cricket = NewCricket(g.EntityByIdentifier("Cricket").Position)
 	g.blackness = make(map[image.Point]bool)
+	g.bg = ebiten.NewImage(
+		g.LDTKProject.Levels[g.Level].Width,
+		g.LDTKProject.Levels[g.Level].Height,
+	)
 	debugNumberOfJumps = 0
 }
 
