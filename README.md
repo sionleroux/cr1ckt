@@ -6,7 +6,7 @@ You may be interested in help for [game testers](#for-game-testers), for [level 
 
 Bugs in this game might be there intentionally...
 
-![Screenshot of actual gameplay](screenshot.png)
+![Screenshot of actual gameplay](artwork/screenshot.png)
 
 ## For game testers
 
