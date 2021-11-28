@@ -27,25 +27,25 @@ func Collides(g *Game) *ldtkgo.Tile {
 	level := g.LDTKProject.Levels[g.Level]
 	tiles := level.Layers[LayerTile]
 	auto := level.Layers[LayerAuto]
-
-	// This inner function is a workaround because we need to loop through both
-	// Tiles and AutoTiles in exactly the same way
-	overlapsTiles := func(ts []*ldtkgo.Tile) *ldtkgo.Tile {
-		for _, v := range ts {
-			if v != nil && image.Rect(
-				v.Position[0], v.Position[1],
-				v.Position[0]+tiles.GridSize, v.Position[1]+tiles.GridSize,
-			).Overlaps(g.Cricket.Hitbox()) {
-				return v
-			}
-		}
-		return nil
-	}
-
-	if c := overlapsTiles(tiles.AllTiles()); c != nil {
+	hitbox := g.Cricket.Hitbox()
+	if c := OverlapsTiles(tiles.AllTiles(), hitbox, tiles.GridSize); c != nil {
 		return c
 	}
-	return overlapsTiles(auto.AllTiles())
+	return OverlapsTiles(auto.AllTiles(), hitbox, tiles.GridSize)
+}
+
+// This inner function is a workaround because we need to loop through both
+// Tiles and AutoTiles in exactly the same way
+func OverlapsTiles(ts []*ldtkgo.Tile, hitbox image.Rectangle, gridSize int) *ldtkgo.Tile {
+	for _, v := range ts {
+		if v != nil && image.Rect(
+			v.Position[0], v.Position[1],
+			v.Position[0]+gridSize, v.Position[1]+gridSize,
+		).Overlaps(hitbox) {
+			return v
+		}
+	}
+	return nil
 }
 
 // Impassible checks whether a tile is impassible (true) or passible (false)
