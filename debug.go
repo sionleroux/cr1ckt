@@ -31,11 +31,13 @@ func debug(screen *ebiten.Image, g *Game) {
 	}
 
 	ebitenutil.DebugPrint(screen,
-		fmt.Sprintf(`position%v - velocity%v: hitbox%v clip[%v]
+		fmt.Sprintf(`fps:%3.0f
+position%v - velocity%v: hitbox%v clip[%v]
 keypress:%v/%v
 jumps:%d
 level:%d
 anim:%v`,
+			ebiten.CurrentFPS(),
 			g.Cricket.Position,
 			g.Cricket.Velocity,
 			hitbox,
