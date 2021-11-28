@@ -276,7 +276,7 @@ func (g *Game) Update() error {
 		if g.Cricket.Position.X < 0 {
 			g.Cricket.Position.X = 0
 		}
-		if g.Cricket.Position.X+g.Cricket.Width > g.Width {
+		if g.Cricket.Position.X+g.Cricket.Width > g.LDTKProject.Levels[g.Level].Width {
 			g.Cricket.Position.X = g.Width - g.Cricket.Width
 		}
 		g.Cricket.Position.Y = g.Cricket.Position.Y - g.Cricket.Velocity.Y
