@@ -326,10 +326,29 @@ func (g *Game) Update() error {
 	}
 
 	// Position camera
-	g.cam.SetPosition(
-		float64(g.Cricket.Position.X+g.Cricket.Width/2),
-		float64(g.Cricket.Position.Y+g.Cricket.Image.Bounds().Dy()/2),
-	)
+	camX, camY := 0, 0
+	// Clamp the Camera to the Map dimensions
+	// Surely there is an easier way to do this with maths... ಠ_ಠ
+	func() {
+		level := g.LDTKProject.Levels[g.Level]
+		cpos := g.Cricket.Position
+		cpos.X, cpos.Y = cpos.X+g.Cricket.Width/2, cpos.Y+g.Cricket.Image.Bounds().Dy()
+		if cpos.X-g.Width/2 < 0 {
+			camX = g.Width / 2
+		} else if cpos.X+g.Width/2 > level.Width {
+			camX = level.Width - g.Width/2
+		} else {
+			camX = cpos.X
+		}
+		if cpos.Y-g.Height/2 < 0 {
+			camY = g.Height / 2
+		} else if cpos.Y+g.Height/2 > level.Height {
+			camY = level.Height - g.Height/2
+		} else {
+			camY = cpos.Y
+		}
+	}()
+	g.cam.SetPosition(float64(camX), float64(camY))
 
 	return nil
 }
