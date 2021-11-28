@@ -1,4 +1,5 @@
 VelocityDenominator = 10    ; the bigger this is, the longer you have to hold jump to reach the next level of "jump strength" aka priming
 VelocityXMultiplier = 2     ; how many times further it should move sideways than up when jumping
 MaxPrime            = 5     ; should have been called max level of jump strength
+MinPrime            = 2     ; minimum jump strength even if you just tap it
 DebugMode           = false ; sets whether to display additional debugging info on the screen during playing the game or not

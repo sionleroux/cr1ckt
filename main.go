@@ -42,6 +42,10 @@ var VelocityDenominator int = 10
 // velocity for the X axis, it's usually bigger
 var VelocityXMultiplier int = 2
 
+// MinPrime is the minimum jump level (after division) you can prime the cricket
+// to jump for, it ensures you jump somewhat even just for a short tap
+var MinPrime int = 2
+
 // MaxPrime is the maximum jump level (after division) you can prime the cricket
 // to jump for, it avoids you jumping off the screen
 var MaxPrime int = 5
@@ -212,6 +216,9 @@ func (g *Game) Update() error {
 				g.Cricket.PrimeDuration /= VelocityDenominator
 				if g.Cricket.PrimeDuration > MaxPrime {
 					g.Cricket.PrimeDuration = MaxPrime
+				}
+				if g.Cricket.PrimeDuration < MinPrime {
+					g.Cricket.PrimeDuration = MinPrime
 				}
 				g.Cricket.Jumping = true
 				g.Cricket.State = Jumping
@@ -502,6 +509,7 @@ func applyConfigs() {
 		VelocityDenominator, _ = cfg.Section("").Key("VelocityDenominator").Int()
 		VelocityXMultiplier, _ = cfg.Section("").Key("VelocityXMultiplier").Int()
 		MaxPrime, _ = cfg.Section("").Key("MaxPrime").Int()
+		MinPrime, _ = cfg.Section("").Key("MinPrime").Int()
 		DebugMode, _ = cfg.Section("").Key("DebugMode").Bool()
 	}
 }
