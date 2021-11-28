@@ -12,10 +12,11 @@ import (
 	"log"
 	"math/rand"
 
+	camera "github.com/sinisterstuf/cr1ckt/camera"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
-	camera "github.com/scarycoffee/ebiten-camera"
 	"github.com/solarlune/ldtkgo"
 	renderer "github.com/solarlune/ldtkgo/ebitenrenderer"
 	"gopkg.in/ini.v1"
@@ -114,7 +115,7 @@ func NewGame(game *Game) {
 	game.TileRenderer = ebitenRenderer
 	game.LDTKProject = ldtkProject
 	game.bg = loadImage("assets/background.png")
-	game.cam = camera.NewCamera(0, 0, 0, 1)
+	game.cam = camera.NewCamera(0, 0, 0, 1, image.Pt(game.Width, game.Height))
 	game.Cricket = NewCricket(game.EntityByIdentifier("Cricket").Position)
 	game.blackness = make(map[image.Point]bool)
 	game.Loading = false
