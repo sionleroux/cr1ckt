@@ -479,13 +479,13 @@
 					"entityInstances": [
 						{
 							"__identifier": "Cricket",
-							"__grid": [3,86],
+							"__grid": [3,83],
 							"__pivot": [0,0],
 							"__tile": null,
 							"width": 32,
 							"height": 32,
 							"defUid": 31,
-							"px": [48,1376],
+							"px": [48,1328],
 							"fieldInstances": []
 						},
 						{
