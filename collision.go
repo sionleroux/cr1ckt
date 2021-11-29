@@ -27,6 +27,7 @@ var TileSquishy = []int{
 	9, 41, 73, // Rocks
 	13, 45, 77, // Flowers
 	15, 47, 79, // Mushrooms
+	19, 20, // Floating in water
 }
 
 // Collides checks whether the Cricket is colliding with a tile
