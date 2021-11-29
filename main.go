@@ -151,6 +151,11 @@ func (g *Game) Update() error {
 		g.Reset(g.Level + 1)
 	}
 
+	// Reset jump counter
+	if DebugMode && inpututil.IsKeyJustPressed(ebiten.KeyR) {
+		debugNumberOfJumps = 0
+	}
+
 	// Render map
 	g.TileRenderer.Render(g.LDTKProject.Levels[g.Level])
 
