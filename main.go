@@ -55,6 +55,9 @@ var MaxPrime int = 5
 // during playing the game or not
 var DebugMode bool = false
 
+// Double the amount of blackness that occurs after this many jumps
+var BlacknessFactor int = 10
+
 const (
 	JumpPressNone int = iota
 	JumpPressLeft
@@ -100,6 +103,7 @@ type Game struct {
 	Loading      bool
 	touchIDs     []ebiten.TouchID
 	blackness    Blackness
+	blackFactor  int
 	bg           *ebiten.Image
 	cam          *camera.Camera
 }
@@ -235,10 +239,13 @@ func (g *Game) Update() error {
 				g.Cricket.Velocity.X =
 					VelocityXMultiplier * g.Cricket.PrimeDuration * g.Cricket.Direction
 				g.Cricket.PrimeDuration = 0
-				g.blackness[image.Pt(
-					rand.Intn(g.Width/16),
-					rand.Intn(g.Height/16),
-				)] = true
+				g.blackFactor = debugNumberOfJumps / BlacknessFactor
+				for i := 0; i < 2^g.blackFactor; i++ {
+					g.blackness[image.Pt(
+						rand.Intn(g.Width/16),
+						rand.Intn(g.Height/16),
+					)] = true
+				}
 			}
 		}
 	}()
