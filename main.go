@@ -315,6 +315,14 @@ func (g *Game) Update() error {
 			g.Cricket.Jumping = false
 			g.Cricket.State = Idle
 		}
+		// Hop onto squishy
+		if Squishy(v) {
+			g.Cricket.Position = image.Pt(
+				v.Position[0]+16/2-g.Cricket.Width/2,
+				v.Position[1]-g.Cricket.Image.Bounds().Dy(),
+			)
+		}
+		// Collide into impassible
 		if Impassible(v) {
 			g.Cricket.Position = oldPos
 		}
