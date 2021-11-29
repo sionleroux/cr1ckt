@@ -17,6 +17,16 @@ func TestImpassible(t *testing.T) {
 	}
 }
 
+func TestSquishy(t *testing.T) {
+	IdMushroom, IdEarth := 15, 0
+	if !Squishy(&ldtkgo.Tile{ID: IdMushroom}) {
+		t.Error("Mushroom should be squishy")
+	}
+	if Squishy(&ldtkgo.Tile{ID: IdEarth}) {
+		t.Error("Earth should be hard")
+	}
+}
+
 // rect16 returns a 16x16 rectangle at the given coordinates
 func rect16(x, y int) image.Rectangle {
 	p := image.Pt(x, y)

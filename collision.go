@@ -22,6 +22,13 @@ var TilesImpassible = []int{
 // TilesWater is a list of tiles that should behave like water
 var TilesWater = []int{18, 19, 20, 82, 83, 84, 114, 145, 156, 146}
 
+// TileSquishy is a list of tiles you should move on top of when you them
+var TileSquishy = []int{
+	9, 41, 73, // Rocks
+	13, 45, 77, // Flowers
+	15, 47, 79, // Mushrooms
+}
+
 // Collides checks whether the Cricket is colliding with a tile
 func Collides(g *Game) *ldtkgo.Tile {
 	level := g.LDTKProject.Levels[g.Level]
@@ -51,6 +58,16 @@ func OverlapsTiles(ts []*ldtkgo.Tile, hitbox image.Rectangle, gridSize int) *ldt
 // Impassible checks whether a tile is impassible (true) or passible (false)
 func Impassible(tile *ldtkgo.Tile) bool {
 	for _, t := range TilesImpassible {
+		if tile.ID == t {
+			return true
+		}
+	}
+	return false
+}
+
+// Squishy checks whether a tile is squishy (true) or hard (false)
+func Squishy(tile *ldtkgo.Tile) bool {
+	for _, t := range TileSquishy {
 		if tile.ID == t {
 			return true
 		}
