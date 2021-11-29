@@ -11,6 +11,7 @@ import (
 	"image/color"
 	"log"
 	"math/rand"
+	"time"
 
 	camera "github.com/sinisterstuf/cr1ckt/camera"
 
@@ -67,6 +68,7 @@ func main() {
 	ebiten.SetWindowSize(gameWidth, gameHeight)
 	ebiten.SetWindowTitle("cr1ckt")
 
+	rand.Seed(time.Now().UnixNano())
 	applyConfigs()
 
 	game := &Game{
