@@ -229,8 +229,8 @@ func (g *Game) Update() error {
 					VelocityXMultiplier * g.Cricket.PrimeDuration * g.Cricket.Direction
 				g.Cricket.PrimeDuration = 0
 				g.blackness[image.Pt(
-					rand.Intn(g.LDTKProject.Levels[g.Level].Width/16),
-					rand.Intn(g.LDTKProject.Levels[g.Level].Height/16),
+					rand.Intn(g.Width/16),
+					rand.Intn(g.Height/16),
 				)] = true
 			}
 		}
