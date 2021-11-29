@@ -44,7 +44,7 @@ var VelocityXMultiplier int = 2
 
 // MinPrime is the minimum jump level (after division) you can prime the cricket
 // to jump for, it ensures you jump somewhat even just for a short tap
-var MinPrime int = 2
+var MinPrime int = 1
 
 // MaxPrime is the maximum jump level (after division) you can prime the cricket
 // to jump for, it avoids you jumping off the screen
