@@ -384,15 +384,6 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	for _, layer := range g.TileRenderer.RenderedLayers {
 		bg.DrawImage(layer.Image, &ebiten.DrawImageOptions{})
 	}
-	for _, v := range g.LDTKProject.Levels[g.Level].Layers[LayerEntities].Entities {
-		if v.Identifier == "Exit" {
-			ebitenutil.DrawRect(bg,
-				float64(v.Position[0]), float64(v.Position[1]), // pos
-				16, 16, // size
-				color.RGBA{200, 50, 50, 200}, // colour
-			)
-		}
-	}
 
 	g.cam.Surface.Clear()
 	g.cam.Surface.DrawImage(bg, g.cam.GetTranslation(0, 0))
