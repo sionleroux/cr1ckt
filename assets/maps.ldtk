@@ -445,7 +445,7 @@
 			"__bgColor": "#696A79",
 			"bgColor": null,
 			"useAutoIdentifier": true,
-			"bgRelPath": "../Background.png",
+			"bgRelPath": "background.png",
 			"bgPos": "Cover",
 			"bgPivotX": 0.5,
 			"bgPivotY": 0.5,
