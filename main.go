@@ -16,6 +16,8 @@ import (
 	camera "github.com/sinisterstuf/cr1ckt/camera"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/audio"
+	"github.com/hajimehoshi/ebiten/v2/audio/mp3"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/solarlune/ldtkgo"
@@ -128,6 +130,24 @@ func NewGame(game *Game) {
 	game.cam = camera.NewCamera(0, 0, 0, 1, image.Pt(game.Width, game.Height))
 	game.Cricket = NewCricket(game.EntityByIdentifier("Cricket").Position)
 	game.blackness = make(map[image.Point]bool)
+
+	// Music
+	sampleRate := 48000
+	musicName := "assets/Robbero_-_Sad_Night.mp3"
+	audioConext := audio.NewContext(sampleRate)
+	musicFile := loadSoundFile(musicName, audioConext)
+	music, err := mp3.DecodeWithSampleRate(sampleRate, musicFile)
+	if err != nil {
+		log.Fatalf("error decoding file %s as MP3: %v\n", musicName, err)
+	}
+	musicLoop := audio.NewInfiniteLoop(music, music.Length())
+	musicPlayer, err := audio.NewPlayer(audioConext, musicLoop)
+	if err != nil {
+		log.Fatalf("error making music player: %v\n", err)
+	}
+	musicPlayer.SetVolume(0.5)
+	musicPlayer.Play()
+
 	game.Loading = false
 }
 

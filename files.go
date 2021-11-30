@@ -6,11 +6,13 @@ package main
 
 import (
 	"image/png"
+	"io/fs"
 	"io/ioutil"
 	"log"
 	"path"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/solarlune/ldtkgo"
 )
 
@@ -64,4 +66,14 @@ type EmbedLoader struct {
 // LoadTileset loads an LDtk tileset image from the embedded FS
 func (l *EmbedLoader) LoadTileset(tileSetPath string) *ebiten.Image {
 	return loadImage(path.Join(l.BasePath, tileSetPath))
+}
+
+func loadSoundFile(name string, context *audio.Context) fs.File {
+	log.Printf("loading %s\n", name)
+
+	file, err := assets.Open(name)
+	if err != nil {
+		log.Fatalf("error opening file %s: %v\n", name, err)
+	}
+	return file
 }
