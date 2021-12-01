@@ -112,7 +112,8 @@ type Game struct {
 	bg, fruit    *ebiten.Image
 	cam          *camera.Camera
 	win          bool
-	fontFace     font.Face
+	fontBig      font.Face
+	fontSmall    font.Face
 }
 
 // NewGame populates a default game object with game data
@@ -136,7 +137,8 @@ func NewGame(game *Game) {
 	game.cam = camera.NewCamera(0, 0, 0, 1, image.Pt(game.Width, game.Height))
 	game.Cricket = NewCricket(game.EntityByIdentifier("Cricket").Position)
 	game.blackness = make(map[image.Point]bool)
-	game.fontFace = loadFont()
+	game.fontBig = loadFont(32)
+	game.fontSmall = loadFont(16)
 
 	// Music
 	sampleRate := 48000
@@ -436,14 +438,37 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	if g.win {
 		txt := "YOU WIN!"
-		txtF, _ := font.BoundString(g.fontFace, txt)
+		txtF, _ := font.BoundString(g.fontBig, txt)
 		txtW := (txtF.Max.X - txtF.Min.X).Ceil() / 2
 		txtH := (txtF.Max.Y - txtF.Min.Y).Ceil() * 2
-		text.Draw(screen, txt, g.fontFace, g.Width/2-txtW, txtH, color.White)
+		text.Draw(screen, txt, g.fontBig, g.Width/2-txtW, txtH, color.White)
+
 		txt = fmt.Sprintf("%d JUMPS", debugNumberOfJumps)
-		txtF, _ = font.BoundString(g.fontFace, txt)
+		txtF, _ = font.BoundString(g.fontBig, txt)
 		txtW = (txtF.Max.X - txtF.Min.X).Ceil() / 2
-		text.Draw(screen, txt, g.fontFace, g.Width/2-txtW, txtH*2, color.White)
+		text.Draw(screen, txt, g.fontBig, g.Width/2-txtW, txtH*2, color.White)
+
+		txt = "Programmer: Siôn le Roux"
+		txtF, _ = font.BoundString(g.fontSmall, txt)
+		txtW = (txtF.Max.X - txtF.Min.X).Ceil() / 2
+		txtH = (txtF.Max.Y - txtF.Min.Y).Ceil() * 2
+		text.Draw(screen, txt, g.fontSmall, g.Width/2-txtW, txtH*8, color.White)
+
+		txt = "Designer: Tristan le Roux"
+		txtF, _ = font.BoundString(g.fontSmall, txt)
+		txtW = (txtF.Max.X - txtF.Min.X).Ceil() / 2
+		text.Draw(screen, txt, g.fontSmall, g.Width/2-txtW, txtH*9, color.White)
+
+		txt = "Artist: Rowan Lindeque"
+		txtF, _ = font.BoundString(g.fontSmall, txt)
+		txtW = (txtF.Max.X - txtF.Min.X).Ceil() / 2
+		text.Draw(screen, txt, g.fontSmall, g.Width/2-txtW, txtH*10, color.White)
+
+		txt = "Music: Sad Night - Robbero ©2021 CC-BY"
+		txtF, _ = font.BoundString(g.fontSmall, txt)
+		txtW = (txtF.Max.X - txtF.Min.X).Ceil() / 2
+		text.Draw(screen, txt, g.fontSmall, g.Width/2-txtW, txtH*12, color.White)
+
 		return
 	}
 

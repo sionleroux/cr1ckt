@@ -81,13 +81,13 @@ func loadSoundFile(name string, context *audio.Context) fs.File {
 	return file
 }
 
-func loadFont() font.Face {
+func loadFont(size int) font.Face {
 	fontdata, err := opentype.Parse(fonts.PressStart2P_ttf)
 	if err != nil {
 		log.Fatal(err)
 	}
 	fontface, err := opentype.NewFace(fontdata, &opentype.FaceOptions{
-		Size:    32,
+		Size:    float64(size),
 		DPI:     72,
 		Hinting: font.HintingFull,
 	})
