@@ -13,7 +13,10 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/audio"
+	"github.com/hajimehoshi/ebiten/v2/examples/resources/fonts"
 	"github.com/solarlune/ldtkgo"
+	"golang.org/x/image/font"
+	"golang.org/x/image/font/opentype"
 )
 
 // Load an project from embedded FS into an LDtk Project object
@@ -76,4 +79,20 @@ func loadSoundFile(name string, context *audio.Context) fs.File {
 		log.Fatalf("error opening file %s: %v\n", name, err)
 	}
 	return file
+}
+
+func loadFont() font.Face {
+	fontdata, err := opentype.Parse(fonts.PressStart2P_ttf)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fontface, err := opentype.NewFace(fontdata, &opentype.FaceOptions{
+		Size:    32,
+		DPI:     72,
+		Hinting: font.HintingFull,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	return fontface
 }

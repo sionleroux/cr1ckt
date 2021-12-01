@@ -14,12 +14,14 @@ import (
 	"time"
 
 	camera "github.com/sinisterstuf/cr1ckt/camera"
+	"golang.org/x/image/font"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/hajimehoshi/ebiten/v2/audio/mp3"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/text"
 	"github.com/solarlune/ldtkgo"
 	renderer "github.com/solarlune/ldtkgo/ebitenrenderer"
 	"gopkg.in/ini.v1"
@@ -108,6 +110,8 @@ type Game struct {
 	blackFactor  int
 	bg, fruit    *ebiten.Image
 	cam          *camera.Camera
+	win          bool
+	fontFace     font.Face
 }
 
 // NewGame populates a default game object with game data
@@ -131,6 +135,7 @@ func NewGame(game *Game) {
 	game.cam = camera.NewCamera(0, 0, 0, 1, image.Pt(game.Width, game.Height))
 	game.Cricket = NewCricket(game.EntityByIdentifier("Cricket").Position)
 	game.blackness = make(map[image.Point]bool)
+	game.fontFace = loadFont()
 
 	// Music
 	sampleRate := 48000
@@ -173,9 +178,15 @@ func (g *Game) Update() error {
 		return nil
 	}
 
+	// No more input when you've won
+	if g.win {
+		return nil
+	}
+
 	// Skip to next level
 	if DebugMode && inpututil.IsKeyJustPressed(ebiten.KeyN) {
 		g.Reset(g.Level + 1)
+		g.win = true
 	}
 
 	// Reset jump counter
@@ -352,8 +363,8 @@ func (g *Game) Update() error {
 			exit.Position[0]+tiles.GridSize, exit.Position[1]+tiles.GridSize,
 		)
 		if exitbox.Overlaps(g.Cricket.Hitbox()) {
-			log.Println("Found the exit, going to next level")
-			g.Reset(g.Level + 1)
+			log.Println("Found the exit, you win!")
+			g.win = true
 			return nil
 		}
 		if g.Cricket.Velocity.Y > 0 {
@@ -419,6 +430,15 @@ func (g *Game) Update() error {
 func (g *Game) Draw(screen *ebiten.Image) {
 	if g.Loading {
 		ebitenutil.DebugPrint(screen, "Loading...")
+		return
+	}
+
+	if g.win {
+		txt := "YOU WIN"
+		txtF, _ := font.BoundString(g.fontFace, txt)
+		txtW := (txtF.Max.X - txtF.Min.X).Ceil() / 2
+		txtH := (txtF.Max.Y - txtF.Min.Y).Ceil() * 2
+		text.Draw(screen, txt, g.fontFace, g.Width/2-txtW, txtH, color.White)
 		return
 	}
 
