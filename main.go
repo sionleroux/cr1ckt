@@ -7,6 +7,7 @@ package main
 import (
 	"embed"
 	"errors"
+	"fmt"
 	"image"
 	"image/color"
 	"log"
@@ -434,11 +435,15 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	}
 
 	if g.win {
-		txt := "YOU WIN"
+		txt := "YOU WIN!"
 		txtF, _ := font.BoundString(g.fontFace, txt)
 		txtW := (txtF.Max.X - txtF.Min.X).Ceil() / 2
 		txtH := (txtF.Max.Y - txtF.Min.Y).Ceil() * 2
 		text.Draw(screen, txt, g.fontFace, g.Width/2-txtW, txtH, color.White)
+		txt = fmt.Sprintf("%d JUMPS", debugNumberOfJumps)
+		txtF, _ = font.BoundString(g.fontFace, txt)
+		txtW = (txtF.Max.X - txtF.Min.X).Ceil() / 2
+		text.Draw(screen, txt, g.fontFace, g.Width/2-txtW, txtH*2, color.White)
 		return
 	}
 
