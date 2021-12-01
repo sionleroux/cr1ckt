@@ -106,7 +106,7 @@ type Game struct {
 	touchIDs     []ebiten.TouchID
 	blackness    Blackness
 	blackFactor  int
-	bg           *ebiten.Image
+	bg, fruit    *ebiten.Image
 	cam          *camera.Camera
 }
 
@@ -127,6 +127,7 @@ func NewGame(game *Game) {
 	game.TileRenderer = ebitenRenderer
 	game.LDTKProject = ldtkProject
 	game.bg = loadImage("assets/background.png")
+	game.fruit = loadImage("assets/fruit.png")
 	game.cam = camera.NewCamera(0, 0, 0, 1, image.Pt(game.Width, game.Height))
 	game.Cricket = NewCricket(game.EntityByIdentifier("Cricket").Position)
 	game.blackness = make(map[image.Point]bool)
@@ -417,6 +418,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	bg.DrawImage(g.bg, &ebiten.DrawImageOptions{})
 	for _, layer := range g.TileRenderer.RenderedLayers {
 		bg.DrawImage(layer.Image, &ebiten.DrawImageOptions{})
+	}
+	for _, v := range g.LDTKProject.Levels[g.Level].Layers[LayerEntities].Entities {
+		if v.Identifier == "Exit" {
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Translate(float64(v.Position[0]), float64(v.Position[1]))
+			bg.DrawImage(g.fruit, op)
+		}
+		// 23
 	}
 
 	g.cam.Surface.Clear()
