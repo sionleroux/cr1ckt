@@ -190,12 +190,24 @@ func (g *Game) Update() error {
 	var JumpPress = JumpPressNone
 	func() {
 		// Keyboard input
+		if ebiten.IsKeyPressed(ebiten.KeyLeft) && ebiten.IsKeyPressed(ebiten.KeyRight) {
+			JumpPress = JumpPressCancel
+			return
+		}
 		if ebiten.IsKeyPressed(ebiten.KeyA) && ebiten.IsKeyPressed(ebiten.KeyD) {
 			JumpPress = JumpPressCancel
 			return
 		}
+		if ebiten.IsKeyPressed(ebiten.KeyLeft) {
+			JumpPress = JumpPressLeft
+			return
+		}
 		if ebiten.IsKeyPressed(ebiten.KeyA) {
 			JumpPress = JumpPressLeft
+			return
+		}
+		if ebiten.IsKeyPressed(ebiten.KeyRight) {
+			JumpPress = JumpPressRight
 			return
 		}
 		if ebiten.IsKeyPressed(ebiten.KeyD) {
