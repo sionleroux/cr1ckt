@@ -141,7 +141,7 @@ func NewGame(game *Game) {
 	game.fontSmall = loadFont(16)
 
 	// Music
-	sampleRate := 48000
+	sampleRate := 44100
 	musicName := "assets/Robbero_-_Sad_Night.mp3"
 	audioConext := audio.NewContext(sampleRate)
 	musicFile := loadSoundFile(musicName, audioConext)
