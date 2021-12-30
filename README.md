@@ -1,10 +1,10 @@
 # cr1ckt
 
-**Still very WIP!** Entry for 2021 Game Off, themed "BUG".  I'll add a link to the submission when it's published.
+Entry for the 2021 Game Off jam, themed "BUG".  You can download or play in-browser at [sinisterstuf.itch.io/cr1ckt](https://sinisterstuf.itch.io/cr1ckt).
+
+Some bugs in this game are intentional! ;)
 
 You may be interested in help for [game testers](#for-game-testers), for [level makers](#for-level-makers) or for [programmers](#for-programmers).
-
-Bugs in this game might be there intentionally...
 
 ![Screenshot of actual gameplay](artwork/screenshot.png)
 
