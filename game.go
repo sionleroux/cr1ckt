@@ -445,10 +445,15 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		txtW = (txtF.Max.X - txtF.Min.X).Ceil() / 2
 		text.Draw(screen, txt, g.fontSmall, g.Width/2-txtW, txtH*10, color.White)
 
+		txt = "Android build: Levente Jónás"
+		txtF, _ = font.BoundString(g.fontSmall, txt)
+		txtW = (txtF.Max.X - txtF.Min.X).Ceil() / 2
+		text.Draw(screen, txt, g.fontSmall, g.Width/2-txtW, txtH*11, color.White)
+
 		txt = "Music: Sad Night - Robbero ©2021 CC-BY"
 		txtF, _ = font.BoundString(g.fontSmall, txt)
 		txtW = (txtF.Max.X - txtF.Min.X).Ceil() / 2
-		text.Draw(screen, txt, g.fontSmall, g.Width/2-txtW, txtH*12, color.White)
+		text.Draw(screen, txt, g.fontSmall, g.Width/2-txtW, txtH*13, color.White)
 
 		return
 	}
