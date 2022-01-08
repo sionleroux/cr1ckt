@@ -13,8 +13,8 @@ import (
 	"log"
 	"math/rand"
 
-	camera "github.com/sinisterstuf/cr1ckt/camera"
 	"golang.org/x/image/font"
+	"gopkg.in/ini.v1"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/audio"
@@ -22,8 +22,8 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
+	camera "github.com/scarycoffee/ebiten-camera"
 	"github.com/solarlune/ldtkgo"
-	"gopkg.in/ini.v1"
 )
 
 //go:embed assets/*
@@ -109,7 +109,7 @@ func NewGame(game *Game) {
 	game.LDTKProject = ldtkProject
 	game.bg = loadImage("assets/background.png")
 	game.fruit = loadImage("assets/fruit.png")
-	game.cam = camera.NewCamera(0, 0, 0, 1, image.Pt(game.Width, game.Height))
+	game.cam = camera.NewCamera(game.Width, game.Height, 0, 0, 0, 1)
 	game.Cricket = NewCricket(game.EntityByIdentifier("Cricket").Position)
 	game.blackness = make(map[image.Point]bool)
 	game.fontBig = loadFont(32)
