@@ -1,7 +1,8 @@
-name: Build Executable
+name: Build Executables
 on: [push]
 jobs:
-  build:
+
+  build-win:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
@@ -9,20 +10,95 @@ jobs:
       uses: actions/setup-go@v2
       with:
         go-version: 1.17
-    - name: Build exe
-      shell: bash
-      run: go build -v -o cr1ckt.exe ./bin/main.go
     - name: Run tests
       shell: bash
       run: go test -v ./...
-    - name: Upload exe
+    - name: Build Windows exe
+      shell: bash
+      run: go build -v -o cr1ckt.exe ./bin/main.go
+    - name: Upload Windows exe
+      uses: actions/upload-artifact@v2.2.4
+      with:
+        name: cr1ckt-win
+        path: |
+          LICENSE
+          cr1ckt.exe
+
+  build-mac:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17
+    - name: Run tests
+      shell: bash
+      run: go test -v ./...
+    - name: Build Mac exe
+      shell: bash
+      run: go build -v -o Cr1ckt.app/Contents/MacOS/cr1ckt ./bin/main.go
+    - name: Tar it up
+      shell: bash
+      run: tar -zcvf cr1ckt-mac.tar.gz Cr1ckt.app LICENSE
+    - name: Upload Mac exe
+      uses: actions/upload-artifact@v2.2.4
+      with:
+        name: cr1ckt-mac
+        path: cr1ckt-mac.tar.gz
+
+  build-lin:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17
+    - name: Install dependencies
+      shell: bash
+      run: sudo apt-get -y install libgl1-mesa-dev xorg-dev libasound2-dev
+    - name: Run tests
+      shell: bash
+      run: xvfb-run go test -v ./...
+    - name: Build Linux exe
+      shell: bash
+      run: go build -v -o cr1ckt ./bin/main.go
+    - name: Tar it up
+      shell: bash
+      run: tar -zcvf cr1ckt-lin.tar.gz cr1ckt LICENSE
+    - name: Upload Linux exe
+      uses: actions/upload-artifact@v2.2.4
+      with:
+        name: cr1ckt-lin
+        path: cr1ckt-lin.tar.gz
+
+  upload-bundle:
+    runs-on: ubuntu-latest
+    needs: [build-lin, build-mac, build-win]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Download Windows binary
+      uses: actions/download-artifact@v2
+      with:
+        name: cr1ckt-win
+    - name: Download Linux binary
+      uses: actions/download-artifact@v2
+      with:
+        name: cr1ckt-lin
+    - name: Download Mac binary
+      uses: actions/download-artifact@v2
+      with:
+        name: cr1ckt-mac
+    - name: Upload beta testing bundle
       uses: actions/upload-artifact@v2.2.4
       with:
         name: cr1ckt-bundle
         path: |
           README.md
           LICENSE
+          assets/
+          cr1ckt-lin.tar.gz
+          cr1ckt-mac.tar.gz
           cr1ckt.exe
           cr1ckt.ini.example
-          assets/
-
