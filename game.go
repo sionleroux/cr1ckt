@@ -22,7 +22,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
-	camera "github.com/scarycoffee/ebiten-camera"
+	camera "github.com/melonfunction/ebiten-camera"
 	"github.com/solarlune/ldtkgo"
 )
 
