@@ -144,8 +144,8 @@ jobs:
           cr1ckt.exe
           cr1ckt.ini.example
 
-  deploy:
-    name: Deploy EXE to itch.io
+  deploy-win:
+    name: Deploy Windows build to itch.io
     if: startsWith(github.event.ref, 'refs/tags/v')
     needs: build-win
     runs-on: ubuntu-latest
@@ -160,3 +160,64 @@ jobs:
         ITCH_GAME: cr1ckt
         ITCH_USER: sinisterstuf
         PACKAGE: cr1ckt.exe
+        VERSION: ${{github.ref_name}}
+
+  deploy-mac:
+    name: Deploy MacOs build to itch.io
+    if: startsWith(github.event.ref, 'refs/tags/v')
+    needs: build-mac
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: cr1ckt-mac
+    - name: Extract tarball
+      shell: bash
+      run: tar -zxvf cr1ckt-mac.tar.gz
+    - uses: josephbmanley/butler-publish-itchio-action@master
+      env:
+        BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+        CHANNEL: mac
+        ITCH_GAME: cr1ckt
+        ITCH_USER: sinisterstuf
+        PACKAGE: Cr1ckt.app
+        VERSION: ${{github.ref_name}}
+
+  deploy-lin:
+    name: Deploy Linux build to itch.io
+    if: startsWith(github.event.ref, 'refs/tags/v')
+    needs: build-lin
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: cr1ckt-lin
+    - name: Extract tarball
+      shell: bash
+      run: tar -zxvf cr1ckt-lin.tar.gz
+    - uses: josephbmanley/butler-publish-itchio-action@master
+      env:
+        BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+        CHANNEL: linux
+        ITCH_GAME: cr1ckt
+        ITCH_USER: sinisterstuf
+        PACKAGE: cr1ckt
+        VERSION: ${{github.ref_name}}
+
+  deploy-web:
+    name: Deploy Web build to itch.io
+    if: startsWith(github.event.ref, 'refs/tags/v')
+    needs: build-web
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: cr1ckt-web
+    - uses: josephbmanley/butler-publish-itchio-action@master
+      env:
+        BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+        CHANNEL: web
+        ITCH_GAME: cr1ckt
+        ITCH_USER: sinisterstuf
+        PACKAGE: web
+        VERSION: ${{github.ref_name}}
