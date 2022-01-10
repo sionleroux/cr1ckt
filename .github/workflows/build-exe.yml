@@ -2,8 +2,25 @@ name: Build Executables
 on: [push]
 jobs:
 
+  tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17
+    - name: Install dependencies
+      shell: bash
+      run: sudo apt-get -y install libgl1-mesa-dev xorg-dev libasound2-dev
+    - name: Run tests
+      shell: bash
+      run: xvfb-run go test -v ./...
+
   build-win:
     name: Build Windows binary
+    needs: tests
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
@@ -11,9 +28,6 @@ jobs:
       uses: actions/setup-go@v2
       with:
         go-version: 1.17
-    - name: Run tests
-      shell: bash
-      run: go test -v ./...
     - name: Build Windows exe
       shell: bash
       run: go build -v -o cr1ckt.exe ./bin/main.go
@@ -27,6 +41,7 @@ jobs:
 
   build-mac:
     name: Build MacOS binary
+    needs: tests
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
@@ -34,9 +49,6 @@ jobs:
       uses: actions/setup-go@v2
       with:
         go-version: 1.17
-    - name: Run tests
-      shell: bash
-      run: go test -v ./...
     - name: Build Mac exe
       shell: bash
       run: go build -v -o Cr1ckt.app/Contents/MacOS/cr1ckt ./bin/main.go
@@ -51,6 +63,7 @@ jobs:
 
   build-lin:
     name: Build Linux binary
+    needs: tests
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -61,9 +74,6 @@ jobs:
     - name: Install dependencies
       shell: bash
       run: sudo apt-get -y install libgl1-mesa-dev xorg-dev libasound2-dev
-    - name: Run tests
-      shell: bash
-      run: xvfb-run go test -v ./...
     - name: Build Linux exe
       shell: bash
       run: go build -v -o cr1ckt ./bin/main.go
@@ -78,6 +88,7 @@ jobs:
 
   build-web:
     name: Build Web binary
+    needs: tests
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
