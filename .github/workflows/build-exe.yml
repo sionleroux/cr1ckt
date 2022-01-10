@@ -51,10 +51,10 @@ jobs:
         go-version: 1.17
     - name: Build Mac exe
       shell: bash
-      run: go build -v -o Cr1ckt.app/Contents/MacOS/cr1ckt ./bin/main.go
+      run: go build -v -o dist/Cr1ckt.app/Contents/MacOS/cr1ckt ./bin/main.go
     - name: Tar it up
       shell: bash
-      run: tar -zcvf cr1ckt-mac.tar.gz Cr1ckt.app LICENSE
+      run: tar -zcvf cr1ckt-mac.tar.gz -C dist Cr1ckt.app
     - name: Upload Mac exe
       uses: actions/upload-artifact@v2.2.4
       with:
@@ -101,16 +101,16 @@ jobs:
       run: sudo apt-get -y install libgl1-mesa-dev xorg-dev libasound2-dev
     - name: Build Web binary
       shell: bash
-      run: GOOS=js GOARCH=wasm go build -v -ldflags "-w -s" -o web/cr1ckt.wasm ./bin/main.go
+      run: GOOS=js GOARCH=wasm go build -v -ldflags "-w -s" -o dist/web/cr1ckt.wasm ./bin/main.go
     - name: Copy WASM exec script
       shell: bash
-      run: cp $(go env GOROOT)/misc/wasm/wasm_exec.js web/.
+      run: cp $(go env GOROOT)/misc/wasm/wasm_exec.js dist/web/.
     - name: Upload Web build
       uses: actions/upload-artifact@v2.2.4
       with:
         name: cr1ckt-web
         path: |
-          web/
+          dist/web/
           LICENSE
 
   upload-bundle:
@@ -219,5 +219,5 @@ jobs:
         CHANNEL: web
         ITCH_GAME: cr1ckt
         ITCH_USER: sinisterstuf
-        PACKAGE: web
+        PACKAGE: dist/web
         VERSION: ${{github.ref_name}}
