@@ -106,13 +106,35 @@ func NewGame(game *Game) {
 
 	game.TileRenderer = renderer
 	game.LDTKProject = ldtkProject
-	game.bg = loadImage("assets/background.png")
 	game.fruit = loadImage("assets/fruit.png")
 	game.cam = camera.NewCamera(game.Width, game.Height, 0, 0, 0, 1)
 	game.Cricket = NewCricket(game.EntityByIdentifier("Cricket").Position)
 	game.blackness = make(map[image.Point]bool)
 	game.fontBig = loadFont(32)
 	game.fontSmall = loadFont(16)
+
+	background := loadImage("assets/background.png")
+	bg := ebiten.NewImage(
+		game.LDTKProject.Levels[game.Level].Width,
+		game.LDTKProject.Levels[game.Level].Height,
+	)
+	bg.Fill(game.LDTKProject.Levels[game.Level].BGColor)
+	bg.DrawImage(background, &ebiten.DrawImageOptions{})
+
+	// Render map
+	game.TileRenderer.Render(game.LDTKProject.Levels[game.Level])
+	for _, layer := range game.TileRenderer.RenderedLayers {
+		bg.DrawImage(layer.Image, &ebiten.DrawImageOptions{})
+	}
+	for _, v := range game.LDTKProject.Levels[game.Level].Layers[LayerEntities].Entities {
+		if v.Identifier == "Exit" {
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Translate(float64(v.Position[0]), float64(v.Position[1]))
+			bg.DrawImage(game.fruit, op)
+		}
+		// 23
+	}
+	game.bg = bg
 
 	// Music
 	sampleRate := 44100
@@ -171,9 +193,6 @@ func (g *Game) Update() error {
 	if DebugMode && inpututil.IsKeyJustPressed(ebiten.KeyR) {
 		debugNumberOfJumps = 0
 	}
-
-	// Render map
-	g.TileRenderer.Render(g.LDTKProject.Levels[g.Level])
 
 	// Controls
 	var JumpPress = JumpPressNone
@@ -417,26 +436,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		return
 	}
 
-	bg := ebiten.NewImage(
-		g.LDTKProject.Levels[g.Level].Width,
-		g.LDTKProject.Levels[g.Level].Height,
-	)
-	bg.Fill(g.LDTKProject.Levels[g.Level].BGColor)
-	bg.DrawImage(g.bg, &ebiten.DrawImageOptions{})
-	for _, layer := range g.TileRenderer.RenderedLayers {
-		bg.DrawImage(layer.Image, &ebiten.DrawImageOptions{})
-	}
-	for _, v := range g.LDTKProject.Levels[g.Level].Layers[LayerEntities].Entities {
-		if v.Identifier == "Exit" {
-			op := &ebiten.DrawImageOptions{}
-			op.GeoM.Translate(float64(v.Position[0]), float64(v.Position[1]))
-			bg.DrawImage(g.fruit, op)
-		}
-		// 23
-	}
-
 	g.cam.Surface.Clear()
-	g.cam.Surface.DrawImage(bg, g.cam.GetTranslation(0, 0))
+	g.cam.Surface.DrawImage(g.bg, g.cam.GetTranslation(0, 0))
 
 	frameSize := g.Cricket.Width
 	g.Cricket.Op.GeoM.Concat(g.cam.GetTranslation(
