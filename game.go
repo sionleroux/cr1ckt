@@ -5,6 +5,7 @@
 package cr1ckt
 
 import (
+	"bufio"
 	"embed"
 	"errors"
 	"image"
@@ -118,12 +119,13 @@ func NewGame(game *Game) {
 	musicName := "assets/Robbero_-_Sad_Night.mp3"
 	audioConext := audio.NewContext(sampleRate)
 	musicFile := loadSoundFile(musicName, audioConext)
-	music, err := mp3.DecodeWithSampleRate(sampleRate, musicFile)
+	musicBuffer := bufio.NewReader(musicFile)
+	music, err := mp3.DecodeWithSampleRate(sampleRate, musicBuffer)
 	if err != nil {
 		log.Fatalf("error decoding file %s as MP3: %v\n", musicName, err)
 	}
-	musicLoop := audio.NewInfiniteLoop(music, music.Length())
-	musicPlayer, err := audio.NewPlayer(audioConext, musicLoop)
+	// musicLoop := audio.NewInfiniteLoop(music, music.Length())
+	musicPlayer, err := audio.NewPlayer(audioConext, music)
 	if err != nil {
 		log.Fatalf("error making music player: %v\n", err)
 	}
