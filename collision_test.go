@@ -36,9 +36,9 @@ func rect16(x, y int) image.Rectangle {
 func TestOverlapsTiles(t *testing.T) {
 	const gridSize int = 16
 	tiles := []*ldtkgo.Tile{
-		&ldtkgo.Tile{ID: 0, Position: []int{0, 0}},
-		&ldtkgo.Tile{ID: 114, Position: []int{32, 48}},
-		&ldtkgo.Tile{ID: 0, Position: []int{48, 48}},
+		{ID: 0, Position: []int{0, 0}},
+		{ID: 114, Position: []int{32, 48}},
+		{ID: 0, Position: []int{48, 48}},
 	}
 	cases := []struct {
 		hitbox  image.Rectangle
