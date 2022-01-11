@@ -6,7 +6,11 @@ Entry for the 2021 Game Off jam, themed "BUG".  You can download or play in-brow
 
 Some bugs in this game are intentional! ;)
 
-You may be interested in help for [game testers](#for-game-testers), for [level makers](#for-level-makers) or for [programmers](#for-programmers).
+Read on below for help:
+
+- for [game testers](#for-game-testers)
+- for [level makers](#for-level-makers)
+- for [programmers](#for-programmers)
 
 [![Play on itch.io](artwork/itchio-badge.svg)](https://sinisterstuf.itch.io/cr1ckt)
 
