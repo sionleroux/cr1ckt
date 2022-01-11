@@ -10,7 +10,7 @@ You may be interested in help for [game testers](#for-game-testers), for [level 
 
 [![Play on itch.io](artwork/itchio-badge.svg)](https://sinisterstuf.itch.io/cr1ckt)
 
-![Screenshot of actual gameplay](artwork/screenshot.png)
+[![Screenshot of actual gameplay](artwork/screenshot.png)](https://sinisterstuf.itch.io/cr1ckt)
 
 ## For game testers
 
