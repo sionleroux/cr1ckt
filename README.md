@@ -52,8 +52,8 @@ I'm using Go 1.17 for this.  You might have luck with an older version but the g
 
 The Go build system will handle the rest of the dependencies for you but if you're curious, it's using:
 - [ebiten](https://github.com/hajimehoshi/ebiten/) simple 2D game library
+- [ebiten-camera](https://github.com/MelonFunction/ebiten-camera) for moving camera
 - [ldtkgo](https://github.com/SolarLune/ldtkgo) to interface with LDtk
-- that's it so far
 
 You can run the test suite with `go test ./...` but I haven't written any yet.
 
