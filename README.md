@@ -1,6 +1,6 @@
 # cr1ckt
 
-[![wakatime](https://wakatime.com/badge/github/sinisterstuf/cr1ckt.svg)](https://wakatime.com/badge/github/sinisterstuf/cr1ckt) [![Build Executables](https://github.com/sinisterstuf/cr1ckt/actions/workflows/build-exe.yml/badge.svg)](https://github.com/sinisterstuf/cr1ckt/actions/workflows/build-exe.yml)
+[![wakatime](https://wakatime.com/badge/github/sinisterstuf/cr1ckt.svg)](https://wakatime.com/badge/github/sinisterstuf/cr1ckt) [![Build Executables](https://github.com/sinisterstuf/cr1ckt/actions/workflows/build-exe.yml/badge.svg)](https://github.com/sinisterstuf/cr1ckt/actions/workflows/build-exe.yml) [![Go Report Card](https://goreportcard.com/badge/github.com/sinisterstuf/cr1ckt)](https://goreportcard.com/report/github.com/sinisterstuf/cr1ckt)
 
 Entry for the 2021 Game Off jam, themed "BUG".  You can download or play in-browser at [sinisterstuf.itch.io/cr1ckt](https://sinisterstuf.itch.io/cr1ckt).
 
