@@ -8,6 +8,8 @@ Some bugs in this game are intentional! ;)
 
 You may be interested in help for [game testers](#for-game-testers), for [level makers](#for-level-makers) or for [programmers](#for-programmers).
 
+[![Play on itch.io](artwork/itchio-badge.svg)](https://sinisterstuf.itch.io/cr1ckt)
+
 ![Screenshot of actual gameplay](artwork/screenshot.png)
 
 ## For game testers
