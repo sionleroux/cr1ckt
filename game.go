@@ -17,7 +17,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/audio"
-	"github.com/hajimehoshi/ebiten/v2/audio/mp3"
+	"github.com/hajimehoshi/ebiten/v2/audio/vorbis"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	camera "github.com/melonfunction/ebiten-camera"
@@ -137,12 +137,12 @@ func NewGame(game *Game) {
 
 	// Music
 	sampleRate := 44100
-	musicName := "assets/Robbero_-_Sad_Night.mp3"
+	musicName := "assets/music.ogg"
 	audioConext := audio.NewContext(sampleRate)
 	musicFile := loadSoundFile(musicName, audioConext)
-	music, err := mp3.DecodeWithSampleRate(sampleRate, musicFile)
+	music, err := vorbis.DecodeWithSampleRate(sampleRate, musicFile)
 	if err != nil {
-		log.Fatalf("error decoding file %s as MP3: %v\n", musicName, err)
+		log.Fatalf("error decoding file %s as Vorbis: %v\n", musicName, err)
 	}
 	musicLoop := audio.NewInfiniteLoop(music, music.Length())
 	musicPlayer, err := audio.NewPlayer(audioConext, musicLoop)

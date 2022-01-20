@@ -12,9 +12,10 @@ require (
 
 require (
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20210727001814-0db043d8d5be // indirect
-	github.com/hajimehoshi/go-mp3 v0.3.2 // indirect
 	github.com/hajimehoshi/oto/v2 v2.1.0-alpha.2 // indirect
 	github.com/jezek/xgb v0.0.0-20210312150743-0e0f116e1240 // indirect
+	github.com/jfreymuth/oggvorbis v1.0.3 // indirect
+	github.com/jfreymuth/vorbis v1.0.2 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/tidwall/gjson v1.6.4 // indirect
 	github.com/tidwall/match v1.0.1 // indirect
