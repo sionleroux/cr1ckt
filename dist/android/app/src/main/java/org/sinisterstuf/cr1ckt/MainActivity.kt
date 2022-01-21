@@ -1,8 +1,7 @@
-package org.sinisterstuf.myapplication
+package org.sinisterstuf.cr1ckt
 
 import android.os.Bundle
 import android.view.Window
-import android.view.WindowManager
 import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
 import androidx.appcompat.app.AppCompatActivity
 import go.Seq
