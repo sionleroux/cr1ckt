@@ -56,7 +56,8 @@ var MaxPrime int = 5
 // during playing the game or not
 var DebugMode bool = false
 
-// Double the amount of blackness that occurs after this many jumps
+// BlacknessFactor sets after how many jumps the amount of blackness that's
+// added per jump should be doubled
 var BlacknessFactor int = 10
 
 // JumpPress are the different jump states for controls
@@ -564,8 +565,11 @@ func ApplyConfigs() {
 	}
 }
 
+// Blackness is a map to store where black squares should appear on the camera
 type Blackness map[image.Point]bool
 
+// Has is a convenience function to check if a point on the camera is already
+// black, it can be used in-line because it only returns one value
 func (b Blackness) Has(v image.Point) bool {
 	_, ok := b[v]
 	return ok

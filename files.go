@@ -42,6 +42,7 @@ func loadMaps(name string) *ldtkgo.Project {
 	return maps
 }
 
+// LoadImage loads an ebiten.Image given the name of a file in the embedded fs
 func LoadImage(name string) *ebiten.Image {
 	return loadImage(name)
 }

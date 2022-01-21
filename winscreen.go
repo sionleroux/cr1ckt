@@ -10,8 +10,10 @@ import (
 	"golang.org/x/image/font"
 )
 
+// WinScreen is the screen that's displayed when you win the game
 type WinScreen int
 
+// Draw draws the win screen to a provided image
 func (w WinScreen) Draw(g *Game, screen *ebiten.Image) {
 	txt := "YOU WIN!"
 	txtF, _ := font.BoundString(g.fontBig, txt)

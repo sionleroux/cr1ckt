@@ -42,6 +42,7 @@ func Collides(g *Game) *ldtkgo.Tile {
 	return OverlapsTiles(auto.AllTiles(), hitbox, tiles.GridSize)
 }
 
+// OverlapsTiles checks for collisions on a given layer
 // This inner function is a workaround because we need to loop through both
 // Tiles and AutoTiles in exactly the same way
 func OverlapsTiles(ts []*ldtkgo.Tile, hitbox image.Rectangle, gridSize int) *ldtkgo.Tile {
