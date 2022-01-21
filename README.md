@@ -12,6 +12,10 @@ Read on below for help:
 - for [level makers](#for-level-makers)
 - for [programmers](#for-programmers)
 
+Here is a [list of improvements](https://github.com/sinisterstuf/cr1ckt/issues) to be added to the game.
+
+If you have feedback please leave a comment on the game's itch.io page:
+
 [![Play on itch.io](artwork/itchio-badge.svg)](https://sinisterstuf.itch.io/cr1ckt)
 
 [![Screenshot of actual gameplay](artwork/screenshot.png)](https://sinisterstuf.itch.io/cr1ckt)
