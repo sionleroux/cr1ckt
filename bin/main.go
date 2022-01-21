@@ -5,6 +5,7 @@
 package main
 
 import (
+	"image"
 	"log"
 	"math/rand"
 	"time"
@@ -19,6 +20,7 @@ func main() {
 	ebiten.SetWindowSize(gameWidth, gameHeight)
 	ebiten.SetWindowTitle("cr1ck_t")
 	ebiten.SetCursorMode(ebiten.CursorModeHidden)
+	ebiten.SetWindowIcon([]image.Image{cr1ckt.LoadImage("assets/icon.png")})
 
 	rand.Seed(time.Now().UnixNano())
 	cr1ckt.ApplyConfigs()
