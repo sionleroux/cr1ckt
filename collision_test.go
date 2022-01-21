@@ -8,21 +8,21 @@ import (
 )
 
 func TestImpassible(t *testing.T) {
-	IdWater, IdEarth := 114, 0
-	if Impassible(&ldtkgo.Tile{ID: IdWater}) {
+	IDWater, IDEarth := 114, 0
+	if Impassible(&ldtkgo.Tile{ID: IDWater}) {
 		t.Error("Water should be impassible")
 	}
-	if !Impassible(&ldtkgo.Tile{ID: IdEarth}) {
+	if !Impassible(&ldtkgo.Tile{ID: IDEarth}) {
 		t.Error("Earth should be impassible")
 	}
 }
 
 func TestSquishy(t *testing.T) {
-	IdMushroom, IdEarth := 15, 0
-	if !Squishy(&ldtkgo.Tile{ID: IdMushroom}) {
+	IDMushroom, IDEarth := 15, 0
+	if !Squishy(&ldtkgo.Tile{ID: IDMushroom}) {
 		t.Error("Mushroom should be squishy")
 	}
-	if Squishy(&ldtkgo.Tile{ID: IdEarth}) {
+	if Squishy(&ldtkgo.Tile{ID: IDEarth}) {
 		t.Error("Earth should be hard")
 	}
 }
