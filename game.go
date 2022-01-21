@@ -144,7 +144,8 @@ func NewGame(game *Game) {
 	if err != nil {
 		log.Fatalf("error decoding file %s as Vorbis: %v\n", musicName, err)
 	}
-	musicLoop := audio.NewInfiniteLoop(music, music.Length())
+	const introLength int64 = 10113930 // pre-calculated from music editor
+	musicLoop := audio.NewInfiniteLoopWithIntro(music, introLength, music.Length())
 	musicPlayer, err := audio.NewPlayer(audioConext, musicLoop)
 	if err != nil {
 		log.Fatalf("error making music player: %v\n", err)
