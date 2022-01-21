@@ -74,7 +74,7 @@ type Game struct {
 	Cricket      *Cricket
 	Wait         int
 	WaitTime     int
-	TileRenderer *EbitenMobileRenderer
+	TileRenderer *TileRenderer
 	LDTKProject  *ldtkgo.Project
 	Level        int
 	Loading      bool
@@ -92,7 +92,7 @@ type Game struct {
 func NewGame(game *Game) {
 	log.Println("Loading game...")
 	// 	ldtkProject, err := ldtkgo.Open("maps.ldtk")
-	var renderer *EbitenMobileRenderer
+	var renderer *TileRenderer
 	// 	if err == nil {
 	// 		log.Println("Found local map override, using that instead!")
 	// 		log.Println("Looking for local tileset...")
@@ -100,7 +100,7 @@ func NewGame(game *Game) {
 	// 	} else {
 	log.Println("Using embedded map data...")
 	ldtkProject := loadMaps("assets/maps.ldtk")
-	renderer = NewEbitenMobileRenderer(&EmbedLoader{"assets"})
+	renderer = NewTileRenderer(&EmbedLoader{"assets"})
 	// }
 
 	game.TileRenderer = renderer

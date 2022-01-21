@@ -32,27 +32,25 @@ type RenderedLayer struct {
 	Layer *ldtkgo.Layer // The layer used to render the image
 }
 
-// EbitenMobileRenderer is a struct that renders LDtk levels to *ebiten.Images.
-type EbitenMobileRenderer struct {
+// TileRenderer is a struct that renders LDtk levels to *ebiten.Images.
+type TileRenderer struct {
 	Tilesets       map[string]*ebiten.Image
 	CurrentTileset string
 	RenderedLayers []*RenderedLayer
 	Loader         TilesetLoader // Loader for the renderer; defaults to a DiskLoader instance, though this can be switched out with something else as necessary.
 }
 
-// NewEbitenMobileRenderer creates a new Renderer instance. TilesetLoader should be an instance of a struct designed to return *ebiten.Images for each Tileset requested (by path relative to the LDtk project file).
-func NewEbitenMobileRenderer(loader TilesetLoader) *EbitenMobileRenderer {
-
-	return &EbitenMobileRenderer{
+// NewTileRenderer creates a new Renderer instance. TilesetLoader should be an instance of a struct designed to return *ebiten.Images for each Tileset requested (by path relative to the LDtk project file).
+func NewTileRenderer(loader TilesetLoader) *TileRenderer {
+	return &TileRenderer{
 		Tilesets:       map[string]*ebiten.Image{},
 		RenderedLayers: []*RenderedLayer{},
 		Loader:         loader,
 	}
-
 }
 
 // Clear clears the renderer's Result.
-func (er *EbitenMobileRenderer) Clear() {
+func (er *TileRenderer) Clear() {
 	for _, layer := range er.RenderedLayers {
 		layer.Image.Dispose()
 	}
@@ -60,7 +58,7 @@ func (er *EbitenMobileRenderer) Clear() {
 }
 
 // beginLayer gets called when necessary between rendering indidvidual Layers of a Level.
-func (er *EbitenMobileRenderer) beginLayer(layer *ldtkgo.Layer, w, h int) {
+func (er *TileRenderer) beginLayer(layer *ldtkgo.Layer, w, h int) {
 
 	_, exists := er.Tilesets[layer.Tileset.Path]
 
@@ -81,7 +79,7 @@ func (er *EbitenMobileRenderer) beginLayer(layer *ldtkgo.Layer, w, h int) {
 // srcX, srcY = position on the source tilesheet of the specified tile
 // srcW, srcH = width and height of the tile
 // flipBit = the flip bit of the tile; if the first bit is set, it should flip horizontally. If the second is set, it should flip vertically.
-func (er *EbitenMobileRenderer) renderTile(x, y, srcX, srcY, srcW, srcH int, flipBit byte) {
+func (er *TileRenderer) renderTile(x, y, srcX, srcY, srcW, srcH int, flipBit byte) {
 
 	// Subimage the Tile from the Tileset
 	tile := er.Tilesets[er.CurrentTileset].SubImage(image.Rect(srcX, srcY, srcX+srcW, srcY+srcH)).(*ebiten.Image)
@@ -113,7 +111,7 @@ func (er *EbitenMobileRenderer) renderTile(x, y, srcX, srcY, srcW, srcH int, fli
 }
 
 // Render clears, and then renders out each visible Layer in an ldtgo.Level instance.
-func (er *EbitenMobileRenderer) Render(level *ldtkgo.Level) {
+func (er *TileRenderer) Render(level *ldtkgo.Level) {
 
 	er.Clear()
 
