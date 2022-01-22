@@ -65,4 +65,4 @@ The Go build system will handle the rest of the dependencies for you but if you'
 
 You can run the test suite with `go test ./...` but I haven't written any yet.
 
-The project structure will probably stay quite simple, most logic is in the "main" file and gets extracted elsewhere as a clump of closely related code gets too big there.
+The project structure will probably stay quite simple, most logic is in the "game" file and gets extracted elsewhere as a clump of closely related code gets too big there.  The main file does Window and game set up for all platforms except mobile.  The Android mobile library is built from the mobile directory.  There are notes on compiling for Android and Web in the [doc](doc) folder.
