@@ -7,7 +7,7 @@ package mobile
 import (
 	"github.com/hajimehoshi/ebiten/v2/mobile"
 
-	"github.com/sinisterstuf/cr1ckt"
+	cr1ckt "github.com/sinisterstuf/cr1ckt/internal"
 )
 
 func init() {

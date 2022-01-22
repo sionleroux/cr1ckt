@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/sinisterstuf/cr1ckt"
+	cr1ckt "github.com/sinisterstuf/cr1ckt/internal"
 )
 
 func main() {

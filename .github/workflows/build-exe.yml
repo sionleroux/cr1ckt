@@ -36,7 +36,7 @@ jobs:
       run: rsrc -ico artwork/icon.ico
     - name: Build Windows exe
       shell: bash
-      run: go build -v -o cr1ckt.exe ./bin/main.go
+      run: go build
     - name: Upload Windows exe
       uses: actions/upload-artifact@v2.2.4
       with:
@@ -57,7 +57,7 @@ jobs:
         go-version: 1.17
     - name: Build Mac exe
       shell: bash
-      run: go build -v -o dist/Cr1ckt.app/Contents/MacOS/cr1ckt ./bin/main.go
+      run: go build -v -o dist/Cr1ckt.app/Contents/MacOS/cr1ckt
     - name: Tar it up
       shell: bash
       run: tar -zcvf cr1ckt-mac.tar.gz -C dist Cr1ckt.app
@@ -82,7 +82,7 @@ jobs:
       run: sudo apt-get -y install libgl1-mesa-dev xorg-dev libasound2-dev
     - name: Build Linux exe
       shell: bash
-      run: go build -v -o cr1ckt ./bin/main.go
+      run: go build -v
     - name: Tar it up
       shell: bash
       run: tar -zcvf cr1ckt-lin.tar.gz cr1ckt LICENSE
@@ -107,7 +107,7 @@ jobs:
       run: sudo apt-get -y install libgl1-mesa-dev xorg-dev libasound2-dev
     - name: Build Web binary
       shell: bash
-      run: GOOS=js GOARCH=wasm go build -v -ldflags "-w -s" -o dist/web/cr1ckt.wasm ./bin/main.go
+      run: GOOS=js GOARCH=wasm go build -v -ldflags "-w -s" -o dist/web/cr1ckt.wasm
     - name: Copy WASM exec script
       shell: bash
       run: cp $(go env GOROOT)/misc/wasm/wasm_exec.js dist/web/.
