@@ -6,7 +6,7 @@ export $ANDROID_HOME=/usr/local/share/android-commandlinetools
 
 brew install android-ndk
 
-ebitenmobile bind -target android -javapkg org.sinisterstuf.cr1ckt -o cr1ckt.aar ./mobile/
+ebitenmobile bind -target android -javapkg org.sinisterstuf.cr1cktbin -o cr1ckt.aar ./mobile/
 
 more info: https://ebiten.org/documents/mobile.html#Android
 
