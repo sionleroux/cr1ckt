@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "org.sinisterstuf.myapplication",
+  "applicationId": "org.sinisterstuf.cr1ckt",
   "variantName": "processReleaseResources",
   "elements": [
     {

@@ -16,7 +16,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "org.sinisterstuf.myapplication"
+        applicationId "org.sinisterstuf.cr1ckt"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
