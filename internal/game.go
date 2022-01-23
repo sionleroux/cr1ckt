@@ -17,7 +17,6 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/audio"
-	"github.com/hajimehoshi/ebiten/v2/audio/vorbis"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	camera "github.com/melonfunction/ebiten-camera"
@@ -137,17 +136,11 @@ func NewGame(game *Game) {
 	game.bg = bg
 
 	// Music
-	sampleRate := 44100
-	musicName := "assets/music.ogg"
-	audioConext := audio.NewContext(sampleRate)
-	musicFile := loadSoundFile(musicName, audioConext)
-	music, err := vorbis.DecodeWithSampleRate(sampleRate, musicFile)
-	if err != nil {
-		log.Fatalf("error decoding file %s as Vorbis: %v\n", musicName, err)
-	}
+	const sampleRate int = 44100       // assuming "normal" sample rate
 	const introLength int64 = 10113930 // pre-calculated from music editor
+	music := loadSoundFile("assets/music.ogg", sampleRate)
 	musicLoop := audio.NewInfiniteLoopWithIntro(music, introLength, music.Length())
-	musicPlayer, err := audio.NewPlayer(audioConext, musicLoop)
+	musicPlayer, err := audio.NewPlayer(audio.NewContext(sampleRate), musicLoop)
 	if err != nil {
 		log.Fatalf("error making music player: %v\n", err)
 	}

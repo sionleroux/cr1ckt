@@ -6,12 +6,11 @@ package cr1ckt
 
 import (
 	"image/png"
-	"io/fs"
 	"io/ioutil"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/audio"
+	"github.com/hajimehoshi/ebiten/v2/audio/vorbis"
 	"github.com/hajimehoshi/ebiten/v2/examples/resources/fonts"
 	"github.com/solarlune/ldtkgo"
 	"golang.org/x/image/font"
@@ -65,14 +64,22 @@ func loadImage(name string) *ebiten.Image {
 	return ebiten.NewImageFromImage(raw)
 }
 
-func loadSoundFile(name string, context *audio.Context) fs.File {
+// Load an OGG Vorbis sound file with 44100 sample rate and return its stream
+func loadSoundFile(name string, sampleRate int) *vorbis.Stream {
 	log.Printf("loading %s\n", name)
 
 	file, err := assets.Open(name)
 	if err != nil {
 		log.Fatalf("error opening file %s: %v\n", name, err)
 	}
-	return file
+	defer file.Close()
+
+	music, err := vorbis.DecodeWithSampleRate(sampleRate, file)
+	if err != nil {
+		log.Fatalf("error decoding file %s as Vorbis: %v\n", name, err)
+	}
+
+	return music
 }
 
 func loadFont(size int) font.Face {
