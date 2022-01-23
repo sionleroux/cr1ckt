@@ -138,7 +138,7 @@ jobs:
       run: ebitenmobile bind -target android -javapkg org.sinisterstuf.cr1cktbin -o cr1ckt.aar ./mobile/ && cp cr1ckt.aar dist/android/app/libs/cr1ckt.aar
     - name: Build Android APK
       shell: bash
-      run: cd dist/android && ./gradlew assemble && cp app/build/outputs/apk/release/app-release-unsigned.apk ../../cr1ckt.apk
+      run: cd dist/android && ./gradlew assemble && cp app/build/outputs/apk/debug/app-debug.apk ../../cr1ckt.apk
     - name: Upload Android build
       uses: actions/upload-artifact@v2.2.4
       with:
