@@ -5,11 +5,11 @@ plugins {
 
 android {
     signingConfigs {
-        cricket {
+        cr1ckt {
             storeFile file(var)
-            storePassword 'cricket'
-            keyAlias 'cricket'
-            keyPassword 'cricket'
+            storePassword 'cr1ckt'
+            keyAlias 'cr1ckt'
+            keyPassword 'cr1ckt'
         }
     }
     compileSdkVersion 30
