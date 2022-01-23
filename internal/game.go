@@ -144,7 +144,6 @@ func NewGame(game *Game) {
 	if err != nil {
 		log.Fatalf("error making music player: %v\n", err)
 	}
-	musicPlayer.SetVolume(0.5)
 	musicPlayer.Play()
 
 	game.Loading = false
