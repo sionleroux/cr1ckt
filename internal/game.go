@@ -53,7 +53,7 @@ var MaxPrime int = 5
 
 // DebugMode sets whether to display additional debugging info on the screen
 // during playing the game or not
-var DebugMode bool = false
+var DebugMode bool = true
 
 // BlacknessFactor sets after how many jumps the amount of blackness that's
 // added per jump should be doubled
