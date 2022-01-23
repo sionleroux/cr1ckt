@@ -119,6 +119,37 @@ jobs:
           dist/web/
           LICENSE
 
+  build-android:
+    name: Build Android binary
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17
+    - name: Set up our JDK environment
+      uses: actions/setup-java@v1.4.3
+      with:
+        java-version: 1.8
+    - name: Install ebitenmobile
+      shell: bash
+      run: go install github.com/hajimehoshi/ebiten/v2/cmd/ebitenmobile@latest
+    - name: Build Android library AAR
+      shell: bash
+      run: ebitenmobile bind -target android -javapkg org.sinisterstuf.cr1cktbin -o dist/android/app/libs/cr1ckt.aar ./mobile/
+    - name: Build Android APK
+      shell: bash
+      run: cd dist/android && ./gradlew assemble
+    - name: Upload Android build
+      uses: actions/upload-artifact@v2.2.4
+      with:
+        name: cr1ckt-android
+        path: |
+          dist/android/app/build/outputs/apk/release/app-release-unsigned.apk
+          LICENSE
+
   upload-bundle:
     name: Bundle binaries with dev assets
     runs-on: ubuntu-latest

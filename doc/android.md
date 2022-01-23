@@ -7,6 +7,8 @@ on my linux box it's in my home dir under ~/Android and some people on Mac have 
 
 brew install android-ndk
 
+go install github.com/hajimehoshi/ebiten/v2/cmd/ebitenmobile@latest
+
 ebitenmobile bind -target android -javapkg org.sinisterstuf.cr1ckt -o cr1ckt.aar ./mobile/
 
 more info: https://ebiten.org/documents/mobile.html#Android
