@@ -264,3 +264,21 @@ jobs:
         ITCH_USER: sinisterstuf
         PACKAGE: dist/web
         VERSION: ${{github.ref_name}}
+
+  deploy-android:
+    name: Deploy Android build to itch.io
+    if: startsWith(github.event.ref, 'refs/tags/v')
+    needs: build-android
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: cr1ckt-android
+    - uses: josephbmanley/butler-publish-itchio-action@master
+      env:
+        BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+        CHANNEL: android
+        ITCH_GAME: cr1ckt
+        ITCH_USER: sinisterstuf
+        PACKAGE: cr1ckt.apk
+        VERSION: ${{github.ref_name}}
