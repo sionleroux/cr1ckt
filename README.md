@@ -22,9 +22,7 @@ If you have feedback please leave a comment on the game's itch.io page:
 
 ## For game testers
 
-For alpha testing use this [link to download the latest Windows EXE](https://nightly.link/sinisterstuf/cr1ckt/workflows/build-exe/master/cr1ckt-bundle.zip).
-
-For Mac & Linux it is trivial to install go with your package manager and built it yourself, see [the section for programmers](#for-programmers) below.
+For alpha testing use this [link to download the latest development build](https://nightly.link/sinisterstuf/cr1ckt/workflows/build-exe/master/cr1ckt-bundle.zip) including Windows EXE, Mac app, Linux binary, Android APK as well as the map file, tiles and other resources if you want to [make your own levels](#for-level-makers).
 
 During development there's debug info at the top showing things like player location and velocity, level number, etc. and some controls:
 
