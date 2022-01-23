@@ -22,8 +22,7 @@ func init() {
 		Loading:  true,
 	}
 
-	// TODO: try if this works as a goroutine
-	cr1ckt.NewGame(game)
+	go cr1ckt.NewGame(game)
 
 	mobile.SetGame(game)
 }
