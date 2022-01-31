@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main)
+        getSupportActionBar()?.hide();
     }
 
     override fun onPause() {
