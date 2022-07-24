@@ -13,7 +13,6 @@ android {
         }
     }
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "org.sinisterstuf.cr1ckt"
@@ -38,6 +37,7 @@ android {
     kotlinOptions {
         jvmTarget = '11'
     }
+    namespace 'org.sinisterstuf.cr1ckt'
 }
 
 dependencies {
