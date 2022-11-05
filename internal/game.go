@@ -431,6 +431,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	g.cam.Surface.Clear()
 	g.cam.Surface.DrawImage(g.bg, g.cam.GetTranslation(0, 0))
 
+	shadow := loadShader("assets/shadow.kage")
+	op := &ebiten.DrawRectShaderOptions{}
+	// op.Uniforms = map[string]interface{}{
+	// 	"Time": float32(g.Time?!) // XXX: finish this
+	// }
+	w, h := g.cam.Surface.Size()
+	g.cam.Surface.DrawRectShader(w, h, shadow, op)
+
 	frameSize := g.Cricket.Width
 	g.Cricket.Op.GeoM.Concat(g.cam.GetTranslation(
 		float64(g.Cricket.Position.X), float64(g.Cricket.Position.Y),

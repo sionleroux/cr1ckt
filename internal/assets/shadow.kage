@@ -1,0 +1,11 @@
+package main
+
+func Fragment(pos vec4, tex vec2, col vec4) vec4 {
+    center := ScreenSize / 2
+	amount := (center - Cursor) / 10 / imageSrcTextureSize()
+	var clr vec3
+	clr.r = imageSrc2At(texCoord + amount).r
+	clr.g = imageSrc2UnsafeAt(texCoord).g
+	clr.b = imageSrc2At(texCoord - amount).b
+	return vec4(clr, 1.0)
+}

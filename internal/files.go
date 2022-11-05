@@ -6,6 +6,7 @@ package cr1ckt
 
 import (
 	"image/png"
+	"io"
 	"io/ioutil"
 	"log"
 
@@ -96,4 +97,26 @@ func loadFont(size int) font.Face {
 		log.Fatal(err)
 	}
 	return fontface
+}
+
+func loadShader(name string) *ebiten.Shader {
+	log.Printf("loading %s\n", name)
+
+	file, err := assets.Open(name)
+	if err != nil {
+		log.Fatalf("error opening file %s: %v\n", name, err)
+	}
+	defer file.Close()
+
+	raw, err := io.ReadAll(file)
+	if err != nil {
+		log.Fatalf("error reading file %s: %v\n", name, err)
+	}
+
+	shader, err := ebiten.NewShader(raw)
+	if err != nil {
+		log.Fatalf("error parsing shader %s: %v\n", name, err)
+	}
+
+	return shader
 }
