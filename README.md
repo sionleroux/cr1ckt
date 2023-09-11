@@ -54,7 +54,7 @@ If you put a copy of the `maps.ldtk` file with your changes in it in the same fo
 
 To build the game yourself, run: `go build .`
 
-I'm using Go 1.17 for this.  You might have luck with an older version but the go:embed feature is only available in 1.16 so you can't go lower than that.
+I'm using Go 1.21 for this.  You might have luck with an older version but the go:embed feature is only available in 1.16 so you can't go lower than that.
 
 The Go build system will handle the rest of the dependencies for you but if you're curious, it's using:
 - [ebiten](https://github.com/hajimehoshi/ebiten/) simple 2D game library

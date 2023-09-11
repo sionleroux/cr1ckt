@@ -10,7 +10,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.17
+        go-version: 1.21
     - name: Install dependencies
       shell: bash
       run: sudo apt-get -y install libgl1-mesa-dev xorg-dev libasound2-dev
@@ -27,7 +27,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.17
+        go-version: 1.21
     - name: Install dependencies
       shell: bash
       run: go get github.com/akavel/rsrc
@@ -54,7 +54,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.17
+        go-version: 1.21
     - name: Build Mac exe
       shell: bash
       run: go build -v -o dist/Cr1ckt.app/Contents/MacOS/cr1ckt
@@ -76,7 +76,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.17
+        go-version: 1.21
     - name: Install dependencies
       shell: bash
       run: sudo apt-get -y install libgl1-mesa-dev xorg-dev libasound2-dev
@@ -101,7 +101,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.17
+        go-version: 1.21
     - name: Build Web binary
       shell: bash
       run: GOOS=js GOARCH=wasm go build -v -ldflags "-w -s" -o dist/web/cr1ckt.wasm
@@ -125,7 +125,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.17
+        go-version: 1.21
     - name: Set up our JDK environment
       uses: actions/setup-java@v1.4.3
       with:
