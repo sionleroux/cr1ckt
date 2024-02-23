@@ -9,7 +9,11 @@ brew install android-ndk
 
 go install github.com/hajimehoshi/ebiten/v2/cmd/ebitenmobile@latest
 
-ebitenmobile bind -target android -javapkg org.sinisterstuf.cr1cktbin -o cr1ckt.aar ./mobile/
+ebitenmobile bind -target android -androidapi 21 -javapkg org.sinisterstuf.cr1cktbin -o cr1ckt.aar ./mobile/
+
+-androidapi 21 flag is needed to get it within the expected NDK range to avoid the error:
+
+gomobile: ANDROID_NDK_HOME specifies /opt/android-ndk, which is unusable: unsupported API version 16 (not in 21..34)
 
 more info: https://ebiten.org/documents/mobile.html#Android
 

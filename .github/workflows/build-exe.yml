@@ -135,7 +135,7 @@ jobs:
       run: go install github.com/hajimehoshi/ebiten/v2/cmd/ebitenmobile@latest
     - name: Build Android library AAR
       shell: bash
-      run: ebitenmobile bind -target android -androidapi 19 -javapkg org.sinisterstuf.cr1cktbin -o cr1ckt.aar ./mobile/ && cp cr1ckt.aar dist/android/app/libs/cr1ckt.aar
+      run: ebitenmobile bind -target android -androidapi 21 -javapkg org.sinisterstuf.cr1cktbin -o cr1ckt.aar ./mobile/ && cp cr1ckt.aar dist/android/app/libs/cr1ckt.aar
     - name: Build Android APK
       shell: bash
       run: cd dist/android && ./gradlew assemble && cp app/build/outputs/apk/debug/app-debug.apk ../../cr1ckt.apk
