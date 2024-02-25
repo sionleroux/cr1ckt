@@ -12,12 +12,12 @@ android {
             keyPassword 'cr1ckt'
         }
     }
-    compileSdkVersion 31
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "org.sinisterstuf.cr1ckt"
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
