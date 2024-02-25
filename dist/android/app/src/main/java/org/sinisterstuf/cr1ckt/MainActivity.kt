@@ -11,10 +11,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Seq.setContext(applicationContext)
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN);
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN)
         setContentView(R.layout.activity_main)
-        getSupportActionBar()?.hide();
+        supportActionBar?.hide()
     }
 
     override fun onPause() {
