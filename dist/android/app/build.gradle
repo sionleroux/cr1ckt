@@ -12,7 +12,7 @@ android {
             keyPassword 'cr1ckt'
         }
     }
-    compileSdkVersion 33
+    compileSdk 33
 
     defaultConfig {
         applicationId "org.sinisterstuf.cr1ckt"
