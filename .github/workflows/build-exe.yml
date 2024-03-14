@@ -202,7 +202,7 @@ jobs:
         BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
         CHANNEL: windows
         ITCH_GAME: cr1ckt
-        ITCH_USER: sinisterstuf
+        ITCH_USER: sionleroux
         PACKAGE: cr1ckt.exe
         VERSION: ${{github.ref_name}}
 
@@ -223,7 +223,7 @@ jobs:
         BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
         CHANNEL: mac
         ITCH_GAME: cr1ckt
-        ITCH_USER: sinisterstuf
+        ITCH_USER: sionleroux
         PACKAGE: Cr1ckt.app
         VERSION: ${{github.ref_name}}
 
@@ -244,7 +244,7 @@ jobs:
         BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
         CHANNEL: linux
         ITCH_GAME: cr1ckt
-        ITCH_USER: sinisterstuf
+        ITCH_USER: sionleroux
         PACKAGE: cr1ckt
         VERSION: ${{github.ref_name}}
 
@@ -262,7 +262,7 @@ jobs:
         BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
         CHANNEL: web
         ITCH_GAME: cr1ckt
-        ITCH_USER: sinisterstuf
+        ITCH_USER: sionleroux
         PACKAGE: dist/web
         VERSION: ${{github.ref_name}}
 
@@ -280,6 +280,6 @@ jobs:
         BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
         CHANNEL: android
         ITCH_GAME: cr1ckt
-        ITCH_USER: sinisterstuf
+        ITCH_USER: sionleroux
         PACKAGE: cr1ckt.apk
         VERSION: ${{github.ref_name}}
