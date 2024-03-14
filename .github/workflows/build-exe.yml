@@ -130,6 +130,7 @@ jobs:
       uses: actions/setup-java@v4
       with:
         java-version: 17
+        distribution: zulu
     - name: Install ebitenmobile
       shell: bash
       run: go install github.com/hajimehoshi/ebiten/v2/cmd/ebitenmobile@latest
