@@ -1,9 +1,10 @@
 package org.sinisterstuf.cr1ckt
 
 import android.os.Bundle
-import android.view.Window
-import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat.getInsetsController
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 import go.Seq
 import org.sinisterstuf.cr1cktbin.mobile.EbitenView
 
@@ -11,10 +12,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Seq.setContext(applicationContext)
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        window.setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN)
+
+        // Immersive full-screen mode
+        val controller = getInsetsController(window, window.decorView)
+        controller.systemBarsBehavior = BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        controller.hide(WindowInsetsCompat.Type.systemBars())
+
         setContentView(R.layout.activity_main)
-        supportActionBar?.hide()
     }
 
     override fun onPause() {

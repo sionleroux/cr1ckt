@@ -12,12 +12,12 @@ android {
             keyPassword 'cr1ckt'
         }
     }
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "org.sinisterstuf.cr1ckt"
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
 
@@ -44,8 +44,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.aar'])
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.2.0'
-    implementation 'com.google.android.material:material:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
 }
